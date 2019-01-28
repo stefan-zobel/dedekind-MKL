@@ -33,8 +33,7 @@ IntArray::IntArray(JNIEnv* env, jintArray jarray, int offset, jboolean critical)
         jboolean isCopy = JNI_FALSE;
         if (critical) {
             carray = static_cast<long*>(ctx->GetPrimitiveArrayCritical(jarray, &isCopy));
-        }
-        else {
+        } else {
             carray = ctx->GetIntArrayElements(jarray, &isCopy);
         }
         if (carray == NULL) {
@@ -54,8 +53,7 @@ IntArray::~IntArray()
 {
     if (critical) {
         ctx->ReleasePrimitiveArrayCritical(jarray, carray, 0);
-    }
-    else {
+    } else {
         ctx->ReleaseIntArrayElements(jarray, carray, 0);
     }
 }
