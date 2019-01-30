@@ -20,7 +20,7 @@ import java.util.Objects;
 import org.netlib.util.doubleW;
 import org.netlib.util.intW;
 
-import net.dedekind.blas.Order;
+import net.dedekind.Order;
 
 /**
  * {@code Intel MKL} (Math Kernel Library) native implementation.

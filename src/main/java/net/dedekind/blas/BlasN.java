@@ -17,6 +17,8 @@ package net.dedekind.blas;
 
 import java.util.Objects;
 
+import net.dedekind.Order;
+
 /**
  * {@code Intel MKL} (Math Kernel Library) native implementation.
  */
