@@ -2,16 +2,16 @@ package net.frobenius;
 
 public enum TDiag {
 
-	UNIT("U"), //
-	NON_UNIT("N"); //
+    UNIT("U"), //
+    NON_UNIT("N"); //
 
-	private final String val;
+    private final String val;
 
-	private TDiag(String s) {
-		val = s;
-	}
+    private TDiag(String s) {
+        val = s;
+    }
 
-	public String val() {
-		return val;
-	}
+    public String val() {
+        return val;
+    }
 }

@@ -2,17 +2,17 @@ package net.frobenius;
 
 public enum TRange {
 
-	ALL("A"), //
-	INDICES("I"), //
-	INTERVAL("V"); //
+    ALL("A"), //
+    INDICES("I"), //
+    INTERVAL("V"); //
 
-	private final String val;
+    private final String val;
 
-	private TRange(String s) {
-		val = s;
-	}
+    private TRange(String s) {
+        val = s;
+    }
 
-	public String val() {
-		return val;
-	}
+    public String val() {
+        return val;
+    }
 }

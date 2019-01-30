@@ -2,16 +2,16 @@ package net.frobenius;
 
 public enum TNorm {
 
-	ONE("1"), //
-	INF("I"); //
+    ONE("1"), //
+    INF("I"); //
 
-	private final String val;
+    private final String val;
 
-	private TNorm(String s) {
-		val = s;
-	}
+    private TNorm(String s) {
+        val = s;
+    }
 
-	public String val() {
-		return val;
-	}
+    public String val() {
+        return val;
+    }
 }

@@ -2,16 +2,16 @@ package net.frobenius;
 
 public enum TEigJob {
 
-	ALL("V"), //
-	VALUES_ONLY("N"); //
+    ALL("V"), //
+    VALUES_ONLY("N"); //
 
-	private final String val;
+    private final String val;
 
-	private TEigJob(String s) {
-		val = s;
-	}
+    private TEigJob(String s) {
+        val = s;
+    }
 
-	public String val() {
-		return val;
-	}
+    public String val() {
+        return val;
+    }
 }

@@ -2,16 +2,16 @@ package net.frobenius;
 
 public enum TSide {
 
-	LEFT("L"), //
-	RIGHT("R"); //
+    LEFT("L"), //
+    RIGHT("R"); //
 
-	private final String val;
+    private final String val;
 
-	private TSide(String s) {
-		val = s;
-	}
+    private TSide(String s) {
+        val = s;
+    }
 
-	public String val() {
-		return val;
-	}
+    public String val() {
+        return val;
+    }
 }

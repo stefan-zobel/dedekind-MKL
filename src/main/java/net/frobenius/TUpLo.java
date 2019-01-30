@@ -2,16 +2,16 @@ package net.frobenius;
 
 public enum TUpLo {
 
-	UPPER("U"), //
-	LOWER("L"); //
+    UPPER("U"), //
+    LOWER("L"); //
 
-	private final String val;
+    private final String val;
 
-	private TUpLo(String s) {
-		val = s;
-	}
+    private TUpLo(String s) {
+        val = s;
+    }
 
-	public String val() {
-		return val;
-	}
+    public String val() {
+        return val;
+    }
 }
