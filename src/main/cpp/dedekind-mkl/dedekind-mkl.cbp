@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="dedekind-mkl" />
+		<Option platforms="Unix;" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option platforms="Windows;Unix;" />
+				<Option output="bin/Debug/dedekind-mkl" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add directory="/usr/lib/jvm/default/include" />
+					<Add directory="/usr/lib/jvm/default/include/linux" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option platforms="Windows;Unix;" />
+				<Option output="bin/Release/dedekind-mkl" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-fPIC" />
+					<Add directory="/usr/lib/jvm/default/include" />
+					<Add directory="/usr/lib/jvm/default/include/linux" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="Release;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Context.cpp" />
+		<Unit filename="Context.h" />
+		<Unit filename="DoubleArray.cpp" />
+		<Unit filename="DoubleArray.h" />
+		<Unit filename="IntArray.cpp" />
+		<Unit filename="IntArray.h" />
+		<Unit filename="JException.cpp" />
+		<Unit filename="JException.h" />
+		<Unit filename="JExceptionUtils.cpp" />
+		<Unit filename="JExceptionUtils.h" />
+		<Unit filename="JvmProvider.cpp" />
+		<Unit filename="JvmProvider.h" />
+		<Unit filename="Portability.cpp" />
+		<Unit filename="Portability.h" />
+		<Unit filename="SlimString.cpp" />
+		<Unit filename="SlimString.h" />
+		<Unit filename="ThreadAutoAttach.cpp" />
+		<Unit filename="ThreadAutoAttach.h" />
+		<Unit filename="ThreadMutex.cpp" />
+		<Unit filename="ThreadMutex.h" />
+		<Unit filename="dedekind-mkl.cpp" />
+		<Unit filename="dedekind-mkl.h" />
+		<Unit filename="net_dedekind_blas_BlasN.cpp" />
+		<Unit filename="net_dedekind_lapack_LapackN.cpp" />
+		<Unit filename="stdafx.h" />
+		<Extensions>
+			<envvars />
+			<code_completion>
+				<search_path add="/usr/lib/jvm/default/include" />
+				<search_path add="/usr/lib/jvm/default/include/linux" />
+			</code_completion>
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
