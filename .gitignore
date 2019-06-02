@@ -2,3 +2,7 @@
 /.settings/
 /.classpath
 /.project
+/bin/
+/src/main/cpp/dedekind-mkl/bin/
+/src/main/cpp/dedekind-mkl/obj/
+
