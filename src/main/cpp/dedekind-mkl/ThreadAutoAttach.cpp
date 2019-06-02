@@ -33,7 +33,7 @@
 
 
 // static global mutex for serialization of thread's access to the Attach/Detach API functions
-// (which are _not_ thread-safe on Sun VMs!) 
+// (which are _not_ thread-safe on Sun VMs!)
 ThreadMutex ThreadAutoAttach::globalMutex;
 
 
@@ -118,7 +118,7 @@ void ThreadAutoAttach::disableCancellation() {
     int rc = pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &oldState);
     if (rc != 0) {
         const char* errMsg = "ThreadAutoAttach::disableCancellation() - failed to disable thread cancellation!";
-        __LOG_FATAL __LARG(errMsg);
+//        __LOG_FATAL __LARG(errMsg);
         throw JException(errMsg);
     }
 #endif /* !(_WIN64) && !(_WIN32) */
@@ -133,7 +133,7 @@ void ThreadAutoAttach::enableCancellation() {
     int rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldState);
     if (rc != 0) {
         const char* warn = "ThreadAutoAttach::enableCancellation() - failed to re-enable thread cancellation!";
-        __LOG_WARN __LARG(warn);
+//        __LOG_WARN __LARG(warn);
         // never throw from a destructor!
     }
 #endif /* !(_WIN64) && !(_WIN32) */
