@@ -37,6 +37,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="/usr/lib/libmkl_rt.so" />
 				</Linker>
 			</Target>
 		</Build>
