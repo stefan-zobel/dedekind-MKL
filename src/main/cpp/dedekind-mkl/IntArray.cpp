@@ -34,7 +34,7 @@ IntArray::IntArray(JNIEnv* env, jintArray jarray, int offset, jboolean critical)
         if (critical) {
             carray = static_cast<long*>(ctx->GetPrimitiveArrayCritical(jarray, &isCopy));
         } else {
-            carray = ctx->GetIntArrayElements(jarray, &isCopy);
+            carray = reinterpret_cast<long*>(ctx->GetIntArrayElements(jarray, &isCopy));
         }
         if (carray == NULL) {
             throw JException("long* result: NULL");
@@ -54,6 +54,6 @@ IntArray::~IntArray()
     if (critical) {
         ctx->ReleasePrimitiveArrayCritical(jarray, carray, 0);
     } else {
-        ctx->ReleaseIntArrayElements(jarray, carray, 0);
+        ctx->ReleaseIntArrayElements(jarray, reinterpret_cast<int*>(carray), 0);
     }
 }
