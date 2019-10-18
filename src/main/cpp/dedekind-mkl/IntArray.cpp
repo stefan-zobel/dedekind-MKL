@@ -32,21 +32,20 @@ IntArray::IntArray(JNIEnv* env, jintArray jarray, int offset, jboolean critical)
     if (jarray) {
         jboolean isCopy = JNI_FALSE;
         if (critical) {
-            carray = static_cast<long*>(ctx->GetPrimitiveArrayCritical(jarray, &isCopy));
+            carray = static_cast<int*>(ctx->GetPrimitiveArrayCritical(jarray, &isCopy));
         } else {
-            carray = reinterpret_cast<long*>(ctx->GetIntArrayElements(jarray, &isCopy));
+            carray = reinterpret_cast<int*>(ctx->GetIntArrayElements(jarray, &isCopy));
         }
         if (carray == NULL) {
-            throw JException("long* result: NULL");
+            throw JException("int* result: NULL");
         }
-    }
-    else {
+    } else {
         throw JException("jintArray argument: null");
     }
 }
 
 int* IntArray::ptr() {
-    return reinterpret_cast<int*>(carray) + offset;
+    return carray + offset;
 }
 
 IntArray::~IntArray()
@@ -54,6 +53,6 @@ IntArray::~IntArray()
     if (critical) {
         ctx->ReleasePrimitiveArrayCritical(jarray, carray, 0);
     } else {
-        ctx->ReleaseIntArrayElements(jarray, reinterpret_cast<int*>(carray), 0);
+        ctx->ReleaseIntArrayElements(jarray, reinterpret_cast<jint*>(carray), 0);
     }
 }

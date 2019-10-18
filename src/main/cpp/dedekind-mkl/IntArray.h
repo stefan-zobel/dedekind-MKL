@@ -34,7 +34,7 @@ public:
 private:
     Context* ctx;
     jintArray jarray;
-    long* carray;
+    int* carray;
     int offset;
     bool critical;
 };
