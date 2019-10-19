@@ -1197,6 +1197,168 @@ public final class PlainLapack {
         }
     }
 
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DGESDD computes the singular value decomposition (SVD) of a real
+     *  M-by-N matrix A, optionally computing the left and right singular
+     *  vectors.  If singular vectors are desired, it uses a
+     *  divide-and-conquer algorithm.
+     *
+     *  The SVD is written
+     *
+     *       A = U * SIGMA * transpose(V)
+     *
+     *  where SIGMA is an M-by-N matrix which is zero except for its
+     *  min(m,n) diagonal elements, U is an M-by-M orthogonal matrix, and
+     *  V is an N-by-N orthogonal matrix.  The diagonal elements of SIGMA
+     *  are the singular values of A; they are real and non-negative, and
+     *  are returned in descending order.  The first min(m,n) columns of
+     *  U and V are the left and right singular vectors of A.
+     *
+     *  Note that the routine returns VT = V**T, not V.
+     *
+     *  The divide and conquer algorithm makes very mild assumptions about
+     *  floating point arithmetic. It will work on machines with a guard
+     *  digit in add/subtract, or on those binary machines without guard
+     *  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+     *  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+     *  without guard digits, but we know of none.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  JOBZ    (input) CHARACTER*1
+     *          Specifies options for computing all or part of the matrix U:
+     *          = 'A':  all M columns of U and all N rows of V**T are
+     *                  returned in the arrays U and VT;
+     *          = 'S':  the first min(M,N) columns of U and the first
+     *                  min(M,N) rows of V**T are returned in the arrays U
+     *                  and VT;
+     *          = 'O':  If M >= N, the first N columns of U are overwritten
+     *                  on the array A and all rows of V**T are returned in
+     *                  the array VT;
+     *                  otherwise, all columns of U are returned in the
+     *                  array U and the first M rows of V**T are overwritten
+     *                  in the array A;
+     *          = 'N':  no columns of U or rows of V**T are computed.
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the input matrix A.  M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the input matrix A.  N >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the M-by-N matrix A.
+     *          On exit,
+     *          if JOBZ = 'O',  A is overwritten with the first N columns
+     *                          of U (the left singular vectors, stored
+     *                          columnwise) if M >= N;
+     *                          A is overwritten with the first M rows
+     *                          of V**T (the right singular vectors, stored
+     *                          rowwise) otherwise.
+     *          if JOBZ .ne. 'O', the contents of A are destroyed.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,M).
+     *
+     *  S       (output) DOUBLE PRECISION array, dimension (min(M,N))
+     *          The singular values of A, sorted so that S(i) >= S(i+1).
+     *
+     *  U       (output) DOUBLE PRECISION array, dimension (LDU,UCOL)
+     *          UCOL = M if JOBZ = 'A' or JOBZ = 'O' and M < N;
+     *          UCOL = min(M,N) if JOBZ = 'S'.
+     *          If JOBZ = 'A' or JOBZ = 'O' and M < N, U contains the M-by-M
+     *          orthogonal matrix U;
+     *          if JOBZ = 'S', U contains the first min(M,N) columns of U
+     *          (the left singular vectors, stored columnwise);
+     *          if JOBZ = 'O' and M >= N, or JOBZ = 'N', U is not referenced.
+     *
+     *  LDU     (input) INTEGER
+     *          The leading dimension of the array U.  LDU >= 1; if
+     *          JOBZ = 'S' or 'A' or JOBZ = 'O' and M < N, LDU >= M.
+     *
+     *  VT      (output) DOUBLE PRECISION array, dimension (LDVT,N)
+     *          If JOBZ = 'A' or JOBZ = 'O' and M >= N, VT contains the
+     *          N-by-N orthogonal matrix V**T;
+     *          if JOBZ = 'S', VT contains the first min(M,N) rows of
+     *          V**T (the right singular vectors, stored rowwise);
+     *          if JOBZ = 'O' and M < N, or JOBZ = 'N', VT is not referenced.
+     *
+     *  LDVT    (input) INTEGER
+     *          The leading dimension of the array VT.  LDVT >= 1; if
+     *          JOBZ = 'A' or JOBZ = 'O' and M >= N, LDVT >= N;
+     *          if JOBZ = 'S', LDVT >= min(M,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit.
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value.
+     *          > 0:  DBDSDC did not converge, updating process failed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param jobz
+     * @param m
+     * @param n
+     * @param a
+     * @param lda
+     * @param s
+     * @param u
+     * @param ldu
+     * @param vt
+     * @param ldvt
+     */
+    public static void dgesdd(Lapack la, TSvdJob jobz, int m, int n, double[] a, int lda, double[] s, double[] u,
+            int ldu, double[] vt, int ldvt) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(s, Math.min(m, n), "s");
+        checkStrictlyPositive(ldu, "ldu");
+        checkStrictlyPositive(ldvt, "ldvt");
+        // ldu + u
+        if (jobz == TSvdJob.ALL || jobz == TSvdJob.PART || (m < n && jobz == TSvdJob.OVERWRITE)) {
+            checkValueAtLeast(ldu, m, "ldu");
+            int ucol = (jobz == TSvdJob.PART) ? Math.min(m, n) : m;
+            checkMinLen(u, ldu * ucol, "u");
+        }
+        // ldvt
+        if (jobz == TSvdJob.ALL || (m >= n && jobz == TSvdJob.OVERWRITE)) {
+            checkValueAtLeast(ldvt, n, "ldvt");
+        } else if (jobz == TSvdJob.PART) {
+            checkValueAtLeast(ldvt, Math.min(m, n), "ldvt");
+        }
+        // vt
+        checkMinLen(vt, ldvt * n, "vt");
+
+        intW info = new intW(0);
+        int[] iwork = new int[8 * Math.min(m, n)];
+        double[] work = new double[1];
+        la.dgesdd(jobz.val(), m, n, new double[0], lda, new double[0], new double[0], ldu, new double[0], ldvt, work,
+                -1, new int[0], info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        la.dgesdd(jobz.val(), m, n, a, lda, s, u, ldu, vt, ldvt, work, work.length, iwork, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new NotConvergedException("Did not converge. Update failed.");
+            }
+        }
+    }
+
     private static void checkNonNegative(int value, String name) {
         if (value < 0) {
             throw new IllegalArgumentException("Parameter " + name + " must be non-negative (value = " + value + ")");
