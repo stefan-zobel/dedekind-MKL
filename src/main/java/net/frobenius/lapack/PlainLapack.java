@@ -1504,6 +1504,83 @@ public final class PlainLapack {
         }
     }
 
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DGETRS solves a system of linear equations
+     *     A * X = B  or  A' * X = B
+     *  with a general N-by-N matrix A using the LU factorization computed
+     *  by DGETRF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  TRANS   (input) CHARACTER*1
+     *          Specifies the form of the system of equations:
+     *          = 'N':  A * X = B  (No transpose)
+     *          = 'T':  A'* X = B  (Transpose)
+     *          = 'C':  A'* X = B  (Conjugate transpose = Transpose)
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  A       (input) DOUBLE PRECISION array, dimension (LDA,N)
+     *          The factors L and U from the factorization A = P*L*U
+     *          as computed by DGETRF.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  IPIV    (input) INTEGER array, dimension (N)
+     *          The pivot indices from DGETRF; for 1<=i<=N, row i of the
+     *          matrix was interchanged with row IPIV(i).
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param trans
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param indices
+     * @param b
+     * @param ldb
+     */
+    public static void dgetrs(Lapack la, TTrans trans, int n, int rhsCount, double[] a, int lda, int[] indices,
+            double[] b, int ldb) {
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, n, "lda");
+        checkValueAtLeast(ldb, n, "ldb");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(b, ldb * rhsCount, "b");
+        checkMinLen(indices, n, "indices");
+
+        intW info = new intW(0);
+        la.dgetrs(trans.val(), n, rhsCount, a, lda, indices, b, ldb, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
     private static void checkNonNegative(int value, String name) {
         if (value < 0) {
             throw new IllegalArgumentException("Parameter " + name + " must be non-negative (value = " + value + ")");
