@@ -1436,6 +1436,74 @@ public final class PlainLapack {
         }
     }
 
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DGETRF computes an LU factorization of a general M-by-N matrix A
+     *  using partial pivoting with row interchanges.
+     *
+     *  The factorization has the form
+     *     A = P * L * U
+     *  where P is a permutation matrix, L is lower triangular with unit
+     *  diagonal elements (lower trapezoidal if m > n), and U is upper
+     *  triangular (upper trapezoidal if m < n).
+     *
+     *  This is the right-looking Level 3 BLAS version of the algorithm.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix A.  M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix A.  N >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the M-by-N matrix to be factored.
+     *          On exit, the factors L and U from the factorization
+     *          A = P*L*U; the unit diagonal elements of L are not stored.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,M).
+     *
+     *  IPIV    (output) INTEGER array, dimension (min(M,N))
+     *          The pivot indices; for 1 <= i <= min(M,N), row i of the
+     *          matrix was interchanged with row IPIV(i).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param a
+     * @param lda
+     * @param indices
+     */
+    public static void dgetrf(Lapack la, int m, int n, double[] a, int lda, int[] indices) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(indices, Math.min(m, n), "indices");
+
+        intW info = new intW(0);
+        la.dgetrf(m, n, a, lda, indices, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Factor U in the LU decomposition is exactly singular");
+            }
+        }
+    }
+
     private static void checkNonNegative(int value, String name) {
         if (value < 0) {
             throw new IllegalArgumentException("Parameter " + name + " must be non-negative (value = " + value + ")");
