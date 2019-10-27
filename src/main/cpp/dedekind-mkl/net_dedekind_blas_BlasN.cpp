@@ -964,6 +964,38 @@ Java_net_dedekind_blas_BlasN_idamax_1n(JNIEnv* env, jclass,
     return -1;
 }
 
+    // miscellaneous float routines
+
+/*
+ * Class:     net_dedekind_blas_BlasN
+ * Method:    sgemm_n
+ * Signature: (IIIIIIF[FII[FIIF[FIIZ)V
+ */
+JNIEXPORT void JNICALL
+Java_net_dedekind_blas_BlasN_sgemm_1n(JNIEnv* env, jclass,
+  jint order,
+  jint transa,
+  jint transb,
+  jint m,
+  jint n,
+  jint k,
+  jfloat alpha,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray b,
+  jint bOffset,
+  jint ldb,
+  jfloat beta,
+  jfloatArray c,
+  jint cOffset,
+  jint ldc,
+  jboolean useCrit) {
+
+}
+
+    // xerbla
+
 /*
  * Class:     net_dedekind_blas_BlasN
  * Method:    redirect_xerbla_n
