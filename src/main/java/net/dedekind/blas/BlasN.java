@@ -265,6 +265,20 @@ public class BlasN extends Blas {
         return idamax_n(n, dx, dxOffset, incx, USE_CRITICAL);
     }
 
+    // miscellaneous float routines
+
+    @Override
+    public final void sgemm(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
+            int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(c, "c");
+        sgemm_n(Order.COL.code(), Trans.of(transa).code(), Trans.of(transb).code(), m, n, k, alpha, a, aOffset, lda, b,
+                bOffset, ldb, beta, c, cOffset, ldc, USE_CRITICAL);
+    }
+
+    // native methods
+
     private static native void dgbmv_n(int order, int trans, int m, int n, int kl, int ku, double alpha, double[] a,
             int aOffset, int lda, double[] x, int xOffset, int incx, double beta, double[] y, int yOffset, int incy,
             boolean useCriticalRegion);
@@ -353,6 +367,12 @@ public class BlasN extends Blas {
     private static native int idamax_n(int n, double[] dx, int dxOffset, int incx, boolean useCriticalRegion);
 
     static native void redirect_xerbla_n();
+
+    // miscellaneous float routines
+
+    private static native void sgemm_n(int order, int transa, int transb, int m, int n, int k, float alpha, float[] a,
+            int aOffset, int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc,
+            boolean useCriticalRegion);
 
     protected BlasN() {
     }

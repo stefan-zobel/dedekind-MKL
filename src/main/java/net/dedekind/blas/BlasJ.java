@@ -131,52 +131,60 @@ public class BlasJ extends Blas {
     }
 
     @Override
-    public void dtbsv(String uplo, String trans, String diag, int n, int k, double[] a, int aOffset, int lda,
+    public final void dtbsv(String uplo, String trans, String diag, int n, int k, double[] a, int aOffset, int lda,
             double[] x, int xOffset, int incx) {
         Dtbsv.dtbsv(uplo, trans, diag, n, k, a, aOffset, lda, x, xOffset, incx);
 
     }
 
     @Override
-    public void dtpsv(String uplo, String trans, String diag, int n, double[] ap, int apOffset, double[] x, int xOffset,
+    public final void dtpsv(String uplo, String trans, String diag, int n, double[] ap, int apOffset, double[] x, int xOffset,
             int incx) {
         Dtpsv.dtpsv(uplo, trans, diag, n, ap, apOffset, x, xOffset, incx);
     }
 
     @Override
-    public void daxpy(int n, double da, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
+    public final void daxpy(int n, double da, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
         Daxpy.daxpy(n, da, dx, dxOffset, incx, dy, dyOffset, incy);
     }
 
     @Override
-    public void dcopy(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
+    public final void dcopy(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
         Dcopy.dcopy(n, dx, dxOffset, incx, dy, dyOffset, incy);
     }
 
     @Override
-    public void dscal(int n, double da, double[] dx, int dxOffset, int incx) {
+    public final void dscal(int n, double da, double[] dx, int dxOffset, int incx) {
         Dscal.dscal(n, da, dx, dxOffset, incx);
     }
 
     @Override
-    public void dswap(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
+    public final void dswap(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
         Dswap.dswap(n, dx, dxOffset, incx, dy, dyOffset, incy);
     }
 
     @Override
-    public double ddot(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
+    public final double ddot(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy) {
         return Ddot.ddot(n, dx, dxOffset, incx, dy, dyOffset, incy);
     }
 
     @Override
-    public void drot(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy, double c,
+    public final void drot(int n, double[] dx, int dxOffset, int incx, double[] dy, int dyOffset, int incy, double c,
             double s) {
         Drot.drot(n, dx, dxOffset, incx, dy, dyOffset, incy, c, s);
     }
 
     @Override
-    public int idamax(int n, double[] dx, int dxOffset, int incx) {
+    public final int idamax(int n, double[] dx, int dxOffset, int incx) {
         return Idamax.idamax(n, dx, dxOffset, incx);
+    }
+
+    // miscellaneous float routines
+
+    @Override
+    public final void sgemm(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
+            int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc) {
+        Sgemm.sgemm(transa, transb, m, n, k, alpha, a, aOffset, lda, b, bOffset, ldb, beta, c, cOffset, ldc);
     }
 
     protected BlasJ() {
