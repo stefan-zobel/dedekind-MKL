@@ -1295,11 +1295,6 @@ public final class PlainLapack {
      *          JOBZ = 'A' or JOBZ = 'O' and M >= N, LDVT >= N;
      *          if JOBZ = 'S', LDVT >= min(M,N).
      *
-     *  INFO    (output) INTEGER
-     *          = 0:  successful exit.
-     *          < 0:  if INFO = -i, the i-th argument had an illegal value.
-     *          > 0:  DBDSDC did not converge, updating process failed.
-     *
      *  =====================================================================
      *
      * </code>
@@ -1355,6 +1350,88 @@ public final class PlainLapack {
                 throwIAEPosition(info);
             } else {
                 throw new NotConvergedException("Did not converge. Update failed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DGESV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N matrix and X and B are N-by-NRHS matrices.
+     *
+     *  The LU decomposition with partial pivoting and row interchanges is
+     *  used to factor A as
+     *     A = P * L * U,
+     *  where P is a permutation matrix, L is unit lower triangular, and U is
+     *  upper triangular.  The factored form of A is then used to solve the
+     *  system of equations A * X = B.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the N-by-N coefficient matrix A.
+     *          On exit, the factors L and U from the factorization
+     *          A = P*L*U; the unit diagonal elements of L are not stored.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  IPIV    (output) INTEGER array, dimension (N)
+     *          The pivot indices that define the permutation matrix P;
+     *          row i of the matrix was interchanged with row IPIV(i).
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS matrix of right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param indices
+     * @param b
+     * @param ldb
+     */
+    public static void dgesv(Lapack la, int n, int rhsCount, double[] a, int lda, int[] indices, double[] b, int ldb) {
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, n, "lda");
+        checkValueAtLeast(ldb, n, "ldb");
+        checkMinLen(indices, n, "indices");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(b, ldb * rhsCount, "b");
+
+        intW info = new intW(0);
+        la.dgesv(n, rhsCount, a, lda, indices, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "Factor U in the LU decomposition is exactly singular. Solution could not be computed.");
             }
         }
     }
