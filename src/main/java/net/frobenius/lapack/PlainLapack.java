@@ -1581,6 +1581,95 @@ public final class PlainLapack {
         }
     }
 
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DGTSV  solves the equation
+     *
+     *     A*X = B,
+     *
+     *  where A is an n by n tridiagonal matrix, by Gaussian elimination with
+     *  partial pivoting.
+     *
+     *  Note that the equation  A'*X = B  may be solved by interchanging the
+     *  order of the arguments DU and DL.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  DL      (input/output) DOUBLE PRECISION array, dimension (N-1)
+     *          On entry, DL must contain the (n-1) sub-diagonal elements of
+     *          A.
+     *
+     *          On exit, DL is overwritten by the (n-2) elements of the
+     *          second super-diagonal of the upper triangular matrix U from
+     *          the LU factorization of A, in DL(1), ..., DL(n-2).
+     *
+     *  D       (input/output) DOUBLE PRECISION array, dimension (N)
+     *          On entry, D must contain the diagonal elements of A.
+     *
+     *          On exit, D is overwritten by the n diagonal elements of U.
+     *
+     *  DU      (input/output) DOUBLE PRECISION array, dimension (N-1)
+     *          On entry, DU must contain the (n-1) super-diagonal elements
+     *          of A.
+     *
+     *          On exit, DU is overwritten by the (n-1) elements of the first
+     *          super-diagonal of U.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N by NRHS matrix of right hand side matrix B.
+     *          On exit, if INFO = 0, the N by NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param n
+     * @param rhsCount
+     * @param dl
+     * @param d
+     * @param du
+     * @param b
+     * @param ldb
+     */
+    public static void dgtsv(Lapack la, int n, int rhsCount, double[] dl, double[] d, double[] du, double[] b,
+            int ldb) {
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(ldb, n, "ldb");
+        checkMinLen(b, ldb * rhsCount, "b");
+        checkMinLen(dl, n - 1, "dl");
+        checkMinLen(du, n - 1, "du");
+        checkMinLen(d, n, "d");
+
+        intW info = new intW(0);
+        la.dgtsv(n, rhsCount, dl, d, du, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "Factor U in the LU decomposition is exactly singular. Solution could not be computed.");
+            }
+        }
+    }
+
     private static void checkNonNegative(int value, String name) {
         if (value < 0) {
             throw new IllegalArgumentException("Parameter " + name + " must be non-negative (value = " + value + ")");
