@@ -30,6 +30,10 @@
 #include "DoubleArray.h"
 #endif /* DOUBLEARRAY_INCLUDED_ */
 
+#ifndef FLOATARRAY_INCLUDED_
+#include "FloatArray.h"
+#endif /* FLOATARRAY_INCLUDED_ */
+
 #ifndef JEXCEPTION_INCLUDED_
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
@@ -1738,6 +1742,20 @@ Java_net_dedekind_lapack_LapackN_sgels_1n(JNIEnv* env, jclass,
   jint workOffset,
   jint lwork,
   jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray ba = FloatArray(env, b, bOffset, useCrit);
+        FloatArray worka = FloatArray(env, work, workOffset, useCrit);
+
+        return LAPACKE_sgels_work(order, trans, m, n, nrhs, aa.ptr(),
+            lda, ba.ptr(), ldb, worka.ptr(), lwork);
+    }
+    catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgels_n", ex.what());
+    }
+    catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgels_n: caught unknown exception");
+    }
     return NOT_REACHED;
 }
 
@@ -1760,6 +1778,19 @@ Java_net_dedekind_lapack_LapackN_sgesv_1n(JNIEnv* env, jclass,
   jint bOffset,
   jint ldb,
   jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        IntArray ipiva = IntArray(env, ipiv, ipivOffset, useCrit);
+        FloatArray ba = FloatArray(env, b, bOffset, useCrit);
+
+        return LAPACKE_sgesv(order, n, nrhs, aa.ptr(), lda, ipiva.ptr(), ba.ptr(), ldb);
+    }
+    catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgesv_n", ex.what());
+    }
+    catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgesv_n: caught unknown exception");
+    }
     return NOT_REACHED;
 }
 

@@ -145,6 +145,7 @@
     <ClInclude Include="Context.h" />
     <ClInclude Include="dedekind-mkl.h" />
     <ClInclude Include="DoubleArray.h" />
+    <ClInclude Include="FloatArray.h" />
     <ClInclude Include="IntArray.h" />
     <ClInclude Include="JException.h" />
     <ClInclude Include="JExceptionUtils.h" />
@@ -173,6 +174,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DoubleArray.cpp" />
+    <ClCompile Include="FloatArray.cpp" />
     <ClCompile Include="IntArray.cpp" />
     <ClCompile Include="JException.cpp" />
     <ClCompile Include="JExceptionUtils.cpp" />

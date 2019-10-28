@@ -51,6 +51,9 @@
     <ClInclude Include="IntArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FloatArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dedekind-mkl.cpp">
@@ -93,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IntArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FloatArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
