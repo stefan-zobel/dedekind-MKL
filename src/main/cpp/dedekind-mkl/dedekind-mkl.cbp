@@ -52,6 +52,8 @@
 		<Unit filename="Context.h" />
 		<Unit filename="DoubleArray.cpp" />
 		<Unit filename="DoubleArray.h" />
+		<Unit filename="FloatArray.cpp" />
+		<Unit filename="FloatArray.h" />
 		<Unit filename="IntArray.cpp" />
 		<Unit filename="IntArray.h" />
 		<Unit filename="JException.cpp" />
