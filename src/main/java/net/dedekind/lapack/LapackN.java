@@ -558,6 +558,16 @@ public class LapackN extends Lapack {
                 workOffset, lwork, USE_CRITICAL);
     }
 
+    @Override
+    public void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
+            int bOffset, int ldb, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(ipiv, "ipiv");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(info, "info");
+        info.val = sgesv_n(Order.COL.code(), n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, USE_CRITICAL);
+    }
+
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
             int[] ipiv, int ipivOffset, double anorm, doubleW rcondDW, double[] work, int workOffset, int[] iwork,
             int iworkOffset, boolean useCriticalRegion);
@@ -715,6 +725,9 @@ public class LapackN extends Lapack {
 
     private static native int sgels_n(int order, byte trans, int m, int n, int nrhs, float[] a, int aOffset, int lda,
             float[] b, int bOffset, int ldb, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
+
+    private static native int sgesv_n(int order, int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv,
+            int ipivOffset, float[] b, int bOffset, int ldb, boolean useCriticalRegion);
 
     static native void initialize_n();
 

@@ -324,6 +324,12 @@ public class LapackJ extends Lapack {
         Sgels.sgels(trans, m, n, nrhs, a, aOffset, lda, b, bOffset, ldb, work, workOffset, lwork, info);
     }
 
+    @Override
+    public final void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
+            int bOffset, int ldb, intW info) {
+        Sgesv.sgesv(n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, info);
+    }
+
     protected LapackJ() {
     }
 }
