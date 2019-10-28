@@ -865,6 +865,129 @@ public final class PlainLapack {
     /**
      * <pre>
      * <code>
+     * 
+     *  Purpose
+     *  =======
+     * 
+     *  SGELS solves overdetermined or underdetermined real linear systems
+     *  involving an M-by-N matrix A, or its transpose, using a QR or LQ
+     *  factorization of A.  It is assumed that A has full rank.
+     * 
+     *  The following options are provided:
+     * 
+     *  1. If TRANS = 'N' and m >= n:  find the least squares solution of
+     *     an overdetermined system, i.e., solve the least squares problem
+     *                  minimize || B - A*X ||.
+     * 
+     *  2. If TRANS = 'N' and m < n:  find the minimum norm solution of
+     *     an underdetermined system A * X = B.
+     * 
+     *  3. If TRANS = 'T' and m >= n:  find the minimum norm solution of
+     *     an undetermined system A**T * X = B.
+     * 
+     *  4. If TRANS = 'T' and m < n:  find the least squares solution of
+     *     an overdetermined system, i.e., solve the least squares problem
+     *                  minimize || B - A**T * X ||.
+     * 
+     *  Several right hand side vectors b and solution vectors x can be
+     *  handled in a single call; they are stored as the columns of the
+     *  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
+     *  matrix X.
+     * 
+     *  Arguments
+     *  =========
+     * 
+     *  TRANS   (input) CHARACTER*1
+     *          = 'N': the linear system involves A;
+     *          = 'T': the linear system involves A**T.
+     * 
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix A.  M >= 0.
+     * 
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix A.  N >= 0.
+     * 
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of
+     *          columns of the matrices B and X. NRHS >=0.
+     * 
+     *  A       (input/output) REAL array, dimension (LDA,N)
+     *          On entry, the M-by-N matrix A.
+     *          On exit,
+     *            if M >= N, A is overwritten by details of its QR
+     *                       factorization as returned by SGEQRF;
+     *            if M <  N, A is overwritten by details of its LQ
+     *                       factorization as returned by SGELQF.
+     * 
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,M).
+     * 
+     *  B       (input/output) REAL array, dimension (LDB,NRHS)
+     *          On entry, the matrix B of right hand side vectors, stored
+     *          columnwise; B is M-by-NRHS if TRANS = 'N', or N-by-NRHS
+     *          if TRANS = 'T'.
+     *          On exit, if INFO = 0, B is overwritten by the solution
+     *          vectors, stored columnwise:
+     *          if TRANS = 'N' and m >= n, rows 1 to n of B contain the least
+     *          squares solution vectors; the residual sum of squares for the
+     *          solution in each column is given by the sum of squares of
+     *          elements N+1 to M in that column;
+     *          if TRANS = 'N' and m < n, rows 1 to N of B contain the
+     *          minimum norm solution vectors;
+     *          if TRANS = 'T' and m >= n, rows 1 to M of B contain the
+     *          minimum norm solution vectors;
+     *          if TRANS = 'T' and m < n, rows 1 to M of B contain the
+     *          least squares solution vectors; the residual sum of squares
+     *          for the solution in each column is given by the sum of
+     *          squares of elements M+1 to N in that column.
+     * 
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B. LDB >= MAX(1,M,N).
+     * 
+     *  =====================================================================
+     * 
+     * </code>
+     * </pre>
+     *
+     * @param trans
+     * @param m
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param b
+     * @param ldb
+     */
+    public static void sgels(Lapack la, TTrans trans, int m, int n, int rhsCount, float[] a, int lda, float[] b, int ldb) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, m, "lda");
+        checkValueAtLeast(ldb, Math.max(n, m), "ldb");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(b, ldb * rhsCount, "b");
+
+        intW info = new intW(0);
+        float[] work = new float[1];
+        la.sgels(trans.val(), m, n, rhsCount, new float[0], lda, new float[0], ldb, work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new float[(int) work[0]];
+        la.sgels(trans.val(), m, n, rhsCount, a, lda, b, ldb, work, work.length, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "A does not have full rank. Least squares solution could not be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
      *
      *  Purpose
      *  =======
@@ -1439,6 +1562,88 @@ public final class PlainLapack {
     /**
      * <pre>
      * <code>
+     * 
+     *  Purpose
+     *  =======
+     * 
+     *  SGESV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N matrix and X and B are N-by-NRHS matrices.
+     * 
+     *  The LU decomposition with partial pivoting and row interchanges is
+     *  used to factor A as
+     *     A = P * L * U,
+     *  where P is a permutation matrix, L is unit lower triangular, and U is
+     *  upper triangular.  The factored form of A is then used to solve the
+     *  system of equations A * X = B.
+     * 
+     *  Arguments
+     *  =========
+     * 
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     * 
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     * 
+     *  A       (input/output) REAL array, dimension (LDA,N)
+     *          On entry, the N-by-N coefficient matrix A.
+     *          On exit, the factors L and U from the factorization
+     *          A = P*L*U; the unit diagonal elements of L are not stored.
+     * 
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     * 
+     *  IPIV    (output) INTEGER array, dimension (N)
+     *          The pivot indices that define the permutation matrix P;
+     *          row i of the matrix was interchanged with row IPIV(i).
+     * 
+     *  B       (input/output) REAL array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS matrix of right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     * 
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     * 
+     *  =====================================================================
+     * 
+     * </code>
+     * </pre>
+     *
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param indices
+     * @param b
+     * @param ldb
+     */
+    public static void sgesv(Lapack la, int n, int rhsCount, float[] a, int lda, int[] indices, float[] b, int ldb) {
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, n, "lda");
+        checkValueAtLeast(ldb, n, "ldb");
+        checkMinLen(indices, n, "indices");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(b, ldb * rhsCount, "b");
+
+        intW info = new intW(0);
+        la.sgesv(n, rhsCount, a, lda, indices, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "Factor U in the LU decomposition is exactly singular. Solution could not be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
      *
      *  Purpose
      *  =======
@@ -1757,6 +1962,13 @@ public final class PlainLapack {
     }
 
     private static void checkMinLen(double[] array, int minLen, String name) {
+        if (array.length < minLen) {
+            throw new IllegalArgumentException("Length of array '" + name + "' argument must be at least " + minLen
+                    + " (length = " + array.length + ")");
+        }
+    }
+
+    private static void checkMinLen(float[] array, int minLen, String name) {
         if (array.length < minLen) {
             throw new IllegalArgumentException("Length of array '" + name + "' argument must be at least " + minLen
                     + " (length = " + array.length + ")");
