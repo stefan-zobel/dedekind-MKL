@@ -26,6 +26,10 @@
 #include "DoubleArray.h"
 #endif /* DOUBLEARRAY_INCLUDED_ */
 
+#ifndef FLOATARRAY_INCLUDED_
+#include "FloatArray.h"
+#endif /* FLOATARRAY_INCLUDED_ */
+
 #ifndef JEXCEPTION_INCLUDED_
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
@@ -991,7 +995,20 @@ Java_net_dedekind_blas_BlasN_sgemm_1n(JNIEnv* env, jclass,
   jint cOffset,
   jint ldc,
   jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray ba = FloatArray(env, b, bOffset, useCrit);
+        FloatArray ca = FloatArray(env, c, cOffset, useCrit);
 
+        cblas_sgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+            static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, alpha, aa.ptr(), lda, ba.ptr(),
+            ldb, beta, ca.ptr(), ldc);
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgemm_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgemm_n: caught unknown exception");
+    }
 }
 
     // xerbla
