@@ -1714,11 +1714,62 @@ Java_net_dedekind_lapack_LapackN_dtrtrs_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+    // miscellaneous float routines
+
 /*
-* Class:     net_dedekind_lapack_LapackN
-* Method:    initialize_n
-* Signature: ()V
-*/
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    sgels_n
+ * Signature: (IBIII[FII[FII[FIIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_sgels_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte trans,
+  jint m,
+  jint n,
+  jint nrhs,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray b,
+  jint bOffset,
+  jint ldb,
+  jfloatArray work,
+  jint workOffset,
+  jint lwork,
+  jboolean useCrit) {
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    sgesv_n
+ * Signature: (III[FII[II[FIIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_sgesv_1n(JNIEnv* env, jclass,
+  jint order,
+  jint n,
+  jint nrhs,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jintArray ipiv,
+  jint ipivOffset,
+  jfloatArray b,
+  jint bOffset,
+  jint ldb,
+  jboolean useCrit) {
+    return NOT_REACHED;
+}
+
+    // initialize
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    initialize_n
+ * Signature: ()V
+ */
 JNIEXPORT void JNICALL
 Java_net_dedekind_lapack_LapackN_initialize_1n(JNIEnv* env, jclass) {
     try {
