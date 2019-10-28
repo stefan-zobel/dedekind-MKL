@@ -3,9 +3,10 @@ package net.incubator.banach.matrix;
 import java.util.Arrays;
 
 import net.dedekind.blas.Blas;
+import net.frobenius.TTrans;
 
 /**
- * <b>Note: this is experimental, unfinished and completely untested code!</b> 
+ * <b>Note: this is experimental, unfinished and completely untested code!</b>
  */
 public class SimpleMatrixF extends MatrixFBase implements MatrixF {
 
@@ -22,37 +23,49 @@ public class SimpleMatrixF extends MatrixFBase implements MatrixF {
 
     @Override
     public MatrixF multAdd(float alpha, MatrixF B, MatrixF C) {
-        // TODO Auto-generated method stub
         Checks.checkMultAdd(this, B, C);
 
         Blas blas = Blas.getInstance();
-        throw new UnsupportedOperationException();
+        blas.sgemm(TTrans.NO_TRANS.val(), TTrans.NO_TRANS.val(), C.numRows(), C.numColumns(), cols, alpha, a,
+                Math.max(1, rows), B.getArrayUnsafe(), Math.max(1, B.numRows()), BETA, C.getArrayUnsafe(),
+                Math.max(1, C.numRows()));
+
+        return C;
     }
 
     @Override
     public MatrixF transABmultAdd(float alpha, MatrixF B, MatrixF C) {
-        // TODO Auto-generated method stub
         Checks.checkTransABmultAdd(this, B, C);
 
         Blas blas = Blas.getInstance();
-        throw new UnsupportedOperationException();
+        blas.sgemm(TTrans.TRANS.val(), TTrans.TRANS.val(), C.numRows(), C.numColumns(), rows, alpha, a,
+                Math.max(1, rows), B.getArrayUnsafe(), Math.max(1, B.numRows()), BETA, C.getArrayUnsafe(),
+                Math.max(1, C.numRows()));
+
+        return C;
     }
 
     @Override
     public MatrixF transAmultAdd(float alpha, MatrixF B, MatrixF C) {
-        // TODO Auto-generated method stub
         Checks.checkTransAmultAdd(this, B, C);
 
         Blas blas = Blas.getInstance();
-        throw new UnsupportedOperationException();
+        blas.sgemm(TTrans.TRANS.val(), TTrans.NO_TRANS.val(), C.numRows(), C.numColumns(), rows, alpha, a,
+                Math.max(1, rows), B.getArrayUnsafe(), Math.max(1, B.numRows()), BETA, C.getArrayUnsafe(),
+                Math.max(1, C.numRows()));
+
+        return C;
     }
 
     @Override
     public MatrixF transBmultAdd(float alpha, MatrixF B, MatrixF C) {
-        // TODO Auto-generated method stub
         Checks.checkTransBmultAdd(this, B, C);
 
         Blas blas = Blas.getInstance();
-        throw new UnsupportedOperationException();
+        blas.sgemm(TTrans.NO_TRANS.val(), TTrans.TRANS.val(), C.numRows(), C.numColumns(), cols, alpha, a,
+                Math.max(1, rows), B.getArrayUnsafe(), Math.max(1, B.numRows()), BETA, C.getArrayUnsafe(),
+                Math.max(1, C.numRows()));
+
+        return C;
     }
 }
