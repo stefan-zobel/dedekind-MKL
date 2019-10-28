@@ -545,6 +545,19 @@ public class LapackN extends Lapack {
                 bOffset, ldb, USE_CRITICAL);
     }
 
+    // miscellaneous float routines
+
+    @Override
+    public final void sgels(String trans, int m, int n, int nrhs, float[] a, int aOffset, int lda, float[] b,
+            int bOffset, int ldb, float[] work, int workOffset, int lwork, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(work, "work");
+        Objects.requireNonNull(info, "info");
+        info.val = sgels_n(Order.COL.code(), trans(trans), m, n, nrhs, a, aOffset, lda, b, bOffset, ldb, work,
+                workOffset, lwork, USE_CRITICAL);
+    }
+
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
             int[] ipiv, int ipivOffset, double anorm, doubleW rcondDW, double[] work, int workOffset, int[] iwork,
             int iworkOffset, boolean useCriticalRegion);
@@ -697,6 +710,11 @@ public class LapackN extends Lapack {
 
     private static native int dtrtrs_n(int order, byte uplo, byte trans, byte diag, int n, int nrhs, double[] a,
             int aOffset, int lda, double[] b, int bOffset, int ldb, boolean useCriticalRegion);
+
+    // miscellaneous float routines
+
+    private static native int sgels_n(int order, byte trans, int m, int n, int nrhs, float[] a, int aOffset, int lda,
+            float[] b, int bOffset, int ldb, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
 
     static native void initialize_n();
 

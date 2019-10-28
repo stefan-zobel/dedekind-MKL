@@ -316,6 +316,14 @@ public class LapackJ extends Lapack {
         Dtrtrs.dtrtrs(uplo, trans, diag, n, nrhs, a, aOffset, lda, b, bOffset, ldb, info);
     }
 
+    // miscellaneous float routines
+
+    @Override
+    public final void sgels(String trans, int m, int n, int nrhs, float[] a, int aOffset, int lda, float[] b,
+            int bOffset, int ldb, float[] work, int workOffset, int lwork, intW info) {
+        Sgels.sgels(trans, m, n, nrhs, a, aOffset, lda, b, bOffset, ldb, work, workOffset, lwork, info);
+    }
+
     protected LapackJ() {
     }
 }
