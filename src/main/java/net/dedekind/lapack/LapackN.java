@@ -28,7 +28,7 @@ import net.dedekind.Order;
 public class LapackN extends Lapack {
 
     // TODO
-    private static final boolean USE_CRITICAL = false;
+    private static final boolean USE_CRITICAL = true;
 
     @Override
     public final void dgbcon(String norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab, int[] ipiv,
@@ -548,6 +548,21 @@ public class LapackN extends Lapack {
     // miscellaneous float routines
 
     @Override
+    public void sgeev(String jobvl, String jobvr, int n, float[] a, int aOffset, int lda, float[] wr, int wrOffset,
+            float[] wi, int wiOffset, float[] vl, int vlOffset, int ldvl, float[] vr, int vrOffset, int ldvr,
+            float[] work, int workOffset, int lwork, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(wr, "wr");
+        Objects.requireNonNull(wi, "wi");
+        Objects.requireNonNull(vl, "vl");
+        Objects.requireNonNull(vr, "vr");
+        Objects.requireNonNull(work, "work");
+        Objects.requireNonNull(info, "info");
+        info.val = sgeev_n(Order.COL.code(), eigJob(jobvl), eigJob(jobvr), n, a, aOffset, lda, wr, wrOffset, wi,
+                wiOffset, vl, vlOffset, ldvl, vr, vrOffset, ldvr, work, workOffset, lwork, USE_CRITICAL);
+    }
+
+    @Override
     public final void sgels(String trans, int m, int n, int nrhs, float[] a, int aOffset, int lda, float[] b,
             int bOffset, int ldb, float[] work, int workOffset, int lwork, intW info) {
         Objects.requireNonNull(a, "a");
@@ -567,6 +582,8 @@ public class LapackN extends Lapack {
         Objects.requireNonNull(info, "info");
         info.val = sgesv_n(Order.COL.code(), n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, USE_CRITICAL);
     }
+
+    // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
             int[] ipiv, int ipivOffset, double anorm, doubleW rcondDW, double[] work, int workOffset, int[] iwork,
@@ -722,6 +739,10 @@ public class LapackN extends Lapack {
             int aOffset, int lda, double[] b, int bOffset, int ldb, boolean useCriticalRegion);
 
     // miscellaneous float routines
+
+    private static native int sgeev_n(int order, byte jobvl, byte jobvr, int n, float[] a, int aOffset, int lda,
+            float[] wr, int wrOffset, float[] wi, int wiOffset, float[] vl, int vlOffset, int ldvl, float[] vr,
+            int vrOffset, int ldvr, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
 
     private static native int sgels_n(int order, byte trans, int m, int n, int nrhs, float[] a, int aOffset, int lda,
             float[] b, int bOffset, int ldb, float[] work, int workOffset, int lwork, boolean useCriticalRegion);

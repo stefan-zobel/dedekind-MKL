@@ -319,6 +319,14 @@ public class LapackJ extends Lapack {
     // miscellaneous float routines
 
     @Override
+    public final void sgeev(String jobvl, String jobvr, int n, float[] a, int aOffset, int lda, float[] wr,
+            int wrOffset, float[] wi, int wiOffset, float[] vl, int vlOffset, int ldvl, float[] vr, int vrOffset,
+            int ldvr, float[] work, int workOffset, int lwork, intW info) {
+        Sgeev.sgeev(jobvl, jobvr, n, a, aOffset, lda, wr, wrOffset, wi, wiOffset, vl, vlOffset, ldvl, vr, vrOffset,
+                ldvr, work, workOffset, lwork, info);
+    }
+
+    @Override
     public final void sgels(String trans, int m, int n, int nrhs, float[] a, int aOffset, int lda, float[] b,
             int bOffset, int ldb, float[] work, int workOffset, int lwork, intW info) {
         Sgels.sgels(trans, m, n, nrhs, a, aOffset, lda, b, bOffset, ldb, work, workOffset, lwork, info);
