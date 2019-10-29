@@ -1748,6 +1748,21 @@ Java_net_dedekind_lapack_LapackN_sgeev_1n(JNIEnv* env, jclass,
   jint workOffset,
   jint lwork,
   jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray wra = FloatArray(env, wr, wrOffset, useCrit);
+        FloatArray wia = FloatArray(env, wi, wiOffset, useCrit);
+        FloatArray vla = FloatArray(env, vl, vlOffset, useCrit);
+        FloatArray vra = FloatArray(env, vr, vrOffset, useCrit);
+        FloatArray worka = FloatArray(env, work, workOffset, useCrit);
+
+        return LAPACKE_sgeev_work(order, jobvl, jobvr, n, aa.ptr(), lda,
+            wra.ptr(), wia.ptr(), vla.ptr(), ldvl, vra.ptr(), ldvr, worka.ptr(), lwork);
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgeev_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgeev_n: caught unknown exception");
+    }
     return NOT_REACHED;
 }
 
@@ -1818,6 +1833,21 @@ Java_net_dedekind_lapack_LapackN_sgesdd_1n(JNIEnv* env, jclass,
   jintArray iwork,
   jint iworkOffset,
   jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray sa = FloatArray(env, s, sOffset, useCrit);
+        FloatArray ua = FloatArray(env, u, uOffset, useCrit);
+        FloatArray vta = FloatArray(env, vt, vtOffset, useCrit);
+        FloatArray worka = FloatArray(env, work, workOffset, useCrit);
+        IntArray iworka = IntArray(env, iwork, iworkOffset, useCrit);
+
+        return LAPACKE_sgesdd_work(order, jobz, m, n, aa.ptr(), lda, sa.ptr(),
+            ua.ptr(), ldu, vta.ptr(), ldvt, worka.ptr(), lwork, iworka.ptr());
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgesdd_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgesdd_n: caught unknown exception");
+    }
     return NOT_REACHED;
 }
 
