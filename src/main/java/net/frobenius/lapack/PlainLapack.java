@@ -729,19 +729,6 @@ public final class PlainLapack {
      *          The leading dimension of the array VR.  LDVR >= 1; if
      *          JOBVR = 'V', LDVR >= N.
      *
-     *  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-     *          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-     *
-     *  LWORK   (input) INTEGER
-     *          The dimension of the array WORK.  LWORK >= max(1,3*N), and
-     *          if JOBVL = 'V' or JOBVR = 'V', LWORK >= 4*N.  For good
-     *          performance, LWORK must generally be larger.
-     *
-     *          If LWORK = -1, then a workspace query is assumed; the routine
-     *          only calculates the optimal size of the WORK array, returns
-     *          this value as the first entry of the WORK array, and no error
-     *          message related to LWORK is issued by XERBLA.
-     *
      *  =====================================================================
      *
      * </code>
