@@ -1722,6 +1722,37 @@ Java_net_dedekind_lapack_LapackN_dtrtrs_1n(JNIEnv* env, jclass,
 
 /*
  * Class:     net_dedekind_lapack_LapackN
+ * Method:    sgeev_n
+ * Signature: (IBBI[FII[FI[FI[FII[FII[FIIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_sgeev_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte jobvl,
+  jbyte jobvr,
+  jint n,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray wr,
+  jint wrOffset,
+  jfloatArray wi,
+  jint wiOffset,
+  jfloatArray vl,
+  jint vlOffset,
+  jint ldvl,
+  jfloatArray vr,
+  jint vrOffset,
+  jint ldvr,
+  jfloatArray work,
+  jint workOffset,
+  jint lwork,
+  jboolean useCrit) {
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
  * Method:    sgels_n
  * Signature: (IBIII[FII[FII[FIIZ)I
  */
@@ -1756,6 +1787,37 @@ Java_net_dedekind_lapack_LapackN_sgels_1n(JNIEnv* env, jclass,
     catch (...) {
         throwJavaRuntimeException(env, "%s", "sgels_n: caught unknown exception");
     }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    sgesdd_n
+ * Signature: (IBII[FII[FI[FII[FII[FII[IIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_sgesdd_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte jobz,
+  jint m,
+  jint n,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray s,
+  jint sOffset,
+  jfloatArray u,
+  jint uOffset,
+  jint ldu,
+  jfloatArray vt,
+  jint vtOffset,
+  jint ldvt,
+  jfloatArray work,
+  jint workOffset,
+  jint lwork,
+  jintArray iwork,
+  jint iworkOffset,
+  jboolean useCrit) {
     return NOT_REACHED;
 }
 
