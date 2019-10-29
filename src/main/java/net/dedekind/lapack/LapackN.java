@@ -548,9 +548,9 @@ public class LapackN extends Lapack {
     // miscellaneous float routines
 
     @Override
-    public void sgeev(String jobvl, String jobvr, int n, float[] a, int aOffset, int lda, float[] wr, int wrOffset,
-            float[] wi, int wiOffset, float[] vl, int vlOffset, int ldvl, float[] vr, int vrOffset, int ldvr,
-            float[] work, int workOffset, int lwork, intW info) {
+    public final void sgeev(String jobvl, String jobvr, int n, float[] a, int aOffset, int lda, float[] wr,
+            int wrOffset, float[] wi, int wiOffset, float[] vl, int vlOffset, int ldvl, float[] vr, int vrOffset,
+            int ldvr, float[] work, int workOffset, int lwork, intW info) {
         Objects.requireNonNull(a, "a");
         Objects.requireNonNull(wr, "wr");
         Objects.requireNonNull(wi, "wi");
@@ -574,7 +574,22 @@ public class LapackN extends Lapack {
     }
 
     @Override
-    public void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
+    public final void sgesdd(String jobz, int m, int n, float[] a, int aOffset, int lda, float[] s, int sOffset,
+            float[] u, int uOffset, int ldu, float[] vt, int vtOffset, int ldvt, float[] work, int workOffset,
+            int lwork, int[] iwork, int iworkOffset, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(s, "s");
+        Objects.requireNonNull(u, "u");
+        Objects.requireNonNull(vt, "vt");
+        Objects.requireNonNull(work, "work");
+        Objects.requireNonNull(iwork, "iwork");
+        Objects.requireNonNull(info, "info");
+        info.val = sgesdd_n(Order.COL.code(), svdJob(jobz), m, n, a, aOffset, lda, s, sOffset, u, uOffset, ldu, vt,
+                vtOffset, ldvt, work, workOffset, lwork, iwork, iworkOffset, USE_CRITICAL);
+    }
+
+    @Override
+    public final void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
             int bOffset, int ldb, intW info) {
         Objects.requireNonNull(a, "a");
         Objects.requireNonNull(ipiv, "ipiv");
@@ -746,6 +761,10 @@ public class LapackN extends Lapack {
 
     private static native int sgels_n(int order, byte trans, int m, int n, int nrhs, float[] a, int aOffset, int lda,
             float[] b, int bOffset, int ldb, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
+
+    private static native int sgesdd_n(int order, byte jobz, int m, int n, float[] a, int aOffset, int lda, float[] s,
+            int sOffset, float[] u, int uOffset, int ldu, float[] vt, int vtOffset, int ldvt, float[] work,
+            int workOffset, int lwork, int[] iwork, int iworkOffset, boolean useCriticalRegion);
 
     private static native int sgesv_n(int order, int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv,
             int ipivOffset, float[] b, int bOffset, int ldb, boolean useCriticalRegion);

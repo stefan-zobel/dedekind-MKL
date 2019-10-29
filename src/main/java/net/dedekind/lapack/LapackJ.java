@@ -333,6 +333,14 @@ public class LapackJ extends Lapack {
     }
 
     @Override
+    public final void sgesdd(String jobz, int m, int n, float[] a, int aOffset, int lda, float[] s, int sOffset,
+            float[] u, int uOffset, int ldu, float[] vt, int vtOffset, int ldvt, float[] work, int workOffset,
+            int lwork, int[] iwork, int iworkOffset, intW info) {
+        Sgesdd.sgesdd(jobz, m, n, a, aOffset, lda, s, sOffset, u, uOffset, ldu, vt, vtOffset, ldvt, work, workOffset,
+                lwork, iwork, iworkOffset, info);
+    }
+
+    @Override
     public final void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
             int bOffset, int ldb, intW info) {
         Sgesv.sgesv(n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, info);
