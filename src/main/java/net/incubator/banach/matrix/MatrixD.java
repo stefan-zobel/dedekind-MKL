@@ -228,6 +228,12 @@ public interface MatrixD extends Dimensions {
 
     MatrixD setInplace(MatrixD other);
 
+    /**
+     * {@code A = alpha * B}
+     * @param alpha
+     * @param B
+     * @return {@code A}
+     */
     MatrixD setInplace(double alpha, MatrixD other);
 
     double get(int row, int col);

@@ -228,7 +228,13 @@ public interface MatrixF extends Dimensions {
 
     MatrixF setInplace(MatrixF other);
 
-    MatrixF setInplace(float alpha, MatrixF other);
+    /**
+     * {@code A = alpha * B}
+     * @param alpha
+     * @param B
+     * @return {@code A}
+     */
+    MatrixF setInplace(float alpha, MatrixF B);
 
     float get(int row, int col);
 
