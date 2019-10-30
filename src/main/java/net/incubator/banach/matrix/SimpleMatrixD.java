@@ -21,6 +21,10 @@ public class SimpleMatrixD extends MatrixDBase implements MatrixD {
         Arrays.fill(a, initialValue);
     }
 
+    private SimpleMatrixD(SimpleMatrixD other) {
+        super(other.rows, other.cols, other.a, true);
+    }
+
     @Override
     public MatrixD multAdd(double alpha, MatrixD B, MatrixD C) {
         Checks.checkMultAdd(this, B, C);
@@ -67,5 +71,10 @@ public class SimpleMatrixD extends MatrixDBase implements MatrixD {
                 Math.max(1, C.numRows()));
 
         return C;
+    }
+
+    @Override
+    public MatrixD copy() {
+        return new SimpleMatrixD(this); 
     }
 }

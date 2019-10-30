@@ -21,6 +21,10 @@ public class SimpleMatrixF extends MatrixFBase implements MatrixF {
         Arrays.fill(a, initialValue);
     }
 
+    private SimpleMatrixF(SimpleMatrixF other) {
+        super(other.rows, other.cols, other.a, true);
+    }
+
     @Override
     public MatrixF multAdd(float alpha, MatrixF B, MatrixF C) {
         Checks.checkMultAdd(this, B, C);
@@ -67,5 +71,10 @@ public class SimpleMatrixF extends MatrixFBase implements MatrixF {
                 Math.max(1, C.numRows()));
 
         return C;
+    }
+
+    @Override
+    public MatrixF copy() {
+        return new SimpleMatrixF(this);
     }
 }

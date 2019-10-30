@@ -45,6 +45,9 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
         if (alpha == 0.0) {
             return this.zeroInplace();
         }
+        if (alpha == 1.0) {
+            return this;
+        }
         double[] _a = a;
         for (int i = 0; i < _a.length; ++i) {
             _a[i] *= alpha;
@@ -359,6 +362,28 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
     public MatrixD zeroInplace() {
         Arrays.fill(a, 0.0);
         return this;
+    }
+
+    @Override
+    public MatrixD setInplace(MatrixD other) {
+        return setInplace(1.0, other);
+    }
+
+    @Override
+    public MatrixD setInplace(double alpha, MatrixD other) {
+        Checks.checkEqualDimension(this, other);
+        if (alpha == 0.0) {
+            return zeroInplace();
+        }
+        if (other == this) {
+            return scaleInplace(alpha);
+        }
+        double[] _a = a;
+        double[] _b = other.getArrayUnsafe();
+        for (int i = 0; i < _b.length; ++i) {
+            _a[i] = alpha * _b[i];
+        }
+        return this; 
     }
 
     @Override

@@ -45,6 +45,9 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
         if (alpha == 0.0f) {
             return this.zeroInplace();
         }
+        if (alpha == 1.0f) {
+            return this;
+        }
         float[] _a = a;
         for (int i = 0; i < _a.length; ++i) {
             _a[i] *= alpha;
@@ -358,6 +361,28 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
     @Override
     public MatrixF zeroInplace() {
         Arrays.fill(a, 0.0f);
+        return this;
+    }
+
+    @Override
+    public MatrixF setInplace(MatrixF other) {
+        return setInplace(1.0f, other);
+    }
+
+    @Override
+    public MatrixF setInplace(float alpha, MatrixF other) {
+        Checks.checkEqualDimension(this, other);
+        if (alpha == 0.0f) {
+            return zeroInplace();
+        }
+        if (other == this) {
+            return scaleInplace(alpha);
+        }
+        float[] _a = a;
+        float[] _b = other.getArrayUnsafe();
+        for (int i = 0; i < _b.length; ++i) {
+            _a[i] = alpha * _b[i];
+        }
         return this;
     }
 

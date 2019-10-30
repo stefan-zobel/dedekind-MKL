@@ -222,7 +222,13 @@ public interface MatrixF extends Dimensions {
      */
     MatrixF transBmultAdd(float alpha, MatrixF B, MatrixF C);
 
+    MatrixF copy();
+
     MatrixF zeroInplace();
+
+    MatrixF setInplace(MatrixF other);
+
+    MatrixF setInplace(float alpha, MatrixF other);
 
     float get(int row, int col);
 

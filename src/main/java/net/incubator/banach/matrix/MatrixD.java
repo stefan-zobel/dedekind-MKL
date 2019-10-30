@@ -222,7 +222,13 @@ public interface MatrixD extends Dimensions {
      */
     MatrixD transBmultAdd(double alpha, MatrixD B, MatrixD C);
 
+    MatrixD copy();
+
     MatrixD zeroInplace();
+
+    MatrixD setInplace(MatrixD other);
+
+    MatrixD setInplace(double alpha, MatrixD other);
 
     double get(int row, int col);
 
