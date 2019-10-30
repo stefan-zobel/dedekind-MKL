@@ -242,6 +242,13 @@ public interface MatrixF extends Dimensions {
 
     MatrixF add(int row, int col, float val);
 
+    /**
+     * Frobenius norm
+     * 
+     * @return sqrt of sum of squares of all elements
+     */
+    float normF();
+
     float[] getArrayUnsafe();
 
     float getUnsafe(int row, int col);

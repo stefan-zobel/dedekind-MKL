@@ -420,6 +420,29 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
         return a;
     }
 
+    @Override
+    public double normF() {
+        // overflow resistant implementation
+        double scale = 0.0;
+        double sumsquared = 1.0;
+        double[] _a = a;
+        for (int i = 0; i < _a.length; ++i) {
+            double xi = _a[i];
+            if (xi != 0.0) {
+                double absxi = Math.abs(xi);
+                if (scale < absxi) {
+                    double unsquared = scale / absxi;
+                    sumsquared = 1.0 + sumsquared * (unsquared * unsquared);
+                    scale = absxi;
+                } else {
+                    double unsquared = absxi / scale;
+                    sumsquared = sumsquared + (unsquared * unsquared);
+                }
+            }
+        }
+        return scale * Math.sqrt(sumsquared);
+    }
+
     protected static void checkArrayLength(double[] array, int rows, int cols) {
         if (array.length != rows * cols) {
             throw new IllegalArgumentException(
