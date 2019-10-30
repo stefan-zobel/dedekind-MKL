@@ -118,12 +118,10 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
     public MatrixF addInplace(float alpha, MatrixF B) {
         Checks.checkEqualDimension(this, B);
         if (alpha != 0.0f) {
-            int cols_ = cols;
-            int rows_ = rows;
-            for (int col = 0; col < cols_; ++col) {
-                for (int row = 0; row < rows_; ++row) {
-                    addUnsafe(row, col, alpha * B.getUnsafe(row, col));
-                }
+            float[] _a = a;
+            float[] _b = B.getArrayUnsafe();
+            for (int i = 0; i < _b.length; ++i) {
+                _a[i] += alpha * _b[i];
             }
         }
         return this;
@@ -155,12 +153,11 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
         if (alpha == 0.0f) {
             System.arraycopy(a, 0, C.getArrayUnsafe(), 0, a.length);
         } else {
-            int cols_ = cols;
-            int rows_ = rows;
-            for (int col = 0; col < cols_; ++col) {
-                for (int row = 0; row < rows_; ++row) {
-                    C.setUnsafe(row, col, getUnsafe(row, col) + alpha * B.getUnsafe(row, col));
-                }
+            float[] _a = a;
+            float[] _b = B.getArrayUnsafe();
+            float[] _c = C.getArrayUnsafe();
+            for (int i = 0; i < _a.length; ++i) {
+                _c[i] = _a[i] + alpha * _b[i];
             }
         }
         return C;

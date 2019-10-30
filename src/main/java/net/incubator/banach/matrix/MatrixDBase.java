@@ -118,12 +118,10 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
     public MatrixD addInplace(double alpha, MatrixD B) {
         Checks.checkEqualDimension(this, B);
         if (alpha != 0.0) {
-            int cols_ = cols;
-            int rows_ = rows;
-            for (int col = 0; col < cols_; ++col) {
-                for (int row = 0; row < rows_; ++row) {
-                    addUnsafe(row, col, alpha * B.getUnsafe(row, col));
-                }
+            double[] _a = a;
+            double[] _b = B.getArrayUnsafe();
+            for (int i = 0; i < _b.length; ++i) {
+                _a[i] += alpha * _b[i];
             }
         }
         return this;
@@ -155,12 +153,11 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
         if (alpha == 0.0) {
             System.arraycopy(a, 0, C.getArrayUnsafe(), 0, a.length);
         } else {
-            int cols_ = cols;
-            int rows_ = rows;
-            for (int col = 0; col < cols_; ++col) {
-                for (int row = 0; row < rows_; ++row) {
-                    C.setUnsafe(row, col, getUnsafe(row, col) + alpha * B.getUnsafe(row, col));
-                }
+            double[] _a = a;
+            double[] _b = B.getArrayUnsafe();
+            double[] _c = C.getArrayUnsafe();
+            for (int i = 0; i < _a.length; ++i) {
+                _c[i] = _a[i] + alpha * _b[i];
             }
         }
         return C;
