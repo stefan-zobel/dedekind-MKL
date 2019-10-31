@@ -9,7 +9,7 @@ final class Checks {
         long length = (long) checkRows(rows) * (long) checkCols(cols);
         if (length > (long) Integer.MAX_VALUE) {
             throw new IllegalArgumentException(
-                    "rows x cols (= " + length + ") exceeds the maximal possible length (4.294.967.295) of an array");
+                    "rows x cols (= " + length + ") exceeds the maximal possible length (= 4294967295) of an array");
         }
         return (int) length;
     }
