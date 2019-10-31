@@ -6,8 +6,7 @@ public abstract class DimensionsBase implements Dimensions {
     protected final int cols;
 
     public DimensionsBase(int rows, int cols) {
-        checkRows(rows);
-        checkCols(cols);
+        Checks.checkArrayLength(rows, cols);
         this.rows = rows;
         this.cols = cols;
     }
@@ -56,15 +55,17 @@ public abstract class DimensionsBase implements Dimensions {
         }
     }
 
-    protected static void checkRows(int rows) {
+    protected static int checkRows(int rows) {
         if (rows <= 0) {
             throw new IllegalArgumentException("number of rows must be strictly positive : " + rows);
         }
+        return rows;
     }
 
-    protected static void checkCols(int cols) {
+    protected static int checkCols(int cols) {
         if (cols <= 0) {
             throw new IllegalArgumentException("number of columns must be strictly positive : " + cols);
         }
+        return cols;
     }
 }

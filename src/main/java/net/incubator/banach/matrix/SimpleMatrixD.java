@@ -13,7 +13,7 @@ public class SimpleMatrixD extends MatrixDBase implements MatrixD {
     private static final double BETA = 1.0;
 
     public SimpleMatrixD(int rows, int cols) {
-        super(rows, cols, new double[rows * cols], false);
+        super(rows, cols, new double[Checks.checkArrayLength(rows, cols)], false);
     }
 
     public SimpleMatrixD(int rows, int cols, double initialValue) {

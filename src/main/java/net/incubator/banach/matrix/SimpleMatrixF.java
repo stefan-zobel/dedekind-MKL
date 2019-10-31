@@ -13,7 +13,7 @@ public class SimpleMatrixF extends MatrixFBase implements MatrixF {
     private static final float BETA = 1.0f;
 
     public SimpleMatrixF(int rows, int cols) {
-        super(rows, cols, new float[rows * cols], false);
+        super(rows, cols, new float[Checks.checkArrayLength(rows, cols)], false);
     }
 
     public SimpleMatrixF(int rows, int cols, float initialValue) {

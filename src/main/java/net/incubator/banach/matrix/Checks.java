@@ -1,6 +1,18 @@
 package net.incubator.banach.matrix;
 
+import static net.incubator.banach.matrix.DimensionsBase.checkRows;
+import static net.incubator.banach.matrix.DimensionsBase.checkCols;
+
 final class Checks {
+
+    static int checkArrayLength(int rows, int cols) {
+        long length = (long) checkRows(rows) * (long) checkCols(cols);
+        if (length > (long) Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(
+                    "rows x cols (= " + length + ") exceeds the maximal possible length (4.294.967.295) of an array");
+        }
+        return (int) length;
+    }
 
     static void checkMult(Dimensions A, Dimensions B) {
         if (A.numColumns() != B.numRows()) {
