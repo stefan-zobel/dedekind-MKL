@@ -32,6 +32,15 @@ final class Checks {
         }
     }
 
+    static void checkRequiredDimension(int rows, int cols, Dimensions X) {
+        if (X.numRows() != rows) {
+            throw new IndexOutOfBoundsException("X.numRows() != rows (" + X.numRows() + " != " + rows + ")");
+        }
+        if (X.numColumns() != cols) {
+            throw new IndexOutOfBoundsException("X.numColumns() != cols (" + X.numColumns() + " != " + cols + ")");
+        }
+    }
+
     static void checkEqualDimension(Dimensions A, Dimensions B) {
         if (A.numRows() != B.numRows()) {
             throw new IndexOutOfBoundsException(

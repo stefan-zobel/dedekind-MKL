@@ -384,6 +384,24 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
     }
 
     @Override
+    public MatrixD submatrix(int r0, int c0, int r1, int c1, MatrixD B) {
+        checkSubmatrixIndices(r0, c0, r1, c1);
+        int _rows = r1 - r0 + 1;
+        int _cols = c1 - c0 + 1;
+        Checks.checkRequiredDimension(_rows, _cols, B);
+        double[] sub = B.getArrayUnsafe();
+        double[] _a = a;
+        int thisRows = rows;
+        for (int col = 0; col < _cols; ++col) {
+            for (int row = 0; row < _rows; ++row) {
+                // COL_MAJOR <- COL_MAJOR
+                sub[col * _rows + row] = _a[(col + c0) * thisRows + row + r0];
+            }
+        }
+        return B;
+    }
+
+    @Override
     public double get(int row, int col) {
         checkIJ(row, col);
         return a[idx(row, col)];
