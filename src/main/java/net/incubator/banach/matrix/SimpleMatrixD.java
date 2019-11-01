@@ -13,16 +13,25 @@ public class SimpleMatrixD extends MatrixDBase implements MatrixD {
     private static final double BETA = 1.0;
 
     public SimpleMatrixD(int rows, int cols) {
-        super(rows, cols, new double[Checks.checkArrayLength(rows, cols)], false);
+        this(rows, cols, new double[Checks.checkArrayLength(rows, cols)]);
     }
 
     public SimpleMatrixD(int rows, int cols, double initialValue) {
-        super(rows, cols, new double[rows * cols], false);
+        super(rows, cols, new double[Checks.checkArrayLength(rows, cols)], false);
         Arrays.fill(a, initialValue);
     }
 
     private SimpleMatrixD(SimpleMatrixD other) {
         super(other.rows, other.cols, other.a, true);
+    }
+
+    private SimpleMatrixD(int rows, int cols, double[] data) {
+        super(rows, cols, data, false);
+    }
+
+    @Override
+    protected MatrixD create(int rows, int cols, double[] data) {
+        return new SimpleMatrixD(rows, cols, data);
     }
 
     @Override

@@ -443,6 +443,8 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
         return (float) (scale * Math.sqrt(sumsquared));
     }
 
+    protected abstract MatrixF create(int rows, int cols, float[] data);
+
     protected static void checkArrayLength(float[] array, int rows, int cols) {
         if (array.length != rows * cols) {
             throw new IllegalArgumentException(

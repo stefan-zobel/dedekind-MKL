@@ -443,6 +443,8 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
         return scale * Math.sqrt(sumsquared);
     }
 
+    protected abstract MatrixD create(int rows, int cols, double[] data);
+
     protected static void checkArrayLength(double[] array, int rows, int cols) {
         if (array.length != rows * cols) {
             throw new IllegalArgumentException(

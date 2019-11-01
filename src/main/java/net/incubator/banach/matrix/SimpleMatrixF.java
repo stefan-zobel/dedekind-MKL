@@ -13,16 +13,25 @@ public class SimpleMatrixF extends MatrixFBase implements MatrixF {
     private static final float BETA = 1.0f;
 
     public SimpleMatrixF(int rows, int cols) {
-        super(rows, cols, new float[Checks.checkArrayLength(rows, cols)], false);
+        this(rows, cols, new float[Checks.checkArrayLength(rows, cols)]);
     }
 
     public SimpleMatrixF(int rows, int cols, float initialValue) {
-        super(rows, cols, new float[rows * cols], false);
+        super(rows, cols, new float[Checks.checkArrayLength(rows, cols)], false);
         Arrays.fill(a, initialValue);
     }
 
     private SimpleMatrixF(SimpleMatrixF other) {
         super(other.rows, other.cols, other.a, true);
+    }
+
+    private SimpleMatrixF(int rows, int cols, float[] data) {
+        super(rows, cols, data, false);
+    }
+
+    @Override
+    protected MatrixF create(int rows, int cols, float[] data) {
+        return new SimpleMatrixF(rows, cols, data);
     }
 
     @Override
