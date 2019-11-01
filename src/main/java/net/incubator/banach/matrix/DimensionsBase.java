@@ -69,4 +69,15 @@ public abstract class DimensionsBase implements Dimensions {
         }
         return cols;
     }
+
+    protected void checkSubmatrixIndices(int r0, int c0, int r1, int c1) {
+        checkIJ(r0, c0);
+        checkIJ(r1, c1);
+        int _rows = r1 - r0 + 1;
+        int _cols = c1 - c0 + 1;
+        if (_rows <= 0 || _cols <= 0) {
+            throw new IllegalArgumentException(
+                    "Illegal submatrix indices : [" + r0 + ", " + c0 + ", " + r1 + ", " + c1 + "]");
+        }
+    }
 }
