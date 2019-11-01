@@ -6,7 +6,8 @@ public abstract class DimensionsBase implements Dimensions {
     protected final int cols;
 
     public DimensionsBase(int rows, int cols) {
-        Checks.checkArrayLength(rows, cols);
+        checkRows(rows);
+        checkCols(cols);
         this.rows = rows;
         this.cols = cols;
     }
