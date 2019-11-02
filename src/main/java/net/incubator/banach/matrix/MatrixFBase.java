@@ -388,7 +388,7 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
         checkSubmatrixIndices(r0, c0, r1, c1);
         int _rows = r1 - r0 + 1;
         int _cols = c1 - c0 + 1;
-        Checks.checkRequiredDimension(_rows, _cols, B);
+        Checks.checkRequiredExactDimension(_rows, _cols, B);
         float[] sub = B.getArrayUnsafe();
         float[] _a = a;
         int thisRows = rows;
