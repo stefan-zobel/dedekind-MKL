@@ -47,6 +47,11 @@ public abstract class DimensionsBase implements Dimensions {
         checkIJ(i, j);
     }
 
+    @Override
+    public void checkSubmatrixIndexes(int rFrom, int cFrom, int rTo, int cTo) {
+        checkSubmatrixIndices(rFrom, cFrom, rTo, cTo);
+    }
+
     protected int idx(int row, int col) {
         return col * rows + row;
     }
