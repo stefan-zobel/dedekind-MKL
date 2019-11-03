@@ -254,7 +254,8 @@ public interface MatrixF extends Dimensions {
      * @param c1
      *            last col index (right lower corner) in this matrix
      * @param B
-     *            matrix of dimension at least (r1 - r0 + 1) x (c1 - c0 + 1)
+     *            matrix of dimension at least
+     *            {@code (r1 - r0 + 1) x (c1 - c0 + 1)}
      * @param rb
      *            initial row index (left upper corner) in the matrix {@code B}
      * @param cb
@@ -262,6 +263,30 @@ public interface MatrixF extends Dimensions {
      * @return the submatrix {@code B}
      */
     MatrixF submatrix(int r0, int c0, int r1, int c1, MatrixF B, int rb, int cb);
+
+    /**
+     * Set a submatrix from the values of matrix {@code B} extending from
+     * {@code (rb0, cb0)} to {@code (rb1, cb1)} (the upper left and lower right
+     * corner in {@code B} respectively) at position {@code (r0, c0)} in this
+     * matrix.
+     * 
+     * @param r0
+     *            initial row index (left upper corner) in this matrix
+     * @param c0
+     *            initial col index (left upper corner) in this matrix
+     * @param rb0
+     *            initial row index (left upper corner) in the matrix {@code B}
+     * @param cb0
+     *            initial col index (left upper corner) in the matrix {@code B}
+     * @param rb1
+     *            last row index (right lower corner) in the matrix {@code B}
+     * @param cb1
+     *            last col index (right lower corner) in the matrix {@code B}
+     * @param B
+     *            the matrix that holds the values to set in this matrix
+     * @return this matrix {@code A}
+     */
+    MatrixF setSubmatrixInplace(int r0, int c0, MatrixF B, int rb0, int cb0, int rb1, int cb1);
 
     /**
      * Frobenius norm

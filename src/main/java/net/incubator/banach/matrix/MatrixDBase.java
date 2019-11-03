@@ -400,6 +400,22 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
     }
 
     @Override
+    public MatrixD setSubmatrixInplace(int r0, int c0, MatrixD B, int rb0, int cb0, int rb1, int cb1) {
+        B.checkSubmatrixIndexes(rb0, cb0, rb1, cb1);
+        checkIndex(r0, c0);
+        checkIndex(r0 + rb1 - rb0, c0 + cb1 - cb0);
+        int r0Start = r0;
+        for (int col = cb0; col <= cb1; ++col) {
+            for (int row = rb0; row <= rb1; ++row) {
+                this.setUnsafe(r0++, c0, B.getUnsafe(row, col));
+            }
+            r0 = r0Start;
+            c0++;
+        }
+        return this;
+    }
+
+    @Override
     public double get(int row, int col) {
         checkIJ(row, col);
         return a[idx(row, col)];
