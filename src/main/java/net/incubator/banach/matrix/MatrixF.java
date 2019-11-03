@@ -254,10 +254,14 @@ public interface MatrixF extends Dimensions {
      * @param c1
      *            last col index (right lower corner) in this matrix
      * @param B
-     *            matrix of dimension (r1 - r0 + 1) x (c1 - c0 + 1)
+     *            matrix of dimension at least (r1 - r0 + 1) x (c1 - c0 + 1)
+     * @param rb
+     *            initial row index (left upper corner) in the matrix {@code B}
+     * @param cb
+     *            initial col index (left upper corner) in the matrix {@code B}
      * @return the submatrix {@code B}
      */
-    MatrixF submatrix(int r0, int c0, int r1, int c1, MatrixF B);
+    MatrixF submatrix(int r0, int c0, int r1, int c1, MatrixF B, int rb, int cb);
 
     /**
      * Frobenius norm

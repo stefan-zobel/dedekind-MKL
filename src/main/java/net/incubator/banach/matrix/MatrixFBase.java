@@ -384,19 +384,17 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
     }
 
     @Override
-    public MatrixF submatrix(int r0, int c0, int r1, int c1, MatrixF B) {
+    public MatrixF submatrix(int r0, int c0, int r1, int c1, MatrixF B, int rb, int cb) {
         checkSubmatrixIndices(r0, c0, r1, c1);
-        int _rows = r1 - r0 + 1;
-        int _cols = c1 - c0 + 1;
-        Checks.checkRequiredExactDimension(_rows, _cols, B);
-        float[] sub = B.getArrayUnsafe();
-        float[] _a = a;
-        int thisRows = rows;
-        for (int col = 0; col < _cols; ++col) {
-            for (int row = 0; row < _rows; ++row) {
-                // COL_MAJOR <- COL_MAJOR
-                sub[col * _rows + row] = _a[(col + c0) * thisRows + row + r0];
+        B.checkIndex(rb, cb);
+        B.checkIndex(rb + r1 - r0, cb + c1 - c0);
+        int rbStart = rb;
+        for (int col = c0; col <= c1; ++col) {
+            for (int row = r0; row <= r1; ++row) {
+                B.setUnsafe(rb++, cb, this.getUnsafe(row, col));
             }
+            rb = rbStart;
+            cb++;
         }
         return B;
     }
