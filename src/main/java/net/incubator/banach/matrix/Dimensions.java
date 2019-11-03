@@ -13,4 +13,6 @@ public interface Dimensions {
     int numColumns();
 
     int numRows();
+
+    void checkIndex(int i, int j);
 }

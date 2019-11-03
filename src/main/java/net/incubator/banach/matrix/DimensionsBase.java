@@ -42,6 +42,11 @@ public abstract class DimensionsBase implements Dimensions {
         return rows;
     }
 
+    @Override
+    public void checkIndex(int i, int j) {
+        checkIJ(i, j);
+    }
+
     protected int idx(int row, int col) {
         return col * rows + row;
     }
