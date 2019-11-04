@@ -40,7 +40,7 @@ public class SimpleMatrixD extends MatrixDBase implements MatrixD {
         super(other.rows, other.cols, other.a, true);
     }
 
-    private SimpleMatrixD(int rows, int cols, double[] data) {
+    protected SimpleMatrixD(int rows, int cols, double[] data) {
         super(rows, cols, data, false);
     }
 

@@ -155,6 +155,26 @@ final class Checks {
         }
     }
 
+    static double[] checkJaggedArrayD(double[][] data) {
+        int _rows = data.length;
+        int _cols = data[0].length;
+        if (_rows < 1 || _cols < 1) {
+            throw new IllegalArgumentException(
+                    "number of rows and columns must be strictly positive : (" + _rows + " x " + _cols + ")");
+        }
+        return new double[checkArrayLength(_rows, _cols)];
+    }
+
+    static float[] checkJaggedArrayF(float[][] data) {
+        int _rows = data.length;
+        int _cols = data[0].length;
+        if (_rows < 1 || _cols < 1) {
+            throw new IllegalArgumentException(
+                    "number of rows and columns must be strictly positive : (" + _rows + " x " + _cols + ")");
+        }
+        return new float[checkArrayLength(_rows, _cols)];
+    }
+
     private Checks() {
         throw new AssertionError();
     }

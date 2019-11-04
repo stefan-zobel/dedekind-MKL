@@ -40,7 +40,7 @@ public class SimpleMatrixF extends MatrixFBase implements MatrixF {
         super(other.rows, other.cols, other.a, true);
     }
 
-    private SimpleMatrixF(int rows, int cols, float[] data) {
+    protected SimpleMatrixF(int rows, int cols, float[] data) {
         super(rows, cols, data, false);
     }
 
