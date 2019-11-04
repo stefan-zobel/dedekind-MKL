@@ -58,27 +58,30 @@ public abstract class DimensionsBase implements Dimensions {
     }
 
     @Override
-    public void checkIndex(int i, int j) {
-        checkIJ(i, j);
+    public void checkIndex(int row, int col) {
+        if (row < 0 || row >= rows) {
+            throw new IllegalArgumentException("Illegal row index " + row + " in (" + rows + " x " + cols + ") matrix");
+        }
+        if (col < 0 || col >= cols) {
+            throw new IllegalArgumentException(
+                    "Illegal column index " + col + " in (" + rows + " x " + cols + ") matrix");
+        }
     }
 
     @Override
     public void checkSubmatrixIndexes(int rFrom, int cFrom, int rTo, int cTo) {
-        checkSubmatrixIndices(rFrom, cFrom, rTo, cTo);
+        checkIndex(rFrom, cFrom);
+        checkIndex(rTo, cTo);
+        int _rows = rTo - rFrom + 1;
+        int _cols = cTo - cFrom + 1;
+        if (_rows <= 0 || _cols <= 0) {
+            throw new IllegalArgumentException(
+                    "Illegal submatrix indices : [" + rFrom + ", " + cFrom + ", " + rTo + ", " + cTo + "]");
+        }
     }
 
     protected int idx(int row, int col) {
         return col * rows + row;
-    }
-
-    protected void checkIJ(int i, int j) {
-        if (i < 0 || i >= rows) {
-            throw new IllegalArgumentException("Illegal row index " + i + " in (" + rows + " x " + cols + ") matrix");
-        }
-        if (j < 0 || j >= cols) {
-            throw new IllegalArgumentException(
-                    "Illegal column index " + j + " in (" + rows + " x " + cols + ") matrix");
-        }
     }
 
     protected static int checkRows(int rows) {
@@ -93,16 +96,5 @@ public abstract class DimensionsBase implements Dimensions {
             throw new IllegalArgumentException("number of columns must be strictly positive : " + cols);
         }
         return cols;
-    }
-
-    protected void checkSubmatrixIndices(int r0, int c0, int r1, int c1) {
-        checkIJ(r0, c0);
-        checkIJ(r1, c1);
-        int _rows = r1 - r0 + 1;
-        int _cols = c1 - c0 + 1;
-        if (_rows <= 0 || _cols <= 0) {
-            throw new IllegalArgumentException(
-                    "Illegal submatrix indices : [" + r0 + ", " + c0 + ", " + r1 + ", " + c1 + "]");
-        }
     }
 }

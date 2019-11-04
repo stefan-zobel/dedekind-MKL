@@ -29,11 +29,11 @@ public interface Dimensions {
 
     int numRows();
 
-    void checkIndex(int i, int j);
+    void checkIndex(int row, int col);
 
     /**
      * {@code (rFrom, cFrom)} upper left corner, {@code (rTo, cTo)} lower right
-     * corner. All indexes must be valid and the submatrix must select at least
+     * corner. All indexes must be valid and the submatrix must contain at least
      * one element.
      * 
      * @param rFrom

@@ -400,7 +400,7 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
 
     @Override
     public MatrixF submatrix(int r0, int c0, int r1, int c1, MatrixF B, int rb, int cb) {
-        checkSubmatrixIndices(r0, c0, r1, c1);
+        checkSubmatrixIndexes(r0, c0, r1, c1);
         B.checkIndex(rb, cb);
         B.checkIndex(rb + r1 - r0, cb + c1 - c0);
         int rbStart = rb;
@@ -432,7 +432,7 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
 
     @Override
     public float get(int row, int col) {
-        checkIJ(row, col);
+        checkIndex(row, col);
         return a[idx(row, col)];
     }
 
@@ -442,7 +442,7 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
 
     @Override
     public MatrixF set(int row, int col, float val) {
-        checkIJ(row, col);
+        checkIndex(row, col);
         a[idx(row, col)] = val;
         return this;
     }
@@ -453,7 +453,7 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
 
     @Override
     public MatrixF add(int row, int col, float val) {
-        checkIJ(row, col);
+        checkIndex(row, col);
         a[idx(row, col)] += val;
         return this;
     }

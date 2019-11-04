@@ -400,7 +400,7 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
 
     @Override
     public MatrixD submatrix(int r0, int c0, int r1, int c1, MatrixD B, int rb, int cb) {
-        checkSubmatrixIndices(r0, c0, r1, c1);
+        checkSubmatrixIndexes(r0, c0, r1, c1);
         B.checkIndex(rb, cb);
         B.checkIndex(rb + r1 - r0, cb + c1 - c0);
         int rbStart = rb;
@@ -432,7 +432,7 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
 
     @Override
     public double get(int row, int col) {
-        checkIJ(row, col);
+        checkIndex(row, col);
         return a[idx(row, col)];
     }
 
@@ -442,7 +442,7 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
 
     @Override
     public MatrixD set(int row, int col, double val) {
-        checkIJ(row, col);
+        checkIndex(row, col);
         a[idx(row, col)] = val;
         return this;
     }
@@ -453,7 +453,7 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
 
     @Override
     public MatrixD add(int row, int col, double val) {
-        checkIJ(row, col);
+        checkIndex(row, col);
         a[idx(row, col)] += val;
         return this;
     }
