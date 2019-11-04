@@ -468,6 +468,21 @@ public abstract class MatrixDBase extends DimensionsBase implements MatrixD {
     }
 
     @Override
+    public double[][] toJaggedArray() {
+        int _rows = rows;
+        int _cols = cols;
+        double[] _a = a;
+        double[][] copy = new double[_rows][_cols];
+        for (int row = 0; row < _rows; ++row) {
+            double[] row_i = copy[row];
+            for (int col = 0; col < row_i.length; ++col) {
+                row_i[col] = _a[col * _rows + row];
+            }
+        }
+        return copy;
+    }
+
+    @Override
     public double normF() {
         // overflow resistant implementation
         double scale = 0.0;

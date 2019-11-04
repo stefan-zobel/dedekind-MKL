@@ -468,6 +468,21 @@ public abstract class MatrixFBase extends DimensionsBase implements MatrixF {
     }
 
     @Override
+    public float[][] toJaggedArray() {
+        int _rows = rows;
+        int _cols = cols;
+        float[] _a = a;
+        float[][] copy = new float[_rows][_cols];
+        for (int row = 0; row < _rows; ++row) {
+            float[] row_i = copy[row];
+            for (int col = 0; col < row_i.length; ++col) {
+                row_i[col] = _a[col * _rows + row];
+            }
+        }
+        return copy;
+    }
+
+    @Override
     public float normF() {
         // overflow resistant implementation
         double scale = 0.0;

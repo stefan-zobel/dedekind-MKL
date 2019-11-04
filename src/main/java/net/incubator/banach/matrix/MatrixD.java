@@ -304,6 +304,12 @@ public interface MatrixD extends Dimensions {
     MatrixD setSubmatrixInplace(int r0, int c0, MatrixD B, int rb0, int cb0, int rb1, int cb1);
 
     /**
+     * Copy into a jagged array. 
+     * @return this matrix converted to a jagged array
+     */
+    double[][] toJaggedArray();
+
+    /**
      * Frobenius norm
      * 
      * @return sqrt of sum of squares of all elements
