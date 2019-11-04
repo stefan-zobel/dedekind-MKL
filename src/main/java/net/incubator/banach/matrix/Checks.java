@@ -175,6 +175,11 @@ final class Checks {
         return new float[checkArrayLength(_rows, _cols)];
     }
 
+    static void throwInconsistentRowLengths(int cols, int rowIdx, int rowLength) {
+        throw new IllegalArgumentException("All rows must have the same length: " + cols + " (row " + rowIdx
+                + " has length " + rowLength + ")");
+    }
+
     private Checks() {
         throw new AssertionError();
     }

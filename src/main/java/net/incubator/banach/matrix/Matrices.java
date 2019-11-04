@@ -22,6 +22,38 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public final class Matrices {
 
+    public static MatrixD fromJaggedArrayD(double[][] data) {
+        double[] copy = Checks.checkJaggedArrayD(data);
+        int _rows = data.length;
+        int _cols = data[0].length;
+        for (int row = 0; row < _rows; ++row) {
+            double[] row_i = data[row];
+            if (row_i.length != _cols) {
+                Checks.throwInconsistentRowLengths(_cols, row, row_i.length);
+            }
+            for (int col = 0; col < row_i.length; ++col) {
+                copy[col * _rows + row] = row_i[col];
+            }
+        }
+        return new SimpleMatrixD(_rows, _cols, copy);
+    }
+
+    public static MatrixF fromJaggedArrayF(float[][] data) {
+        float[] copy = Checks.checkJaggedArrayF(data);
+        int _rows = data.length;
+        int _cols = data[0].length;
+        for (int row = 0; row < _rows; ++row) {
+            float[] row_i = data[row];
+            if (row_i.length != _cols) {
+                Checks.throwInconsistentRowLengths(_cols, row, row_i.length);
+            }
+            for (int col = 0; col < row_i.length; ++col) {
+                copy[col * _rows + row] = row_i[col];
+            }
+        }
+        return new SimpleMatrixF(_rows, _cols, copy);
+    }
+
     public static MatrixD identityD(int n) {
         SimpleMatrixD m = new SimpleMatrixD(n, n);
         for (int i = 0; i < n; ++i) {
