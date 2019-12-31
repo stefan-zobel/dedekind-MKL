@@ -1584,14 +1584,14 @@ public final class PlainLapack {
             int ucol = (jobz == TSvdJob.PART) ? Math.min(m, n) : m;
             checkMinLen(u, ldu * ucol, "u");
         }
-        // ldvt
+        // ldvt + vt
         if (jobz == TSvdJob.ALL || (m >= n && jobz == TSvdJob.OVERWRITE)) {
             checkValueAtLeast(ldvt, n, "ldvt");
+            checkMinLen(vt, ldvt * n, "vt");
         } else if (jobz == TSvdJob.PART) {
             checkValueAtLeast(ldvt, Math.min(m, n), "ldvt");
+            checkMinLen(vt, ldvt * n, "vt");
         }
-        // vt
-        checkMinLen(vt, ldvt * n, "vt");
 
         intW info = new intW(0);
         int[] iwork = new int[8 * Math.min(m, n)];
@@ -1748,14 +1748,14 @@ public final class PlainLapack {
             int ucol = (jobz == TSvdJob.PART) ? Math.min(m, n) : m;
             checkMinLen(u, ldu * ucol, "u");
         }
-        // ldvt
+        // ldvt + vt
         if (jobz == TSvdJob.ALL || (m >= n && jobz == TSvdJob.OVERWRITE)) {
             checkValueAtLeast(ldvt, n, "ldvt");
+            checkMinLen(vt, ldvt * n, "vt");
         } else if (jobz == TSvdJob.PART) {
             checkValueAtLeast(ldvt, Math.min(m, n), "ldvt");
+            checkMinLen(vt, ldvt * n, "vt");
         }
-        // vt
-        checkMinLen(vt, ldvt * n, "vt");
 
         intW info = new intW(0);
         int[] iwork = new int[8 * Math.min(m, n)];
