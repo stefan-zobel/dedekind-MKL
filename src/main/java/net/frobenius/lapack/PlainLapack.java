@@ -2275,8 +2275,10 @@ public final class PlainLapack {
     }
 
     private static void checkMinLen(int[] array, int minLen, String name) {
-        throw new IllegalArgumentException("Length of array '" + name + "' argument must be at least " + minLen
-                + " (length = " + array.length + ")");
+        if (array.length < minLen) {
+            throw new IllegalArgumentException("Length of array '" + name + "' argument must be at least " + minLen
+                    + " (length = " + array.length + ")");
+        }
     }
 
     private static void throwIAEPosition(intW info) {
