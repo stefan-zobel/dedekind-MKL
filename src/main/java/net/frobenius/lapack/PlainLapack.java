@@ -2223,10 +2223,10 @@ public final class PlainLapack {
      * @param n
      * @param a
      * @param lda
-     * @param k1
-     * @param k2
+     * @param pivFirstIdx
+     * @param pivLastIdx
      * @param indices
-     * @param incx
+     * @param increment
      */
     public static void dlaswp(Lapack la, int n, double[] a, int lda, int pivFirstIdx, int pivLastIdx, int[] indices,
             int increment) {
