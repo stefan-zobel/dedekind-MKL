@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -277,6 +277,32 @@ public class BlasN extends Blas {
                 bOffset, ldb, beta, c, cOffset, ldc, USE_CRITICAL);
     }
 
+    // miscellaneous complex routines
+
+    @Override
+    public final void cgemm(Trans transa, Trans transb, int m, int n, int k, float alphar, float alphai, float[] a,
+            int lda, float[] b, int ldb, float betar, float betai, float[] c, int ldc) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(c, "c");
+        Objects.requireNonNull(transa, "transa");
+        Objects.requireNonNull(transb, "transb");
+        cgemm_n(Order.COL.code(), transa.code(), transb.code(), m, n, k, alphar, alphai, a, lda, b, ldb, betar, betai,
+                c, ldc, USE_CRITICAL);
+    }
+
+    @Override
+    public final void zgemm(Trans transa, Trans transb, int m, int n, int k, double alphar, double alphai, double[] a,
+            int lda, double[] b, int ldb, double betar, double betai, double[] c, int ldc) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(c, "c");
+        Objects.requireNonNull(transa, "transa");
+        Objects.requireNonNull(transb, "transb");
+        zgemm_n(Order.COL.code(), transa.code(), transb.code(), m, n, k, alphar, alphai, a, lda, b, ldb, betar, betai,
+                c, ldc, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native void dgbmv_n(int order, int trans, int m, int n, int kl, int ku, double alpha, double[] a,
@@ -372,6 +398,16 @@ public class BlasN extends Blas {
 
     private static native void sgemm_n(int order, int transa, int transb, int m, int n, int k, float alpha, float[] a,
             int aOffset, int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc,
+            boolean useCriticalRegion);
+
+    // miscellaneous complex routines
+
+    private static native void cgemm_n(int order, int transa, int transb, int m, int n, int k, float alphar,
+            float alphai, float[] a, int lda, float[] b, int ldb, float betar, float betai, float[] c, int ldc,
+            boolean useCriticalRegion);
+
+    private static native void zgemm_n(int order, int transa, int transb, int m, int n, int k, double alphar,
+            double alphai, double[] a, int lda, double[] b, int ldb, double betar, double betai, double[] c, int ldc,
             boolean useCriticalRegion);
 
     protected BlasN() {

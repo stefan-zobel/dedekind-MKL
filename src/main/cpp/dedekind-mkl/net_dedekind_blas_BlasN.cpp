@@ -1011,6 +1011,84 @@ Java_net_dedekind_blas_BlasN_sgemm_1n(JNIEnv* env, jclass,
     }
 }
 
+    // miscellaneous complex routines
+
+/*
+ * Class:     net_dedekind_blas_BlasN
+ * Method:    cgemm_n
+ * Signature: (IIIIIIFF[FI[FIFF[FIZ)V
+ */
+JNIEXPORT void JNICALL
+Java_net_dedekind_blas_BlasN_cgemm_1n(JNIEnv* env, jclass,
+  jint order,
+  jint transa,
+  jint transb,
+  jint m,
+  jint n,
+  jint k,
+  jfloat alphar,
+  jfloat alphai,
+  jfloatArray a,
+  jint lda,
+  jfloatArray b,
+  jint ldb,
+  jfloat betar,
+  jfloat betai,
+  jfloatArray c,
+  jint ldc,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray ba = FloatArray(env, b, 0, useCrit);
+        FloatArray ca = FloatArray(env, c, 0, useCrit);
+
+
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cgemm_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "cgemm_n: caught unknown exception");
+    }
+}
+
+/*
+ * Class:     net_dedekind_blas_BlasN
+ * Method:    zgemm_n
+ * Signature: (IIIIIIDD[DI[DIDD[DIZ)V
+ */
+JNIEXPORT void JNICALL
+Java_net_dedekind_blas_BlasN_zgemm_1n(JNIEnv* env, jclass,
+  jint order,
+  jint transa,
+  jint transb,
+  jint m,
+  jint n,
+  jint k,
+  jdouble alphar,
+  jdouble alphai,
+  jdoubleArray a,
+  jint lda,
+  jdoubleArray b,
+  jint ldb,
+  jdouble betar,
+  jdouble betai,
+  jdoubleArray c,
+  jint ldc,
+  jboolean useCrit) {
+    try {
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray ba = DoubleArray(env, b, 0, useCrit);
+        DoubleArray ca = DoubleArray(env, c, 0, useCrit);
+
+
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zgemm_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "zgemm_n: caught unknown exception");
+    }
+}
+
     // xerbla
 
 /*

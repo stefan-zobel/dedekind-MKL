@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2928,6 +2928,14 @@ public abstract class Blas {
 
     public abstract void sgemm(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
             int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc);
+
+    // miscellaneous complex routines
+
+    public abstract void cgemm(Trans transa, Trans transb, int m, int n, int k, float alphar, float alphai, float[] a,
+            int lda, float[] b, int ldb, float betar, float betai, float[] c, int ldc);
+
+    public abstract void zgemm(Trans transa, Trans transb, int m, int n, int k, double alphar, double alphai,
+            double[] a, int lda, double[] b, int ldb, double betar, double betai, double[] c, int ldc);
 
     protected Blas() {
     }
