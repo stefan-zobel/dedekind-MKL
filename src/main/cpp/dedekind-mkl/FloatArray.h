@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ public:
     FloatArray(JNIEnv* env, jfloatArray jarray, int offset, jboolean critical);
     ~FloatArray();
     float* ptr();
+    long length();
 private:
     Context* ctx;
     jfloatArray jarray;

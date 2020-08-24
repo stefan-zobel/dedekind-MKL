@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2020 Stefan Zobel
+ * Copyright 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef DOUBLEARRAY_INCLUDED_
-#define DOUBLEARRAY_INCLUDED_
+#ifndef COMPLEX_FLOATARRAY_INCLUDED_
+#define COMPLEX_FLOATARRAY_INCLUDED_
 
 #ifndef STDAFX_INCLUDED_
 #include "stdafx.h"
 #endif /* STDAFX_INCLUDED_ */
 
-#ifndef __CONTEXT_H_INCLUDED_
-#include "Context.h"
-#endif /* __CONTEXT_H_INCLUDED_ */
+#ifndef FLOATARRAY_INCLUDED_
+#include "FloatArray.h"
+#endif /* FLOATARRAY_INCLUDED_ */
 
-class __GCC_DONT_EXPORT DoubleArray
+#ifndef _MKL_H_
+#include <mkl.h>
+#endif /* _MKL_H_ */
+
+class __GCC_DONT_EXPORT ComplexFloatArray
 {
 public:
-    DoubleArray(JNIEnv* env, jdoubleArray jarray, int offset, jboolean critical);
-    ~DoubleArray();
-    double* ptr();
-    long length();
+    ComplexFloatArray(FloatArray& array_);
+    ~ComplexFloatArray();
+    MKL_Complex8* ptr();
+    long complexLength();
 private:
-    Context* ctx;
-    jdoubleArray jarray;
-    double* carray;
-    int offset;
-    bool critical;
+    ComplexFloatArray& operator=(const ComplexFloatArray&);
+    FloatArray& array;
+    long complex_array_len;
+    MKL_Complex8* complex_array;
 };
 
-#endif /* DOUBLEARRAY_INCLUDED_ */
+#endif /* COMPLEX_FLOATARRAY_INCLUDED_ */

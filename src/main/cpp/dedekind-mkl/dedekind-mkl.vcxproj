@@ -142,6 +142,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ComplexDoubleArray.h" />
+    <ClInclude Include="ComplexFloatArray.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="dedekind-mkl.h" />
     <ClInclude Include="DoubleArray.h" />
@@ -157,6 +159,8 @@
     <ClInclude Include="ThreadMutex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ComplexDoubleArray.cpp" />
+    <ClCompile Include="ComplexFloatArray.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="dedekind-mkl.cpp" />
     <ClCompile Include="dllmain.cpp">

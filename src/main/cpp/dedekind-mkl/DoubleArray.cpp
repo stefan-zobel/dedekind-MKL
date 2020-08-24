@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,10 @@ DoubleArray::DoubleArray(JNIEnv* env, jdoubleArray jarray, int offset, jboolean 
 
 double* DoubleArray::ptr() {
     return carray + offset;
+}
+
+long DoubleArray::length() {
+    return ctx->GetArrayLength(jarray) - offset;
 }
 
 DoubleArray::~DoubleArray() {

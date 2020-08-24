@@ -54,6 +54,12 @@
     <ClInclude Include="FloatArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ComplexFloatArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplexDoubleArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dedekind-mkl.cpp">
@@ -99,6 +105,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FloatArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComplexFloatArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComplexDoubleArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

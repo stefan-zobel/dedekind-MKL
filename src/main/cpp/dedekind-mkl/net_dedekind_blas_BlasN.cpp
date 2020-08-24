@@ -30,6 +30,14 @@
 #include "FloatArray.h"
 #endif /* FLOATARRAY_INCLUDED_ */
 
+#ifndef COMPLEX_FLOATARRAY_INCLUDED_
+#include "ComplexFloatArray.h"
+#endif /* COMPLEX_FLOATARRAY_INCLUDED_ */
+
+#ifndef COMPLEX_DOUBLEARRAY_INCLUDED_
+#include "ComplexDoubleArray.h"
+#endif /* COMPLEX_DOUBLEARRAY_INCLUDED_ */
+
 #ifndef JEXCEPTION_INCLUDED_
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
@@ -1042,7 +1050,28 @@ Java_net_dedekind_blas_BlasN_cgemm_1n(JNIEnv* env, jclass,
         FloatArray ba = FloatArray(env, b, 0, useCrit);
         FloatArray ca = FloatArray(env, c, 0, useCrit);
 
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray bac = ComplexFloatArray(ba);
+        ComplexFloatArray cac = ComplexFloatArray(ca);
 
+        MKL_Complex8* pa = aac.ptr();
+        MKL_Complex8* pb = bac.ptr();
+        MKL_Complex8* pc = cac.ptr();
+
+        if (pa && pb && pc) {
+            MKL_Complex8 alpha = { alphar, alphai };
+            MKL_Complex8 beta = { betar, betai };
+
+            cblas_cgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+                static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, &alpha, pa, lda, pb, ldb, &beta, pc, ldc);
+
+            long len = cac.complexLength();
+            if (len > 0) {
+                float* mixed = ca.ptr();
+                cblas_scopy(len, &(pc[0].real), 2, &(mixed[0]), 2);
+                cblas_scopy(len, &(pc[0].imag), 2, &(mixed[1]), 2);
+            }
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgemm_n", ex.what());
@@ -1080,7 +1109,28 @@ Java_net_dedekind_blas_BlasN_zgemm_1n(JNIEnv* env, jclass,
         DoubleArray ba = DoubleArray(env, b, 0, useCrit);
         DoubleArray ca = DoubleArray(env, c, 0, useCrit);
 
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray bac = ComplexDoubleArray(ba);
+        ComplexDoubleArray cac = ComplexDoubleArray(ca);
 
+        MKL_Complex16* pa = aac.ptr();
+        MKL_Complex16* pb = bac.ptr();
+        MKL_Complex16* pc = cac.ptr();
+
+        if (pa && pb && pc) {
+            MKL_Complex16 alpha = { alphar, alphai };
+            MKL_Complex16 beta = { betar, betai };
+
+            cblas_zgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+                static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, &alpha, pa, lda, pb, ldb, &beta, pc, ldc);
+
+            long len = cac.complexLength();
+            if (len > 0) {
+                double* mixed = ca.ptr();
+                cblas_dcopy(len, &(pc[0].real), 2, &(mixed[0]), 2);
+                cblas_dcopy(len, &(pc[0].imag), 2, &(mixed[1]), 2);
+            }
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgemm_n", ex.what());
