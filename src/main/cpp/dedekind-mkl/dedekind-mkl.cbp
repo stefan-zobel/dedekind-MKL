@@ -48,6 +48,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="ComplexDoubleArray.cpp" />
+		<Unit filename="ComplexDoubleArray.h" />
+		<Unit filename="ComplexFloatArray.cpp" />
+		<Unit filename="ComplexFloatArray.h" />
 		<Unit filename="Context.cpp" />
 		<Unit filename="Context.h" />
 		<Unit filename="DoubleArray.cpp" />
@@ -76,13 +80,11 @@
 		<Unit filename="net_dedekind_lapack_LapackN.cpp" />
 		<Unit filename="stdafx.h" />
 		<Extensions>
-			<envvars />
 			<code_completion>
 				<search_path add="/usr/lib/jvm/default/include" />
 				<search_path add="/usr/lib/jvm/default/include/linux" />
 			</code_completion>
 			<lib_finder disable_auto="1" />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
