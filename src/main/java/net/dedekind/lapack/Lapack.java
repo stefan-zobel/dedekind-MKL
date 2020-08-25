@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -5140,6 +5140,14 @@ public abstract class Lapack {
 
     public abstract void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
             int bOffset, int ldb, intW info);
+
+    // miscellaneous complex routines
+
+    public abstract int cgeev(String jobvl, String jobvr, int n, float[] a, int lda, float[] w, float[] vl, int ldvl,
+            float[] vr, int ldvr);
+
+    public abstract int zgeev(String jobvl, String jobvr, int n, double[] a, int lda, double[] w, double[] vl, int ldvl,
+            double[] vr, int ldvr);
 
     protected Lapack() {
     }

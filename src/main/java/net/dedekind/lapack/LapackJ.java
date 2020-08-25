@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -344,6 +344,20 @@ public class LapackJ extends Lapack {
     public final void sgesv(int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, float[] b,
             int bOffset, int ldb, intW info) {
         Sgesv.sgesv(n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, info);
+    }
+
+    // miscellaneous complex routines
+
+    @Override
+    public final int cgeev(String jobvl, String jobvr, int n, float[] a, int lda, float[] w, float[] vl, int ldvl,
+            float[] vr, int ldvr) {
+        throw new UnsupportedOperationException("cgeev only supported for LapackN");
+    }
+
+    @Override
+    public final int zgeev(String jobvl, String jobvr, int n, double[] a, int lda, double[] w, double[] vl, int ldvl,
+            double[] vr, int ldvr) {
+        throw new UnsupportedOperationException("zgeev only supported for LapackN");
     }
 
     protected LapackJ() {

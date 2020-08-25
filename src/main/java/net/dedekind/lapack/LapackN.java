@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -598,6 +598,32 @@ public class LapackN extends Lapack {
         info.val = sgesv_n(Order.COL.code(), n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, USE_CRITICAL);
     }
 
+    // miscellaneous complex routines
+
+    @Override
+    public final int cgeev(String jobvl, String jobvr, int n, float[] a, int lda, float[] w, float[] vl, int ldvl,
+            float[] vr, int ldvr) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(w, "w");
+        Objects.requireNonNull(vl, "vl");
+        Objects.requireNonNull(vr, "vr");
+        Objects.requireNonNull(jobvl, "jobvl");
+        Objects.requireNonNull(jobvr, "jobvr");
+        return cgeev_n(Order.COL.code(), eigJob(jobvl), eigJob(jobvr), n, a, lda, w, vl, ldvl, vr, ldvr, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zgeev(String jobvl, String jobvr, int n, double[] a, int lda, double[] w, double[] vl, int ldvl,
+            double[] vr, int ldvr) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(w, "w");
+        Objects.requireNonNull(vl, "vl");
+        Objects.requireNonNull(vr, "vr");
+        Objects.requireNonNull(jobvl, "jobvl");
+        Objects.requireNonNull(jobvr, "jobvr");
+        return zgeev_n(Order.COL.code(), eigJob(jobvl), eigJob(jobvr), n, a, lda, w, vl, ldvl, vr, ldvr, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
@@ -768,6 +794,14 @@ public class LapackN extends Lapack {
 
     private static native int sgesv_n(int order, int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv,
             int ipivOffset, float[] b, int bOffset, int ldb, boolean useCriticalRegion);
+
+    // miscellaneous complex routines
+
+    private static native int cgeev_n(int order, byte jobvl, byte jobvr, int n, float[] a, int lda, float[] w,
+            float[] vl, int ldvl, float[] vr, int ldvr, boolean useCriticalRegion);
+
+    private static native int zgeev_n(int order, byte jobvl, byte jobvr, int n, double[] a, int lda, double[] w,
+            double[] vl, int ldvl, double[] vr, int ldvr, boolean useCriticalRegion);
 
     static native void initialize_n();
 
