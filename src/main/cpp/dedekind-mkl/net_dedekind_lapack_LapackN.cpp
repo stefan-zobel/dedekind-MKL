@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1882,6 +1882,78 @@ Java_net_dedekind_lapack_LapackN_sgesv_1n(JNIEnv* env, jclass,
     }
     catch (...) {
         throwJavaRuntimeException(env, "%s", "sgesv_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+    // miscellaneous complex routines
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    cgeev_n
+ * Signature: (IBBI[FI[F[FI[FIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_cgeev_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte jobvl,
+  jbyte jobvr,
+  jint n,
+  jfloatArray a,
+  jint lda,
+  jfloatArray w,
+  jfloatArray vl,
+  jint ldvl,
+  jfloatArray vr,
+  jint ldvr,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray wa = FloatArray(env, w, 0, useCrit);
+        FloatArray vla = FloatArray(env, vl, 0, useCrit);
+        FloatArray vra = FloatArray(env, vr, 0, useCrit);
+
+
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cgeev_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "cgeev_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    zgeev_n
+ * Signature: (IBBI[DI[D[DI[DIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte jobvl,
+  jbyte jobvr,
+  jint n,
+  jdoubleArray a,
+  jint lda,
+  jdoubleArray w,
+  jdoubleArray vl,
+  jint ldvl,
+  jdoubleArray vr,
+  jint ldvr,
+  jboolean useCrit) {
+    try {
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray wa = DoubleArray(env, w, 0, useCrit);
+        DoubleArray vla = DoubleArray(env, vl, 0, useCrit);
+        DoubleArray vra = DoubleArray(env, vr, 0, useCrit);
+
+
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zgeev_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "zgeev_n: caught unknown exception");
     }
     return NOT_REACHED;
 }
