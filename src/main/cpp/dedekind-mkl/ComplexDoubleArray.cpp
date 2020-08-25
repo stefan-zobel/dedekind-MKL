@@ -32,7 +32,7 @@ ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_)
     long length = array.length();
     if (length > 0) {
         if (length % 2 != 0) {
-			SlimString msg("complex arrays must have even length: ");
+            SlimString msg("complex arrays must have even length: ");
             msg.append(length);
             throw JException(msg);
         }
@@ -40,7 +40,7 @@ ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_)
         complex_array_len = length;
         complex_array = (MKL_Complex16*) mkl_malloc(length * sizeof(MKL_Complex16), 64);
         if (!complex_array) {
-			SlimString msg("couldn't allocate MKL_Complex16 array of length ");
+            SlimString msg("couldn't allocate MKL_Complex16 array of length ");
             msg.append(length);
             throw JException(msg);
         }

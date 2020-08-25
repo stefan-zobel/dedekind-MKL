@@ -32,7 +32,7 @@ ComplexFloatArray::ComplexFloatArray(FloatArray& array_)
     long length = array.length();
     if (length > 0) {
         if (length % 2 != 0) {
-			SlimString msg("complex arrays must have even length: ");
+            SlimString msg("complex arrays must have even length: ");
             msg.append(length);
             throw JException(msg);
         }
@@ -40,7 +40,7 @@ ComplexFloatArray::ComplexFloatArray(FloatArray& array_)
         complex_array_len = length;
         complex_array = (MKL_Complex8*) mkl_malloc(length * sizeof(MKL_Complex8), 64);
         if (!complex_array) {
-			SlimString msg("couldn't allocate MKL_Complex8 array of length ");
+            SlimString msg("couldn't allocate MKL_Complex8 array of length ");
             msg.append(length);
             throw JException(msg);
         }
