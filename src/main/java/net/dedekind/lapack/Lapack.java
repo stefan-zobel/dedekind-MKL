@@ -5143,9 +5143,11 @@ public abstract class Lapack {
 
     // miscellaneous complex routines
 
+    // note: there is no need to make a copy of 'a' before calling cgeev!
     public abstract int cgeev(String jobvl, String jobvr, int n, float[] a, int lda, float[] w, float[] vl, int ldvl,
             float[] vr, int ldvr);
 
+    // note: there is no need to make a copy of 'a' before calling zgeev!
     public abstract int zgeev(String jobvl, String jobvr, int n, double[] a, int lda, double[] w, double[] vl, int ldvl,
             double[] vr, int ldvr);
 
