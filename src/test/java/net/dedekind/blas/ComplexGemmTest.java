@@ -57,11 +57,13 @@ public class ComplexGemmTest {
         double betar = 1.0;
         double betai = 0.0;
 
+        System.out.println("A: " + Arrays.toString(a));
         Blas blas = Blas.getInstance();
         blas.zgemm(Trans.N, Trans.N, numRowsC, numColsC, numColsA, alphar, alphai, a, Math.max(1, numRowsA), b,
                 Math.max(1, numRowsB), betar, betai, c, Math.max(1, numRowsC));
 
-        System.out.println(Arrays.toString(c));
+        System.out.println("C: " + Arrays.toString(c));
+        System.out.println("A: " + Arrays.toString(a));
 
         // cgemm
         float alpharf = (float) alphar;
@@ -78,9 +80,12 @@ public class ComplexGemmTest {
             b2[i] = (float) b[i];
         }
 
+        System.out.println(" --- ");
+        System.out.println("A: " + Arrays.toString(a2));
         blas.cgemm(Trans.N, Trans.N, numRowsC, numColsC, numColsA, alpharf, alphaif, a2, Math.max(1, numRowsA), b2,
                 Math.max(1, numRowsB), betarf, betaif, c2, Math.max(1, numRowsC));
 
-        System.out.println(Arrays.toString(c2));
+        System.out.println("C: " + Arrays.toString(c2));
+        System.out.println("A: " + Arrays.toString(a2));
     }
 }
