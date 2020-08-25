@@ -25,8 +25,6 @@
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
 
-#include <stdio.h> // sprintf
-
 #include <pthread.h>
 #endif
 
@@ -61,13 +59,8 @@ public:
 #else /* POSIX threads */
         int rc = pthread_mutex_unlock(&m_cs);
         if (rc != 0) {
-            const int MAX_LEN = 64;
-            char code[MAX_LEN] = {0};
-            sprintf(code, "%d", rc);
-            const char* errMsg = "ThreadMutex::release() failed unexpectedly"
-                " with error code: ";
-            SlimString msg(errMsg);
-            msg.append(code);
+            SlimString msg("ThreadMutex::release() failed unexpectedly with error code: ");
+            msg.append(rc);
             throw JException(msg);
         }
 #endif /* (_WIN64) || (_WIN32) */

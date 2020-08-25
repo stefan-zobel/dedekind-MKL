@@ -26,6 +26,7 @@ public:
     void operator=(const char*);
     SlimString& append(const char*);
     SlimString& append(char*);
+    SlimString& append(long);
     inline const char* c_str() const {return m_pStr;}
     inline ~SlimString() {if (m_pStr) delete [] m_pStr;}
 

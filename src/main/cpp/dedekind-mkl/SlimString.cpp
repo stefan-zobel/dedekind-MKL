@@ -12,7 +12,14 @@
 
 #include "SlimString.h"
 
+#include <stdio.h>  // for sprintf
 #include <string.h> // for memcpy, strlen
+
+
+#if defined (_WIN64) || defined (_WIN32)
+// disable "This function may be unsafe" warning for sprintf()
+#pragma warning( disable: 4996 )
+#endif /* (_WIN64) || (_WIN32) */
 
 
 
@@ -40,6 +47,13 @@ SlimString& SlimString::append(char* s)
         m_pStr = tmp;
     }
     return *this;
+}
+
+SlimString& SlimString::append(long value)
+{
+    char buffer[64] = {0};
+    sprintf(buffer, "%d", value);
+    return this->append(buffer);
 }
 
 void SlimString::copy(const char* s)

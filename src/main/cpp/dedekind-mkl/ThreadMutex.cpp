@@ -11,8 +11,6 @@
 
 #include "ThreadMutex.h"
 
-#include <stdio.h> // sprintf
-
 #ifndef JEXCEPTION_INCLUDED_
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
@@ -20,12 +18,6 @@
 #ifndef SLIMSTRING_INCLUDED_
 #include "SlimString.h"
 #endif /* SLIMSTRING_INCLUDED_ */
-
-
-#if defined (_WIN64) || defined (_WIN32)
-// disable "This function may be unsafe" warning for sprintf()
-#pragma warning( disable: 4996 )
-#endif /* (_WIN64) || (_WIN32) */
 
 
 
@@ -37,13 +29,8 @@ ThreadMutex::ThreadMutex() {
     if (!InitializeCriticalSectionAndSpinCount(&m_cs, SPINCOUNT)) {
         // this is unexpected
         unsigned long err = GetLastError();
-        const int MAX_LEN = 64;
-        char code[MAX_LEN] = {0};
-        sprintf(code, "%d", err);
-        const char* errMsg = "ThreadMutex::ThreadMutex() failed unexpectedly"
-            " (low memory situation?) - Error Code: ";
-        SlimString msg(errMsg);
-        msg.append(code);
+        SlimString msg("ThreadMutex::ThreadMutex() failed unexpectedly (low memory situation?) - Error Code: ");
+        msg.append(err);
         throw JException(msg);
     }
 
@@ -52,13 +39,8 @@ ThreadMutex::ThreadMutex() {
     int rc = pthread_mutex_init(&m_cs, NULL);
 
     if (rc != 0) {
-        const int MAX_LEN = 64;
-        char code[MAX_LEN] = {0};
-        sprintf(code, "%d", rc);
-        const char* errMsg = "ThreadMutex::ThreadMutex() failed unexpectedly"
-            " with error code: ";
-        SlimString msg(errMsg);
-        msg.append(code);
+        SlimString msg("ThreadMutex::ThreadMutex() failed unexpectedly with error code: ");
+        msg.append(rc);
         throw JException(msg);
     }
 
@@ -90,12 +72,8 @@ void ThreadMutex::acquire() const {
     int rc = pthread_mutex_lock(&m_cs);
 
     if (rc != 0) {
-        const int MAX_LEN = 64;
-        char code[MAX_LEN] = {0};
-        sprintf(code, "%d", rc);
-        const char* errMsg = "ThreadMutex::acquire() failed with return code ";
-        SlimString msg(errMsg);
-        msg.append(code);
+        SlimString msg("ThreadMutex::acquire() failed with return code ");
+        msg.append(rc);
         throw JException(msg);
     }
 
