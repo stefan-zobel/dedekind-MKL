@@ -34,6 +34,14 @@
 #include "FloatArray.h"
 #endif /* FLOATARRAY_INCLUDED_ */
 
+#ifndef COMPLEX_FLOATARRAY_INCLUDED_
+#include "ComplexFloatArray.h"
+#endif /* COMPLEX_FLOATARRAY_INCLUDED_ */
+
+#ifndef COMPLEX_DOUBLEARRAY_INCLUDED_
+#include "ComplexDoubleArray.h"
+#endif /* COMPLEX_DOUBLEARRAY_INCLUDED_ */
+
 #ifndef JEXCEPTION_INCLUDED_
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
@@ -1899,7 +1907,7 @@ Java_net_dedekind_lapack_LapackN_cgeev_1n(JNIEnv* env, jclass,
   jbyte jobvl,
   jbyte jobvr,
   jint n,
-  jfloatArray a,
+  jfloatArray a, // no need to make a copy in Java
   jint lda,
   jfloatArray w,
   jfloatArray vl,
@@ -1913,8 +1921,43 @@ Java_net_dedekind_lapack_LapackN_cgeev_1n(JNIEnv* env, jclass,
         FloatArray vla = FloatArray(env, vl, 0, useCrit);
         FloatArray vra = FloatArray(env, vr, 0, useCrit);
 
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray wac = ComplexFloatArray(wa);
+        ComplexFloatArray vlac = ComplexFloatArray(vla);
+        ComplexFloatArray vrac = ComplexFloatArray(vra);
 
+        int r = LAPACKE_cgeev(order, jobvl, jobvr, n, aac.ptr(), lda,
+            wac.ptr(), vlac.ptr(), ldvl, vrac.ptr(), ldvr);
 
+        if (r >= 0) {
+            // we don't need A!
+            // Eigenvalues
+            long len = wac.complexLength();
+            if (len > 0) {
+                float* mixed = wa.ptr();
+                MKL_Complex8* pw = wac.ptr();
+                cblas_scopy(len, &(pw[0].real), 2, &(mixed[0]), 2);
+                cblas_scopy(len, &(pw[0].imag), 2, &(mixed[1]), 2);
+            }
+            // left Eigenvectors
+            len = vlac.complexLength();
+            if (jobvl != 'N' && len > 0 && r == 0) {
+                float* mixed = vla.ptr();
+                MKL_Complex8* pvl = vlac.ptr();
+                cblas_scopy(len, &(pvl[0].real), 2, &(mixed[0]), 2);
+                cblas_scopy(len, &(pvl[0].imag), 2, &(mixed[1]), 2);
+            }
+            // right Eigenvectors
+            len = vrac.complexLength();
+            if (jobvr != 'N' && len > 0 && r == 0) {
+                float* mixed = vra.ptr();
+                MKL_Complex8* pvr = vrac.ptr();
+                cblas_scopy(len, &(pvr[0].real), 2, &(mixed[0]), 2);
+                cblas_scopy(len, &(pvr[0].imag), 2, &(mixed[1]), 2);
+            }
+        }
+
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgeev_n", ex.what());
     } catch (...) {
@@ -1934,7 +1977,7 @@ Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
   jbyte jobvl,
   jbyte jobvr,
   jint n,
-  jdoubleArray a,
+  jdoubleArray a, // no need to make a copy in Java
   jint lda,
   jdoubleArray w,
   jdoubleArray vl,
@@ -1948,8 +1991,43 @@ Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
         DoubleArray vla = DoubleArray(env, vl, 0, useCrit);
         DoubleArray vra = DoubleArray(env, vr, 0, useCrit);
 
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray wac = ComplexDoubleArray(wa);
+        ComplexDoubleArray vlac = ComplexDoubleArray(vla);
+        ComplexDoubleArray vrac = ComplexDoubleArray(vra);
 
+        int r = LAPACKE_zgeev(order, jobvl, jobvr, n, aac.ptr(), lda,
+            wac.ptr(), vlac.ptr(), ldvl, vrac.ptr(), ldvr);
 
+        if (r >= 0) {
+            // we don't need A!
+            // Eigenvalues
+            long len = wac.complexLength();
+            if (len > 0) {
+                double* mixed = wa.ptr();
+                MKL_Complex16* pw = wac.ptr();
+                cblas_dcopy(len, &(pw[0].real), 2, &(mixed[0]), 2);
+                cblas_dcopy(len, &(pw[0].imag), 2, &(mixed[1]), 2);
+            }
+            // left Eigenvectors
+            len = vlac.complexLength();
+            if (jobvl != 'N' && len > 0 && r == 0) {
+                double* mixed = vla.ptr();
+                MKL_Complex16* pvl = vlac.ptr();
+                cblas_dcopy(len, &(pvl[0].real), 2, &(mixed[0]), 2);
+                cblas_dcopy(len, &(pvl[0].imag), 2, &(mixed[1]), 2);
+            }
+            // right Eigenvectors
+            len = vrac.complexLength();
+            if (jobvr != 'N' && len > 0 && r == 0) {
+                double* mixed = vra.ptr();
+                MKL_Complex16* pvr = vrac.ptr();
+                cblas_dcopy(len, &(pvr[0].real), 2, &(mixed[0]), 2);
+                cblas_dcopy(len, &(pvr[0].imag), 2, &(mixed[1]), 2);
+            }
+        }
+
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgeev_n", ex.what());
     } catch (...) {
