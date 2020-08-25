@@ -16,9 +16,21 @@
 
 #include "ComplexDoubleArray.h"
 
+#include <stdio.h> // sprintf
+
 #ifndef JEXCEPTION_INCLUDED_
 #include "JException.h"
 #endif /* JEXCEPTION_INCLUDED_ */
+
+#ifndef SLIMSTRING_INCLUDED_
+#include "SlimString.h"
+#endif /* SLIMSTRING_INCLUDED_ */
+
+
+#if defined (_WIN64) || defined (_WIN32)
+// disable "This function may be unsafe" warning for sprintf()
+#pragma warning( disable: 4996 )
+#endif /* (_WIN64) || (_WIN32) */
 
 
 
@@ -28,13 +40,23 @@ ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_)
     long length = array.length();
     if (length > 0) {
         if (length % 2 != 0) {
-            throw JException("complex arrays must have even length"); // TODO: add actual length
+            char lenInfo[16] = {0};
+            sprintf(lenInfo, "%d", length);
+            const char* errMsg = "complex arrays must have even length: ";
+            SlimString msg(errMsg);
+            msg.append(lenInfo);
+            throw JException(msg);
         }
         length /= 2;
         complex_array_len = length;
         complex_array = (MKL_Complex16*) mkl_malloc(length * sizeof(MKL_Complex16), 64);
         if (!complex_array) {
-            throw JException("couldn't allocate MKL_Complex16 array"); // TODO: add requested length
+            char lenInfo[16] = {0};
+            sprintf(lenInfo, "%d", length);
+            const char* errMsg = "couldn't allocate MKL_Complex16 array of length ";
+            SlimString msg(errMsg);
+            msg.append(lenInfo);
+            throw JException(msg);
         }
         double* mixed = array.ptr();
         cblas_dcopy(length, &(mixed[0]), 2, &(complex_array[0].real), 2);
