@@ -52,7 +52,7 @@ SlimString& SlimString::append(char* s)
 SlimString& SlimString::append(long value)
 {
     char buffer[64] = {0};
-    sprintf(buffer, "%d", value);
+    sprintf(buffer, "%ld", value);
     return this->append(buffer);
 }
 
