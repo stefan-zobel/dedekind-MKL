@@ -5171,6 +5171,10 @@ public abstract class Lapack {
 
     public abstract int zgels(String trans, int m, int n, int nrhs, double[] a, int lda, double[] b, int ldb);
 
+    public abstract int cgesv(int n, int nrhs, float[] a, int lda, int[] ipiv, float[] b, int ldb);
+
+    public abstract int zgesv(int n, int nrhs, double[] a, int lda, int[] ipiv, double[] b, int ldb);
+
     protected Lapack() {
     }
 }

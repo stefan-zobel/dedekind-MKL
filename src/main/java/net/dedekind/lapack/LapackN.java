@@ -662,6 +662,22 @@ public class LapackN extends Lapack {
         return zgels_n(Order.COL.code(), trans(trans), m, n, nrhs, a, lda, b, ldb, USE_CRITICAL);
     }
 
+    @Override
+    public final int cgesv(int n, int nrhs, float[] a, int lda, int[] ipiv, float[] b, int ldb) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(ipiv, "ipiv");
+        Objects.requireNonNull(b, "b");
+        return cgesv_n(Order.COL.code(), n, nrhs, a, lda, ipiv, b, ldb, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zgesv(int n, int nrhs, double[] a, int lda, int[] ipiv, double[] b, int ldb) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(ipiv, "ipiv");
+        Objects.requireNonNull(b, "b");
+        return zgesv_n(Order.COL.code(), n, nrhs, a, lda, ipiv, b, ldb, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
@@ -852,6 +868,12 @@ public class LapackN extends Lapack {
 
     private static native int zgels_n(int order, byte trans, int m, int n, int nrhs, double[] a, int lda, double[] b,
             int ldb, boolean useCriticalRegion);
+
+    private static native int cgesv_n(int order, int n, int nrhs, float[] a, int lda, int[] ipiv, float[] b, int ldb,
+            boolean useCriticalRegion);
+
+    private static native int zgesv_n(int order, int n, int nrhs, double[] a, int lda, int[] ipiv, double[] b, int ldb,
+            boolean useCriticalRegion);
 
     static native void initialize_n();
 
