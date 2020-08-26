@@ -1896,6 +1896,20 @@ Java_net_dedekind_lapack_LapackN_sgesv_1n(JNIEnv* env, jclass,
 
     // miscellaneous complex routines
 
+__GCC_DONT_EXPORT void floatCopy(long len, float* mixed, MKL_Complex8* complex) {
+    if (len > 0 && mixed && complex) {
+        cblas_scopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+        cblas_scopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+    }
+}
+
+__GCC_DONT_EXPORT void doubleCopy(long len, double* mixed, MKL_Complex16* complex) {
+    if (len > 0 && mixed && complex) {
+        cblas_dcopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+        cblas_dcopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+    }
+}
+
 /*
  * Class:     net_dedekind_lapack_LapackN
  * Method:    cgeev_n
@@ -1934,26 +1948,17 @@ Java_net_dedekind_lapack_LapackN_cgeev_1n(JNIEnv* env, jclass,
             // Eigenvalues
             long len = wac.complexLength();
             if (len > 0) {
-                float* mixed = wa.ptr();
-                MKL_Complex8* pw = wac.ptr();
-                cblas_scopy(len, &(pw[0].real), 2, &(mixed[0]), 2);
-                cblas_scopy(len, &(pw[0].imag), 2, &(mixed[1]), 2);
+                floatCopy(len, wa.ptr(), wac.ptr());
             }
             // left Eigenvectors
             len = vlac.complexLength();
             if (jobvl != 'N' && len > 0 && r == 0) {
-                float* mixed = vla.ptr();
-                MKL_Complex8* pvl = vlac.ptr();
-                cblas_scopy(len, &(pvl[0].real), 2, &(mixed[0]), 2);
-                cblas_scopy(len, &(pvl[0].imag), 2, &(mixed[1]), 2);
+                floatCopy(len, vla.ptr(), vlac.ptr());
             }
             // right Eigenvectors
             len = vrac.complexLength();
             if (jobvr != 'N' && len > 0 && r == 0) {
-                float* mixed = vra.ptr();
-                MKL_Complex8* pvr = vrac.ptr();
-                cblas_scopy(len, &(pvr[0].real), 2, &(mixed[0]), 2);
-                cblas_scopy(len, &(pvr[0].imag), 2, &(mixed[1]), 2);
+                floatCopy(len, vra.ptr(), vrac.ptr());
             }
         }
 
@@ -2004,26 +2009,17 @@ Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
             // Eigenvalues
             long len = wac.complexLength();
             if (len > 0) {
-                double* mixed = wa.ptr();
-                MKL_Complex16* pw = wac.ptr();
-                cblas_dcopy(len, &(pw[0].real), 2, &(mixed[0]), 2);
-                cblas_dcopy(len, &(pw[0].imag), 2, &(mixed[1]), 2);
+                doubleCopy(len, wa.ptr(), wac.ptr());
             }
             // left Eigenvectors
             len = vlac.complexLength();
             if (jobvl != 'N' && len > 0 && r == 0) {
-                double* mixed = vla.ptr();
-                MKL_Complex16* pvl = vlac.ptr();
-                cblas_dcopy(len, &(pvl[0].real), 2, &(mixed[0]), 2);
-                cblas_dcopy(len, &(pvl[0].imag), 2, &(mixed[1]), 2);
+                doubleCopy(len, vla.ptr(), vlac.ptr());
             }
             // right Eigenvectors
             len = vrac.complexLength();
             if (jobvr != 'N' && len > 0 && r == 0) {
-                double* mixed = vra.ptr();
-                MKL_Complex16* pvr = vrac.ptr();
-                cblas_dcopy(len, &(pvr[0].real), 2, &(mixed[0]), 2);
-                cblas_dcopy(len, &(pvr[0].imag), 2, &(mixed[1]), 2);
+                doubleCopy(len, vra.ptr(), vrac.ptr());
             }
         }
 
@@ -2047,7 +2043,7 @@ Java_net_dedekind_lapack_LapackN_cgesdd_1n(JNIEnv* env, jclass,
   jbyte jobz,
   jint m,
   jint n,
-  jfloatArray a,
+  jfloatArray a, // only need to copy in Java if jobz == 'O'
   jint lda,
   jfloatArray s, // real
   jfloatArray u,
@@ -2065,7 +2061,28 @@ Java_net_dedekind_lapack_LapackN_cgesdd_1n(JNIEnv* env, jclass,
         ComplexFloatArray uac = ComplexFloatArray(ua);
         ComplexFloatArray vtac = ComplexFloatArray(vta);
 
+        int r = LAPACKE_cgesdd(order, jobz, m, n, aac.ptr(), lda, sa.ptr(),
+            uac.ptr(), ldu, vtac.ptr(), ldvt);
 
+        if (r == 0) {
+            long len = aac.complexLength();
+            if (jobz == 'O' && len > 0) {
+                // A gets overwritten
+                floatCopy(len, aa.ptr(), aac.ptr());
+            }
+            len = uac.complexLength();
+            if (jobz != 'N' && len > 0) {
+                // left singular vectors
+                floatCopy(len, ua.ptr(), uac.ptr());
+            }
+            len = vtac.complexLength();
+            if (jobz != 'N' && len > 0) {
+                // right singular vectors
+                floatCopy(len, vta.ptr(), vtac.ptr());
+            }
+        }
+
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgesdd_n", ex.what());
     } catch (...) {
@@ -2085,7 +2102,7 @@ Java_net_dedekind_lapack_LapackN_zgesdd_1n(JNIEnv* env, jclass,
   jbyte jobz,
   jint m,
   jint n,
-  jdoubleArray a,
+  jdoubleArray a, // only need to copy in Java if jobz == 'O'
   jint lda,
   jdoubleArray s, // real
   jdoubleArray u,
@@ -2103,7 +2120,28 @@ Java_net_dedekind_lapack_LapackN_zgesdd_1n(JNIEnv* env, jclass,
         ComplexDoubleArray uac = ComplexDoubleArray(ua);
         ComplexDoubleArray vtac = ComplexDoubleArray(vta);
 
+        int r = LAPACKE_zgesdd(order, jobz, m, n, aac.ptr(), lda, sa.ptr(),
+            uac.ptr(), ldu, vtac.ptr(), ldvt);
 
+        if (r == 0) {
+            long len = aac.complexLength();
+            if (jobz == 'O' && len > 0) {
+                // A gets overwritten
+                doubleCopy(len, aa.ptr(), aac.ptr());
+            }
+            len = uac.complexLength();
+            if (jobz != 'N' && len > 0) {
+                // left singular vectors
+                doubleCopy(len, ua.ptr(), uac.ptr());
+            }
+            len = vtac.complexLength();
+            if (jobz != 'N' && len > 0) {
+                // right singular vectors
+                doubleCopy(len, vta.ptr(), vtac.ptr());
+            }
+        }
+
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgesdd_n", ex.what());
     } catch (...) {
