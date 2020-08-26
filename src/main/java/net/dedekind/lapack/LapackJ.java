@@ -360,6 +360,18 @@ public class LapackJ extends Lapack {
         throw new UnsupportedOperationException("zgeev only supported for LapackN");
     }
 
+    @Override
+    public final int cgesdd(String jobz, int m, int n, float[] a, int lda, float[] s, float[] u, int ldu, float[] vt,
+            int ldvt) {
+        throw new UnsupportedOperationException("cgesdd only supported for LapackN");
+    }
+
+    @Override
+    public final int zgesdd(String jobz, int m, int n, double[] a, int lda, double[] s, double[] u, int ldu,
+            double[] vt, int ldvt) {
+        throw new UnsupportedOperationException("zgesdd only supported for LapackN");
+    }
+
     protected LapackJ() {
     }
 }

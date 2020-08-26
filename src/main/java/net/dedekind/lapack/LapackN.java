@@ -624,6 +624,28 @@ public class LapackN extends Lapack {
         return zgeev_n(Order.COL.code(), eigJob(jobvl), eigJob(jobvr), n, a, lda, w, vl, ldvl, vr, ldvr, USE_CRITICAL);
     }
 
+    @Override
+    public final int cgesdd(String jobz, int m, int n, float[] a, int lda, float[] s, float[] u, int ldu, float[] vt,
+            int ldvt) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(s, "s");
+        Objects.requireNonNull(u, "u");
+        Objects.requireNonNull(vt, "vt");
+        Objects.requireNonNull(jobz, "jobz");
+        return cgesdd_n(Order.COL.code(), svdJob(jobz), m, n, a, lda, s, u, ldu, vt, ldvt, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zgesdd(String jobz, int m, int n, double[] a, int lda, double[] s, double[] u, int ldu,
+            double[] vt, int ldvt) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(s, "s");
+        Objects.requireNonNull(u, "u");
+        Objects.requireNonNull(vt, "vt");
+        Objects.requireNonNull(jobz, "jobz");
+        return zgesdd_n(Order.COL.code(), svdJob(jobz), m, n, a, lda, s, u, ldu, vt, ldvt, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
@@ -802,6 +824,12 @@ public class LapackN extends Lapack {
 
     private static native int zgeev_n(int order, byte jobvl, byte jobvr, int n, double[] a, int lda, double[] w,
             double[] vl, int ldvl, double[] vr, int ldvr, boolean useCriticalRegion);
+
+    private static native int cgesdd_n(int order, byte jobz, int m, int n, float[] a, int lda, float[] s, float[] u,
+            int ldu, float[] vt, int ldvt, boolean useCriticalRegion);
+
+    private static native int zgesdd_n(int order, byte jobz, int m, int n, double[] a, int lda, double[] s, double[] u,
+            int ldu, double[] vt, int ldvt, boolean useCriticalRegion);
 
     static native void initialize_n();
 
