@@ -646,6 +646,22 @@ public class LapackN extends Lapack {
         return zgesdd_n(Order.COL.code(), svdJob(jobz), m, n, a, lda, s, u, ldu, vt, ldvt, USE_CRITICAL);
     }
 
+    @Override
+    public final int cgels(String trans, int m, int n, int nrhs, float[] a, int lda, float[] b, int ldb) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(trans, "trans");
+        return cgels_n(Order.COL.code(), trans(trans), m, n, nrhs, a, lda, b, ldb, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zgels(String trans, int m, int n, int nrhs, double[] a, int lda, double[] b, int ldb) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(trans, "trans");
+        return zgels_n(Order.COL.code(), trans(trans), m, n, nrhs, a, lda, b, ldb, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
@@ -830,6 +846,12 @@ public class LapackN extends Lapack {
 
     private static native int zgesdd_n(int order, byte jobz, int m, int n, double[] a, int lda, double[] s, double[] u,
             int ldu, double[] vt, int ldvt, boolean useCriticalRegion);
+
+    private static native int cgels_n(int order, byte trans, int m, int n, int nrhs, float[] a, int lda, float[] b,
+            int ldb, boolean useCriticalRegion);
+
+    private static native int zgels_n(int order, byte trans, int m, int n, int nrhs, double[] a, int lda, double[] b,
+            int ldb, boolean useCriticalRegion);
 
     static native void initialize_n();
 

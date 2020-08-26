@@ -372,6 +372,16 @@ public class LapackJ extends Lapack {
         throw new UnsupportedOperationException("zgesdd only supported for LapackN");
     }
 
+    @Override
+    public final int cgels(String trans, int m, int n, int nrhs, float[] a, int lda, float[] b, int ldb) {
+        throw new UnsupportedOperationException("cgels only supported for LapackN");
+    }
+
+    @Override
+    public final int zgels(String trans, int m, int n, int nrhs, double[] a, int lda, double[] b, int ldb) {
+        throw new UnsupportedOperationException("zgels only supported for LapackN");
+    }
+
     protected LapackJ() {
     }
 }
