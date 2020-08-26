@@ -27,7 +27,7 @@
 
 
 ComplexFloatArray::ComplexFloatArray(FloatArray& array_)
-    : array(array_), complex_array(NULL), complex_array_len(0)
+    : array(array_), complex_array_len(0), complex_array(NULL)
 {
     long length = array.length();
     if (length > 0) {
