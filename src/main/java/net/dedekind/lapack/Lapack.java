@@ -5151,9 +5151,13 @@ public abstract class Lapack {
     public abstract int zgeev(String jobvl, String jobvr, int n, double[] a, int lda, double[] w, double[] vl, int ldvl,
             double[] vr, int ldvr);
 
+    // note: 's' (the singular values) are real (a float[]) wheras 'a[]', 'u[]'
+    // and 'vt[]' are arrays of complex numbers
     public abstract int cgesdd(String jobz, int m, int n, float[] a, int lda, float[] s, float[] u, int ldu, float[] vt,
             int ldvt);
 
+    // note: 's' (the singular values) are real (a double[]) wheras 'a[]', 'u[]'
+    // and 'vt[]' are arrays of complex numbers
     public abstract int zgesdd(String jobz, int m, int n, double[] a, int lda, double[] s, double[] u, int ldu,
             double[] vt, int ldvt);
 
