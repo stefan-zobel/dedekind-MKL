@@ -2036,6 +2036,82 @@ Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    cgesdd_n
+ * Signature: (IBII[FI[F[FI[FIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_cgesdd_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte jobz,
+  jint m,
+  jint n,
+  jfloatArray a,
+  jint lda,
+  jfloatArray s, // real
+  jfloatArray u,
+  jint ldu,
+  jfloatArray vt,
+  jint ldvt,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray sa = FloatArray(env, s, 0, useCrit);
+        FloatArray ua = FloatArray(env, u, 0, useCrit);
+        FloatArray vta = FloatArray(env, vt, 0, useCrit);
+
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray uac = ComplexFloatArray(ua);
+        ComplexFloatArray vtac = ComplexFloatArray(vta);
+
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cgesdd_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "cgesdd_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    zgesdd_n
+ * Signature: (IBII[DI[D[DI[DIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_zgesdd_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte jobz,
+  jint m,
+  jint n,
+  jdoubleArray a,
+  jint lda,
+  jdoubleArray s, // real
+  jdoubleArray u,
+  jint ldu,
+  jdoubleArray vt,
+  jint ldvt,
+  jboolean useCrit) {
+    try {
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray sa = DoubleArray(env, s, 0, useCrit);
+        DoubleArray ua = DoubleArray(env, u, 0, useCrit);
+        DoubleArray vta = DoubleArray(env, vt, 0, useCrit);
+
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray uac = ComplexDoubleArray(ua);
+        ComplexDoubleArray vtac = ComplexDoubleArray(vta);
+
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zgesdd_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "zgesdd_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
     // initialize
 
 /*
