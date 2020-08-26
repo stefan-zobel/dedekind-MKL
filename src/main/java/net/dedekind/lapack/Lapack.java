@@ -5143,6 +5143,10 @@ public abstract class Lapack {
 
     // miscellaneous complex routines
 
+    // Note:
+    // An array of 3 complex numbers a0, a1 and a2 is always represented as an
+    // array of 6 real numbers [a0.re, a0.im, a1.re, a1.im, a2.re, a2.im]
+
     // note: there is no need to make a copy of 'a' before calling cgeev!
     public abstract int cgeev(String jobvl, String jobvr, int n, float[] a, int lda, float[] w, float[] vl, int ldvl,
             float[] vr, int ldvr);

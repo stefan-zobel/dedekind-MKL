@@ -2931,6 +2931,10 @@ public abstract class Blas {
 
     // miscellaneous complex routines
 
+    // Note:
+    // An array of 3 complex numbers a0, a1 and a2 is always represented as an
+    // array of 6 real numbers [a0.re, a0.im, a1.re, a1.im, a2.re, a2.im]
+
     public abstract void cgemm(Trans transa, Trans transb, int m, int n, int k, float alphar, float alphai, float[] a,
             int lda, float[] b, int ldb, float betar, float betai, float[] c, int ldc);
 
