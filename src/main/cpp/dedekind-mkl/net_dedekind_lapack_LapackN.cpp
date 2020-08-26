@@ -2150,6 +2150,70 @@ Java_net_dedekind_lapack_LapackN_zgesdd_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    cgels_n
+ * Signature: (IBIII[FI[FIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_cgels_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte trans,
+  jint m,
+  jint n,
+  jint nrhs,
+  jfloatArray a,
+  jint lda,
+  jfloatArray b,
+  jint ldb,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray ba = FloatArray(env, b, 0, useCrit);
+
+
+    }
+    catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cgels_n", ex.what());
+    }
+    catch (...) {
+        throwJavaRuntimeException(env, "%s", "cgels_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    zgels_n
+ * Signature: (IBIII[DI[DIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_zgels_1n(JNIEnv* env, jclass,
+  jint order,
+  jbyte trans,
+  jint m,
+  jint n,
+  jint nrhs,
+  jdoubleArray a,
+  jint lda,
+  jdoubleArray b,
+  jint ldb,
+  jboolean useCrit) {
+    try {
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray ba = DoubleArray(env, b, 0, useCrit);
+
+
+    }
+    catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zgels_n", ex.what());
+    }
+    catch (...) {
+        throwJavaRuntimeException(env, "%s", "zgels_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
     // initialize
 
 /*
