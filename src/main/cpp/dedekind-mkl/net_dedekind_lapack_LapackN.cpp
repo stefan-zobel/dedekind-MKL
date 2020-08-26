@@ -2171,7 +2171,24 @@ Java_net_dedekind_lapack_LapackN_cgels_1n(JNIEnv* env, jclass,
         FloatArray aa = FloatArray(env, a, 0, useCrit);
         FloatArray ba = FloatArray(env, b, 0, useCrit);
 
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray bac = ComplexFloatArray(ba);
 
+        int r = LAPACKE_cgels(order, trans, m, n, nrhs, aac.ptr(),
+            lda, bac.ptr(), ldb);
+
+        if (r >= 0) {
+            long len = aac.complexLength();
+            if (len > 0) {
+                floatCopy(len, aa.ptr(), aac.ptr());
+            }
+            len = bac.complexLength();
+            if (r == 0 && len > 0) {
+                floatCopy(len, ba.ptr(), bac.ptr());
+            }
+        }
+
+        return r;
     }
     catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgels_n", ex.what());
@@ -2203,7 +2220,24 @@ Java_net_dedekind_lapack_LapackN_zgels_1n(JNIEnv* env, jclass,
         DoubleArray aa = DoubleArray(env, a, 0, useCrit);
         DoubleArray ba = DoubleArray(env, b, 0, useCrit);
 
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray bac = ComplexDoubleArray(ba);
 
+        int r = LAPACKE_zgels(order, trans, m, n, nrhs, aac.ptr(),
+            lda, bac.ptr(), ldb);
+
+        if (r >= 0) {
+            long len = aac.complexLength();
+            if (len > 0) {
+                doubleCopy(len, aa.ptr(), aac.ptr());
+            }
+            len = bac.complexLength();
+            if (r == 0 && len > 0) {
+                doubleCopy(len, ba.ptr(), bac.ptr());
+            }
+        }
+
+        return r;
     }
     catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgels_n", ex.what());
