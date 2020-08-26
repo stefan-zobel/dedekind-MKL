@@ -2248,6 +2248,90 @@ Java_net_dedekind_lapack_LapackN_zgels_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    cgesv_n
+ * Signature: (III[FI[I[FIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_cgesv_1n(JNIEnv* env, jclass,
+  jint order,
+  jint n,
+  jint nrhs,
+  jfloatArray a,
+  jint lda,
+  jintArray ipiv,
+  jfloatArray b,
+  jint ldb,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        IntArray ipiva = IntArray(env, ipiv, 0, useCrit);
+        FloatArray ba = FloatArray(env, b, 0, useCrit);
+
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray bac = ComplexFloatArray(ba);
+
+        int r = LAPACKE_cgesv(order, n, nrhs, aac.ptr(), lda, ipiva.ptr(),
+            bac.ptr(), ldb);
+
+        if (r >= 0) {
+            // TODO
+        }
+
+        return r;
+    }
+    catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cgesv_n", ex.what());
+    }
+    catch (...) {
+        throwJavaRuntimeException(env, "%s", "cgesv_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    zgesv_n
+ * Signature: (III[DI[I[DIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_zgesv_1n(JNIEnv* env, jclass,
+  jint order,
+  jint n,
+  jint nrhs,
+  jdoubleArray a,
+  jint lda,
+  jintArray ipiv,
+  jdoubleArray b,
+  jint ldb,
+  jboolean useCrit) {
+    try {
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        IntArray ipiva = IntArray(env, ipiv, 0, useCrit);
+        DoubleArray ba = DoubleArray(env, b, 0, useCrit);
+
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray bac = ComplexFloatArray(ba);
+
+        int r = LAPACKE_zgesv(order, n, nrhs, aac.ptr(), lda, ipiva.ptr(),
+            bac.ptr(), ldb);
+
+        if (r >= 0) {
+            // TODO
+        }
+
+        return r;
+    }
+    catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zgesv_n", ex.what());
+    }
+    catch (...) {
+        throwJavaRuntimeException(env, "%s", "zgesv_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
     // initialize
 
 /*
