@@ -5156,12 +5156,14 @@ public abstract class Lapack {
             double[] vr, int ldvr);
 
     // note: 's' (the singular values) are real (a float[]) wheras 'a[]', 'u[]'
-    // and 'vt[]' are arrays of complex numbers
+    // and 'vt[]' are arrays of complex numbers; the only case where 'a' must
+    // be copied before calling cgesdd is when jobz == 'O'
     public abstract int cgesdd(String jobz, int m, int n, float[] a, int lda, float[] s, float[] u, int ldu, float[] vt,
             int ldvt);
 
     // note: 's' (the singular values) are real (a double[]) wheras 'a[]', 'u[]'
-    // and 'vt[]' are arrays of complex numbers
+    // and 'vt[]' are arrays of complex numbers; the only case where 'a' must
+    // be copied before calling zgesdd is when jobz == 'O'
     public abstract int zgesdd(String jobz, int m, int n, double[] a, int lda, double[] s, double[] u, int ldu,
             double[] vt, int ldvt);
 
