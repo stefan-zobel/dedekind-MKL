@@ -24,6 +24,8 @@
 #include "SlimString.h"
 #endif /* SLIMSTRING_INCLUDED_ */
 
+#include <string.h> // for memcpy
+
 
 
 ComplexFloatArray::ComplexFloatArray(FloatArray& array_, bool copy)
@@ -45,9 +47,10 @@ ComplexFloatArray::ComplexFloatArray(FloatArray& array_, bool copy)
                 msg.append(length);
                 throw JException(msg);
             }
-            float* mixed = array.ptr();
-            cblas_scopy(length, &(mixed[0]), 2, &(complex_array[0].real), 2);
-            cblas_scopy(length, &(mixed[1]), 2, &(complex_array[0].imag), 2);
+            memcpy(complex_array, array.ptr(), length * sizeof(MKL_Complex8));
+//            float* mixed = array.ptr();
+//            cblas_scopy(length, &(mixed[0]), 2, &(complex_array[0].real), 2);
+//            cblas_scopy(length, &(mixed[1]), 2, &(complex_array[0].imag), 2);
         }
         else {
             complex_array = (MKL_Complex8*) array.ptr();

@@ -54,6 +54,8 @@
 #include <mkl.h>
 #endif /* _MKL_H_ */
 
+#include <string.h> // for memcpy
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -1021,6 +1023,22 @@ Java_net_dedekind_blas_BlasN_sgemm_1n(JNIEnv* env, jclass,
 
     // miscellaneous complex routines
 
+__GCC_DONT_EXPORT void floatCopy(long len, float* mixed, MKL_Complex8* complex) {
+    if (len > 0 && mixed && complex) {
+        memcpy(mixed, complex, len * sizeof(MKL_Complex8));
+//        cblas_scopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+//        cblas_scopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+    }
+}
+
+__GCC_DONT_EXPORT void doubleCopy(long len, double* mixed, MKL_Complex16* complex) {
+    if (len > 0 && mixed && complex) {
+        memcpy(mixed, complex, len * sizeof(MKL_Complex16));
+//        cblas_dcopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+//        cblas_dcopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+    }
+}
+
 /*
  * Class:     net_dedekind_blas_BlasN
  * Method:    cgemm_n
@@ -1067,9 +1085,7 @@ Java_net_dedekind_blas_BlasN_cgemm_1n(JNIEnv* env, jclass,
 
             long len = cac.complexLength();
             if (len > 0 && cac.hasCopy()) {
-                float* mixed = ca.ptr();
-                cblas_scopy(len, &(pc[0].real), 2, &(mixed[0]), 2);
-                cblas_scopy(len, &(pc[0].imag), 2, &(mixed[1]), 2);
+                floatCopy(len, mixed, pc);
             }
         }
 
@@ -1126,9 +1142,7 @@ Java_net_dedekind_blas_BlasN_zgemm_1n(JNIEnv* env, jclass,
 
             long len = cac.complexLength();
             if (len > 0 && cac.hasCopy()) {
-                double* mixed = ca.ptr();
-                cblas_dcopy(len, &(pc[0].real), 2, &(mixed[0]), 2);
-                cblas_dcopy(len, &(pc[0].imag), 2, &(mixed[1]), 2);
+                doubleCopy(len, mixed, pc);
             }
         }
 

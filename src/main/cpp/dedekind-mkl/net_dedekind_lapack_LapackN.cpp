@@ -54,6 +54,8 @@
 #include <mkl.h>
 #endif /* _MKL_H_ */
 
+#include <string.h> // for memcpy
+
 
 static const int NOT_REACHED = -10000;
 
@@ -1898,16 +1900,17 @@ Java_net_dedekind_lapack_LapackN_sgesv_1n(JNIEnv* env, jclass,
 
 __GCC_DONT_EXPORT void floatCopy(long len, float* mixed, MKL_Complex8* complex) {
     if (len > 0 && mixed && complex) {
-        cblas_scopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
-        cblas_scopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+        memcpy(mixed, complex, len * sizeof(MKL_Complex8));
+//        cblas_scopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+//        cblas_scopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
     }
 }
 
 __GCC_DONT_EXPORT void doubleCopy(long len, double* mixed, MKL_Complex16* complex) {
     if (len > 0 && mixed && complex) {
-        cblas_dcopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
-        cblas_dcopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
-    }
+        memcpy(mixed, complex, len * sizeof(MKL_Complex16));
+//        cblas_dcopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+//        cblas_dcopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
 }
 
 /*
