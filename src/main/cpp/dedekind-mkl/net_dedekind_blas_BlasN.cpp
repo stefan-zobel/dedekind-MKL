@@ -1066,7 +1066,7 @@ Java_net_dedekind_blas_BlasN_cgemm_1n(JNIEnv* env, jclass,
                 static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, &alpha, pa, lda, pb, ldb, &beta, pc, ldc);
 
             long len = cac.complexLength();
-            if (len > 0) {
+            if (len > 0 && cac.hasCopy()) {
                 float* mixed = ca.ptr();
                 cblas_scopy(len, &(pc[0].real), 2, &(mixed[0]), 2);
                 cblas_scopy(len, &(pc[0].imag), 2, &(mixed[1]), 2);
@@ -1125,7 +1125,7 @@ Java_net_dedekind_blas_BlasN_zgemm_1n(JNIEnv* env, jclass,
                 static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, &alpha, pa, lda, pb, ldb, &beta, pc, ldc);
 
             long len = cac.complexLength();
-            if (len > 0) {
+            if (len > 0 && cac.hasCopy()) {
                 double* mixed = ca.ptr();
                 cblas_dcopy(len, &(pc[0].real), 2, &(mixed[0]), 2);
                 cblas_dcopy(len, &(pc[0].imag), 2, &(mixed[1]), 2);

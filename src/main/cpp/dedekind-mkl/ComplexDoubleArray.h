@@ -32,15 +32,17 @@
 class __GCC_DONT_EXPORT ComplexDoubleArray
 {
 public:
-    ComplexDoubleArray(DoubleArray& array_);
+    ComplexDoubleArray(DoubleArray& array_, bool copy = false);
     ~ComplexDoubleArray();
     MKL_Complex16* ptr();
     long complexLength();
+    bool hasCopy();
 private:
     ComplexDoubleArray& operator=(const ComplexDoubleArray&);
     DoubleArray& array;
     long complex_array_len;
     MKL_Complex16* complex_array;
+    bool isCopy;
 };
 
 #endif /* COMPLEX_DOUBLEARRAY_INCLUDED_ */

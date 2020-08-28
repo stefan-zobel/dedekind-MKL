@@ -26,8 +26,8 @@
 
 
 
-ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_)
-    : array(array_), complex_array_len(0), complex_array(NULL)
+ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_, bool copy)
+    : array(array_), complex_array_len(0), complex_array(NULL), isCopy(copy)
 {
     long length = array.length();
     if (length > 0) {
@@ -38,15 +38,20 @@ ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_)
         }
         length /= 2;
         complex_array_len = length;
-        complex_array = (MKL_Complex16*) mkl_malloc(length * sizeof(MKL_Complex16), 64);
-        if (!complex_array) {
-            SlimString msg("couldn't allocate MKL_Complex16 array of length ");
-            msg.append(length);
-            throw JException(msg);
+        if (isCopy) {
+            complex_array = (MKL_Complex16*) mkl_malloc(length * sizeof(MKL_Complex16), 64);
+            if (!complex_array) {
+                SlimString msg("couldn't allocate MKL_Complex16 array of length ");
+                msg.append(length);
+                throw JException(msg);
+            }
+            double* mixed = array.ptr();
+            cblas_dcopy(length, &(mixed[0]), 2, &(complex_array[0].real), 2);
+            cblas_dcopy(length, &(mixed[1]), 2, &(complex_array[0].imag), 2);
         }
-        double* mixed = array.ptr();
-        cblas_dcopy(length, &(mixed[0]), 2, &(complex_array[0].real), 2);
-        cblas_dcopy(length, &(mixed[1]), 2, &(complex_array[0].imag), 2);
+        else {
+            complex_array = (MKL_Complex16*) array.ptr();
+        }
     }
 }
 
@@ -58,8 +63,12 @@ long ComplexDoubleArray::complexLength() {
     return complex_array_len;
 }
 
+bool ComplexDoubleArray::hasCopy() {
+    return isCopy;
+}
+
 ComplexDoubleArray::~ComplexDoubleArray() {
-    if (complex_array) {
+    if (isCopy && complex_array) {
         mkl_free(complex_array);
     }
 }

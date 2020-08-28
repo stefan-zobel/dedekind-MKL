@@ -1935,7 +1935,7 @@ Java_net_dedekind_lapack_LapackN_cgeev_1n(JNIEnv* env, jclass,
         FloatArray vla = FloatArray(env, vl, 0, useCrit);
         FloatArray vra = FloatArray(env, vr, 0, useCrit);
 
-        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray aac = ComplexFloatArray(aa, true);
         ComplexFloatArray wac = ComplexFloatArray(wa);
         ComplexFloatArray vlac = ComplexFloatArray(vla);
         ComplexFloatArray vrac = ComplexFloatArray(vra);
@@ -1947,17 +1947,17 @@ Java_net_dedekind_lapack_LapackN_cgeev_1n(JNIEnv* env, jclass,
             // we don't need A!
             // Eigenvalues
             long len = wac.complexLength();
-            if (len > 0) {
+            if (len > 0 && wac.hasCopy()) {
                 floatCopy(len, wa.ptr(), wac.ptr());
             }
             // left Eigenvectors
             len = vlac.complexLength();
-            if (jobvl != 'N' && len > 0 && r == 0) {
+            if (jobvl != 'N' && len > 0 && r == 0 && vlac.hasCopy()) {
                 floatCopy(len, vla.ptr(), vlac.ptr());
             }
             // right Eigenvectors
             len = vrac.complexLength();
-            if (jobvr != 'N' && len > 0 && r == 0) {
+            if (jobvr != 'N' && len > 0 && r == 0 && vrac.hasCopy()) {
                 floatCopy(len, vra.ptr(), vrac.ptr());
             }
         }
@@ -1996,7 +1996,7 @@ Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
         DoubleArray vla = DoubleArray(env, vl, 0, useCrit);
         DoubleArray vra = DoubleArray(env, vr, 0, useCrit);
 
-        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray aac = ComplexDoubleArray(aa, true);
         ComplexDoubleArray wac = ComplexDoubleArray(wa);
         ComplexDoubleArray vlac = ComplexDoubleArray(vla);
         ComplexDoubleArray vrac = ComplexDoubleArray(vra);
@@ -2008,17 +2008,17 @@ Java_net_dedekind_lapack_LapackN_zgeev_1n(JNIEnv* env, jclass,
             // we don't need A!
             // Eigenvalues
             long len = wac.complexLength();
-            if (len > 0) {
+            if (len > 0 && wac.hasCopy()) {
                 doubleCopy(len, wa.ptr(), wac.ptr());
             }
             // left Eigenvectors
             len = vlac.complexLength();
-            if (jobvl != 'N' && len > 0 && r == 0) {
+            if (jobvl != 'N' && len > 0 && r == 0 && vlac.hasCopy()) {
                 doubleCopy(len, vla.ptr(), vlac.ptr());
             }
             // right Eigenvectors
             len = vrac.complexLength();
-            if (jobvr != 'N' && len > 0 && r == 0) {
+            if (jobvr != 'N' && len > 0 && r == 0 && vrac.hasCopy()) {
                 doubleCopy(len, vra.ptr(), vrac.ptr());
             }
         }

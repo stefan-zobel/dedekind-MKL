@@ -32,15 +32,17 @@
 class __GCC_DONT_EXPORT ComplexFloatArray
 {
 public:
-    ComplexFloatArray(FloatArray& array_);
+    ComplexFloatArray(FloatArray& array_, bool copy = false);
     ~ComplexFloatArray();
     MKL_Complex8* ptr();
     long complexLength();
+    bool hasCopy();
 private:
     ComplexFloatArray& operator=(const ComplexFloatArray&);
     FloatArray& array;
     long complex_array_len;
     MKL_Complex8* complex_array;
+    bool isCopy;
 };
 
 #endif /* COMPLEX_FLOATARRAY_INCLUDED_ */
