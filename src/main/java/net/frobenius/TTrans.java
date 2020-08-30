@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ public enum TTrans {
 
     NO_TRANS("N"), //
     TRANS("T"), //
-    CONJ_TRANS("C"); //
+    CONJ_TRANS("C"), //
+    CONJ("R"); //
 
     private final String val;
 
