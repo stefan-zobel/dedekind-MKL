@@ -2069,17 +2069,17 @@ Java_net_dedekind_lapack_LapackN_cgesdd_1n(JNIEnv* env, jclass,
 
         if (r == 0) {
             long len = aac.complexLength();
-            if (jobz == 'O' && len > 0) {
+            if (jobz == 'O' && len > 0 && aac.hasCopy()) {
                 // A gets overwritten
                 floatCopy(len, aa.ptr(), aac.ptr());
             }
             len = uac.complexLength();
-            if (jobz != 'N' && len > 0) {
+            if (jobz != 'N' && len > 0 && uac.hasCopy()) {
                 // left singular vectors
                 floatCopy(len, ua.ptr(), uac.ptr());
             }
             len = vtac.complexLength();
-            if (jobz != 'N' && len > 0) {
+            if (jobz != 'N' && len > 0 && vtac.hasCopy()) {
                 // right singular vectors
                 floatCopy(len, vta.ptr(), vtac.ptr());
             }
@@ -2128,17 +2128,17 @@ Java_net_dedekind_lapack_LapackN_zgesdd_1n(JNIEnv* env, jclass,
 
         if (r == 0) {
             long len = aac.complexLength();
-            if (jobz == 'O' && len > 0) {
+            if (jobz == 'O' && len > 0 && aac.hasCopy()) {
                 // A gets overwritten
                 doubleCopy(len, aa.ptr(), aac.ptr());
             }
             len = uac.complexLength();
-            if (jobz != 'N' && len > 0) {
+            if (jobz != 'N' && len > 0 && uac.hasCopy()) {
                 // left singular vectors
                 doubleCopy(len, ua.ptr(), uac.ptr());
             }
             len = vtac.complexLength();
-            if (jobz != 'N' && len > 0) {
+            if (jobz != 'N' && len > 0 && vtac.hasCopy()) {
                 // right singular vectors
                 doubleCopy(len, vta.ptr(), vtac.ptr());
             }
@@ -2182,11 +2182,11 @@ Java_net_dedekind_lapack_LapackN_cgels_1n(JNIEnv* env, jclass,
 
         if (r >= 0) {
             long len = aac.complexLength();
-            if (len > 0) {
+            if (len > 0 && aac.hasCopy()) {
                 floatCopy(len, aa.ptr(), aac.ptr());
             }
             len = bac.complexLength();
-            if (r == 0 && len > 0) {
+            if (r == 0 && len > 0 && bac.hasCopy()) {
                 floatCopy(len, ba.ptr(), bac.ptr());
             }
         }
@@ -2231,11 +2231,11 @@ Java_net_dedekind_lapack_LapackN_zgels_1n(JNIEnv* env, jclass,
 
         if (r >= 0) {
             long len = aac.complexLength();
-            if (len > 0) {
+            if (len > 0 && aac.hasCopy()) {
                 doubleCopy(len, aa.ptr(), aac.ptr());
             }
             len = bac.complexLength();
-            if (r == 0 && len > 0) {
+            if (r == 0 && len > 0 && bac.hasCopy()) {
                 doubleCopy(len, ba.ptr(), bac.ptr());
             }
         }
@@ -2280,11 +2280,11 @@ Java_net_dedekind_lapack_LapackN_cgesv_1n(JNIEnv* env, jclass,
 
         if (r >= 0) {
             long len = aac.complexLength();
-            if (len > 0) {
+            if (len > 0 && aac.hasCopy()) {
                 floatCopy(len, aa.ptr(), aac.ptr());
             }
             len = bac.complexLength();
-            if (r == 0 && len > 0) {
+            if (r == 0 && len > 0 && bac.hasCopy()) {
                 floatCopy(len, ba.ptr(), bac.ptr());
             }
         }
@@ -2329,11 +2329,11 @@ Java_net_dedekind_lapack_LapackN_zgesv_1n(JNIEnv* env, jclass,
 
         if (r >= 0) {
             long len = aac.complexLength();
-            if (len > 0) {
+            if (len > 0 && aac.hasCopy()) {
                 doubleCopy(len, aa.ptr(), aac.ptr());
             }
             len = bac.complexLength();
-            if (r == 0 && len > 0) {
+            if (r == 0 && len > 0 && bac.hasCopy()) {
                 doubleCopy(len, ba.ptr(), bac.ptr());
             }
         }
