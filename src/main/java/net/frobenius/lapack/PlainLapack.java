@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Stefan Zobel
+ * Copyright 2019, 2020 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,12 @@ import net.frobenius.TSvdJob;
 import net.frobenius.TTrans;
 import net.frobenius.TUpLo;
 
+/**
+ * Matrix storage layout must be column-major as in Fortran. The number of
+ * matrix rows and columns, if required, must be strictly positive. All
+ * operations throw a {@code NullPointerException} if any of the reference
+ * method arguments is {@code null}.
+ */
 public final class PlainLapack {
     /**
      * <pre>
@@ -2239,6 +2245,74 @@ public final class PlainLapack {
 
         la.dlaswp(n, a, lda, pivFirstIdx, pivLastIdx, indices, increment);
     }
+
+	/**
+	 * <pre>
+	 * <code>
+	 *
+	 *  Purpose
+	 *  =======
+	 *
+	 *  DORGLQ generates an M-by-N real matrix Q with orthonormal rows,
+	 *  which is defined as the first M rows of a product of K elementary
+	 *  reflectors of order N
+	 *
+	 *        Q  =  H(k) . . . H(2) H(1)
+	 *
+	 *  as returned by DGELQF.
+	 *
+	 *  Arguments
+	 *  =========
+	 *
+	 *  M       (input) INTEGER
+	 *          The number of rows of the matrix Q. M >= 0.
+	 *
+	 *  N       (input) INTEGER
+	 *          The number of columns of the matrix Q. N >= M.
+	 *
+	 *  K       (input) INTEGER
+	 *          The number of elementary reflectors whose product defines the
+	 *          matrix Q. M >= K >= 0.
+	 *
+	 *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+	 *          On entry, the i-th row must contain the vector which defines
+	 *          the elementary reflector H(i), for i = 1,2,...,k, as returned
+	 *          by DGELQF in the first k rows of its array argument A.
+	 *          On exit, the M-by-N matrix Q.
+	 *
+	 *  LDA     (input) INTEGER
+	 *          The first dimension of the array A. LDA >= max(1,M).
+	 *
+	 *  TAU     (input) DOUBLE PRECISION array, dimension (K)
+	 *          TAU(i) must contain the scalar factor of the elementary
+	 *          reflector H(i), as returned by DGELQF.
+	 *
+	 *  =====================================================================
+	 *
+	 * </code>
+	 * </pre>
+	 *
+	 * @param m
+	 * @param n
+	 * @param k
+	 * @param a
+	 * @param lda
+	 * @param tau
+	 */
+	public static void dorglq(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+		intW info = new intW(0);
+		// TODO: remaining params sanity check
+		double[] work = new double[1];
+		la.dorglq(m, n, k, new double[0], lda, new double[0], work, -1, info);
+		if (info.val != 0) {
+			throwIAEPosition(info);
+		}
+		work = new double[(int) work[0]];
+		la.dorglq(m, n, k, a, lda, tau, work, work.length, info);
+		if (info.val != 0) {
+			throwIAEPosition(info);
+		}
+	}
 
     private static void checkNonNegative(int value, String name) {
         if (value < 0) {
