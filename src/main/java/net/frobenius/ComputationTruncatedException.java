@@ -33,7 +33,7 @@ public class ComputationTruncatedException extends RuntimeException {
         super(message, cause);
     }
 
-    public ComputationTruncatedException(String message, Throwable cause, boolean enableSuppression,
+    protected ComputationTruncatedException(String message, Throwable cause, boolean enableSuppression,
             boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }

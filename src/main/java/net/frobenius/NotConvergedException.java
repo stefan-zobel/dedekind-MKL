@@ -33,7 +33,7 @@ public class NotConvergedException extends RuntimeException {
         super(message, cause);
     }
 
-    public NotConvergedException(String message, Throwable cause, boolean enableSuppression,
+    protected NotConvergedException(String message, Throwable cause, boolean enableSuppression,
             boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
