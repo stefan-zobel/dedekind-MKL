@@ -76,6 +76,7 @@
 		<Unit filename="ThreadMutex.h" />
 		<Unit filename="dedekind-mkl.cpp" />
 		<Unit filename="dedekind-mkl.h" />
+		<Unit filename="net_dedekind_blas_BlasExt.cpp" />
 		<Unit filename="net_dedekind_blas_BlasN.cpp" />
 		<Unit filename="net_dedekind_lapack_LapackN.cpp" />
 		<Unit filename="stdafx.h" />
