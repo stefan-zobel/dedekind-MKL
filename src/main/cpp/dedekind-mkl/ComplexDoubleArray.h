@@ -29,6 +29,9 @@
 #include <mkl.h>
 #endif /* _MKL_H_ */
 
+
+__GCC_DONT_EXPORT void doubleCopy(long len, double* mixed, MKL_Complex16* complex);
+
 class __GCC_DONT_EXPORT ComplexDoubleArray
 {
 public:

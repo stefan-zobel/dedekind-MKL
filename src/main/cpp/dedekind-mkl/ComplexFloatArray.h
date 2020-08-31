@@ -29,6 +29,9 @@
 #include <mkl.h>
 #endif /* _MKL_H_ */
 
+
+__GCC_DONT_EXPORT void floatCopy(long len, float* mixed, MKL_Complex8* complex);
+
 class __GCC_DONT_EXPORT ComplexFloatArray
 {
 public:

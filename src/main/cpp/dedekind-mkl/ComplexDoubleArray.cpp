@@ -28,6 +28,14 @@
 
 
 
+__GCC_DONT_EXPORT void doubleCopy(long len, double* mixed, MKL_Complex16* complex) {
+    if (len > 0 && mixed && complex) {
+        memcpy(mixed, complex, len * sizeof(MKL_Complex16));
+//        cblas_dcopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+//        cblas_dcopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+    }
+}
+
 ComplexDoubleArray::ComplexDoubleArray(DoubleArray& array_, bool copy)
     : array(array_), complex_array_len(0), complex_array(NULL), isCopy(copy)
 {

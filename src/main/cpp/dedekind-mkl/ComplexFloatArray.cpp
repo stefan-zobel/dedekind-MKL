@@ -28,6 +28,14 @@
 
 
 
+__GCC_DONT_EXPORT void floatCopy(long len, float* mixed, MKL_Complex8* complex) {
+    if (len > 0 && mixed && complex) {
+        memcpy(mixed, complex, len * sizeof(MKL_Complex8));
+//        cblas_scopy(len, &(complex[0].real), 2, &(mixed[0]), 2);
+//        cblas_scopy(len, &(complex[0].imag), 2, &(mixed[1]), 2);
+    }
+}
+
 ComplexFloatArray::ComplexFloatArray(FloatArray& array_, bool copy)
     : array(array_), complex_array_len(0), complex_array(NULL), isCopy(copy)
 {
