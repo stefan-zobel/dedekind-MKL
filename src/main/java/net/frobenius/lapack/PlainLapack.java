@@ -2246,73 +2246,2631 @@ public final class PlainLapack {
         la.dlaswp(n, a, lda, pivFirstIdx, pivLastIdx, indices, increment);
     }
 
-	/**
-	 * <pre>
-	 * <code>
-	 *
-	 *  Purpose
-	 *  =======
-	 *
-	 *  DORGLQ generates an M-by-N real matrix Q with orthonormal rows,
-	 *  which is defined as the first M rows of a product of K elementary
-	 *  reflectors of order N
-	 *
-	 *        Q  =  H(k) . . . H(2) H(1)
-	 *
-	 *  as returned by DGELQF.
-	 *
-	 *  Arguments
-	 *  =========
-	 *
-	 *  M       (input) INTEGER
-	 *          The number of rows of the matrix Q. M >= 0.
-	 *
-	 *  N       (input) INTEGER
-	 *          The number of columns of the matrix Q. N >= M.
-	 *
-	 *  K       (input) INTEGER
-	 *          The number of elementary reflectors whose product defines the
-	 *          matrix Q. M >= K >= 0.
-	 *
-	 *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
-	 *          On entry, the i-th row must contain the vector which defines
-	 *          the elementary reflector H(i), for i = 1,2,...,k, as returned
-	 *          by DGELQF in the first k rows of its array argument A.
-	 *          On exit, the M-by-N matrix Q.
-	 *
-	 *  LDA     (input) INTEGER
-	 *          The first dimension of the array A. LDA >= max(1,M).
-	 *
-	 *  TAU     (input) DOUBLE PRECISION array, dimension (K)
-	 *          TAU(i) must contain the scalar factor of the elementary
-	 *          reflector H(i), as returned by DGELQF.
-	 *
-	 *  =====================================================================
-	 *
-	 * </code>
-	 * </pre>
-	 *
-	 * @param m
-	 * @param n
-	 * @param k
-	 * @param a
-	 * @param lda
-	 * @param tau
-	 */
-	public static void dorglq(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
-		intW info = new intW(0);
-		// TODO: remaining params sanity check
-		double[] work = new double[1];
-		la.dorglq(m, n, k, new double[0], lda, new double[0], work, -1, info);
-		if (info.val != 0) {
-			throwIAEPosition(info);
-		}
-		work = new double[(int) work[0]];
-		la.dorglq(m, n, k, a, lda, tau, work, work.length, info);
-		if (info.val != 0) {
-			throwIAEPosition(info);
-		}
-	}
+    // TODO: finish sanity checks for the remaining arguments
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DORGLQ generates an M-by-N real matrix Q with orthonormal rows,
+     *  which is defined as the first M rows of a product of K elementary
+     *  reflectors of order N
+     *
+     *        Q  =  H(k) . . . H(2) H(1)
+     *
+     *  as returned by DGELQF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix Q. M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix Q. N >= M.
+     *
+     *  K       (input) INTEGER
+     *          The number of elementary reflectors whose product defines the
+     *          matrix Q. M >= K >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the i-th row must contain the vector which defines
+     *          the elementary reflector H(i), for i = 1,2,...,k, as returned
+     *          by DGELQF in the first k rows of its array argument A.
+     *          On exit, the M-by-N matrix Q.
+     *
+     *  LDA     (input) INTEGER
+     *          The first dimension of the array A. LDA >= max(1,M).
+     *
+     *  TAU     (input) DOUBLE PRECISION array, dimension (K)
+     *          TAU(i) must contain the scalar factor of the elementary
+     *          reflector H(i), as returned by DGELQF.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param k
+     * @param a
+     * @param lda
+     * @param tau
+     */
+    public static void dorglq(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        la.dorglq(m, n, k, new double[0], lda, new double[0], work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        la.dorglq(m, n, k, a, lda, tau, work, work.length, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DORGQR generates an M-by-N real matrix Q with orthonormal columns,
+     *  which is defined as the first N columns of a product of K elementary
+     *  reflectors of order M
+     *
+     *        Q  =  H(1) H(2) . . . H(k)
+     *
+     *  as returned by DGEQRF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix Q. M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix Q. M >= N >= 0.
+     *
+     *  K       (input) INTEGER
+     *          The number of elementary reflectors whose product defines the
+     *          matrix Q. N >= K >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the i-th column must contain the vector which
+     *          defines the elementary reflector H(i), for i = 1,2,...,k, as
+     *          returned by DGEQRF in the first k columns of its array
+     *          argument A.
+     *          On exit, the M-by-N matrix Q.
+     *
+     *  LDA     (input) INTEGER
+     *          The first dimension of the array A. LDA >= max(1,M).
+     *
+     *  TAU     (input) DOUBLE PRECISION array, dimension (K)
+     *          TAU(i) must contain the scalar factor of the elementary
+     *          reflector H(i), as returned by DGEQRF.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param k
+     * @param a
+     * @param lda
+     * @param tau
+     */
+    public static void dorgqr(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        la.dorgqr(m, n, k, new double[0], lda, new double[0], work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        la.dorgqr(m, n, k, a, lda, tau, work, work.length, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DORGRQ generates an M-by-N real matrix Q with orthonormal rows,
+     *  which is defined as the last M rows of a product of K elementary
+     *  reflectors of order N
+     *
+     *        Q  =  H(1) H(2) . . . H(k)
+     *
+     *  as returned by DGERQF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix Q. M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix Q. N >= M.
+     *
+     *  K       (input) INTEGER
+     *          The number of elementary reflectors whose product defines the
+     *          matrix Q. M >= K >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the (m-k+i)-th row must contain the vector which
+     *          defines the elementary reflector H(i), for i = 1,2,...,k, as
+     *          returned by DGERQF in the last k rows of its array argument
+     *          A.
+     *          On exit, the M-by-N matrix Q.
+     *
+     *  LDA     (input) INTEGER
+     *          The first dimension of the array A. LDA >= max(1,M).
+     *
+     *  TAU     (input) DOUBLE PRECISION array, dimension (K)
+     *          TAU(i) must contain the scalar factor of the elementary
+     *          reflector H(i), as returned by DGERQF.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param k
+     * @param a
+     * @param lda
+     * @param tau
+     */
+    public static void dorgrq(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        la.dorgrq(m, n, k, new double[0], lda, new double[0], work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        la.dorgrq(m, n, k, a, lda, tau, work, work.length, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DORMRZ overwrites the general real M-by-N matrix C with
+     *
+     *                  SIDE = 'L'     SIDE = 'R'
+     *  TRANS = 'N':      Q * C          C * Q
+     *  TRANS = 'T':      Q**T * C       C * Q**T
+     *
+     *  where Q is a real orthogonal matrix defined as the product of k
+     *  elementary reflectors
+     *
+     *        Q = H(1) H(2) . . . H(k)
+     *
+     *  as returned by DTZRZF. Q is of order M if SIDE = 'L' and of order N
+     *  if SIDE = 'R'.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  SIDE    (input) CHARACTER*1
+     *          = 'L': apply Q or Q**T from the Left;
+     *          = 'R': apply Q or Q**T from the Right.
+     *
+     *  TRANS   (input) CHARACTER*1
+     *          = 'N':  No transpose, apply Q;
+     *          = 'T':  Transpose, apply Q**T.
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix C. M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix C. N >= 0.
+     *
+     *  K       (input) INTEGER
+     *          The number of elementary reflectors whose product defines
+     *          the matrix Q.
+     *          If SIDE = 'L', M >= K >= 0;
+     *          if SIDE = 'R', N >= K >= 0.
+     *
+     *  L       (input) INTEGER
+     *          The number of columns of the matrix A containing
+     *          the meaningful part of the Householder reflectors.
+     *          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.
+     *
+     *  A       (input) DOUBLE PRECISION array, dimension
+     *                               (LDA,M) if SIDE = 'L',
+     *                               (LDA,N) if SIDE = 'R'
+     *          The i-th row must contain the vector which defines the
+     *          elementary reflector H(i), for i = 1,2,...,k, as returned by
+     *          DTZRZF in the last k rows of its array argument A.
+     *          A is modified by the routine but restored on exit.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A. LDA >= max(1,K).
+     *
+     *  TAU     (input) DOUBLE PRECISION array, dimension (K)
+     *          TAU(i) must contain the scalar factor of the elementary
+     *          reflector H(i), as returned by DTZRZF.
+     *
+     *  C       (input/output) DOUBLE PRECISION array, dimension (LDC,N)
+     *          On entry, the M-by-N matrix C.
+     *          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
+     *
+     *  LDC     (input) INTEGER
+     *          The leading dimension of the array C. LDC >= max(1,M).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param side
+     * @param trans
+     * @param m
+     * @param n
+     * @param k
+     * @param l
+     * @param a
+     * @param lda
+     * @param tau
+     * @param c
+     * @param ldc
+     */
+    public static void dormrz(Lapack la, TSide side, TTrans trans, int m, int n, int k, int l, double[] a, int lda,
+            double[] tau, double[] c, int ldc) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        la.dormrz(side.val(), trans.val(), m, n, k, l, new double[0], lda, new double[0], new double[0], ldc, work, -1,
+                info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        la.dormrz(side.val(), trans.val(), m, n, k, l, a, lda, tau, c, ldc, work, work.length, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPBCON estimates the reciprocal of the condition number (in the
+     *  1-norm) of a real symmetric positive definite band matrix using the
+     *  Cholesky factorization A = U**T*U or A = L*L**T computed by DPBTRF.
+     *
+     *  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+     *  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangular factor stored in AB;
+     *          = 'L':  Lower triangular factor stored in AB.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  KD      (input) INTEGER
+     *          The number of superdiagonals of the matrix A if UPLO = 'U',
+     *          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+     *
+     *  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+     *          The triangular factor U or L from the Cholesky factorization
+     *          A = U**T*U or A = L*L**T of the band matrix A, stored in the
+     *          first KD+1 rows of the array.  The j-th column of U or L is
+     *          stored in the j-th column of the array AB as follows:
+     *          if UPLO ='U', AB(kd+1+i-j,j) = U(i,j) for max(1,j-kd)<=i<=j;
+     *          if UPLO ='L', AB(1+i-j,j)    = L(i,j) for j<=i<=min(n,j+kd).
+     *
+     *  LDAB    (input) INTEGER
+     *          The leading dimension of the array AB.  LDAB >= KD+1.
+     *
+     *  ANORM   (input) DOUBLE PRECISION
+     *          The 1-norm (or infinity-norm) of the symmetric band matrix A.
+     *
+     *  RCOND   (output) DOUBLE PRECISION
+     *          The reciprocal of the condition number of the matrix A,
+     *          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+     *          estimate of the 1-norm of inv(A) computed in this routine.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param diagCount
+     * @param ab
+     * @param normA
+     */
+    public static double dpbcon(Lapack la, TUpLo uplo, int n, int diagCount, double[] ab, double normA) {
+        intW info = new intW(0);
+        doubleW rcond = new doubleW(0.0);
+        // TODO: remaining params sanity check
+        double[] work = new double[3 * n];
+        int[] iwork = new int[n];
+        int ldab = Math.max(1, diagCount + 1);
+        la.dpbcon(uplo.val(), n, diagCount, ab, ldab, normA, rcond, work, iwork, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        return rcond.val;
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPBSV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N symmetric positive definite band matrix and X
+     *  and B are N-by-NRHS matrices.
+     *
+     *  The Cholesky decomposition is used to factor A as
+     *     A = U**T * U,  if UPLO = 'U', or
+     *     A = L * L**T,  if UPLO = 'L',
+     *  where U is an upper triangular band matrix, and L is a lower
+     *  triangular band matrix, with the same number of superdiagonals or
+     *  subdiagonals as A.  The factored form of A is then used to solve the
+     *  system of equations A * X = B.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     *
+     *  KD      (input) INTEGER
+     *          The number of superdiagonals of the matrix A if UPLO = 'U',
+     *          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+     *          On entry, the upper or lower triangle of the symmetric band
+     *          matrix A, stored in the first KD+1 rows of the array.  The
+     *          j-th column of A is stored in the j-th column of the array AB
+     *          as follows:
+     *          if UPLO = 'U', AB(KD+1+i-j,j) = A(i,j) for max(1,j-KD)<=i<=j;
+     *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(N,j+KD).
+     *          See below for further details.
+     *
+     *          On exit, if INFO = 0, the triangular factor U or L from the
+     *          Cholesky factorization A = U**T*U or A = L*L**T of the band
+     *          matrix A, in the same storage format as A.
+     *
+     *  LDAB    (input) INTEGER
+     *          The leading dimension of the array AB.  LDAB >= KD+1.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i of A is not
+     *                positive definite, so the factorization could not be
+     *                completed, and the solution has not been computed.
+     *
+     *  Further Details
+     *  ===============
+     *
+     *  The band storage scheme is illustrated by the following example, when
+     *  N = 6, KD = 2, and UPLO = 'U':
+     *
+     *  On entry:                       On exit:
+     *
+     *      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+     *      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+     *     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+     *
+     *  Similarly, if UPLO = 'L' the format of A is as follows:
+     *
+     *  On entry:                       On exit:
+     *
+     *     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+     *     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+     *     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+     *
+     *  Array elements marked * are not used by the routine.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param diagCount
+     * @param rhsCount
+     * @param ab
+     * @param b
+     * @param ldb
+     */
+    public static void dpbsv(Lapack la, TUpLo uplo, int n, int diagCount, int rhsCount, double[] ab, double[] b,
+            int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        int ldab = Math.max(1, diagCount + 1);
+        la.dpbsv(uplo.val(), n, diagCount, rhsCount, ab, ldab, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "A leading minor of A is not positive-definite. Solution could not be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPBTRF computes the Cholesky factorization of a real symmetric
+     *  positive definite band matrix A.
+     *
+     *  The factorization has the form
+     *     A = U**T * U,  if UPLO = 'U', or
+     *     A = L  * L**T,  if UPLO = 'L',
+     *  where U is an upper triangular matrix and L is lower triangular.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  KD      (input) INTEGER
+     *          The number of superdiagonals of the matrix A if UPLO = 'U',
+     *          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+     *
+     *  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+     *          On entry, the upper or lower triangle of the symmetric band
+     *          matrix A, stored in the first KD+1 rows of the array.  The
+     *          j-th column of A is stored in the j-th column of the array AB
+     *          as follows:
+     *          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+     *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+     *
+     *          On exit, if INFO = 0, the triangular factor U or L from the
+     *          Cholesky factorization A = U**T*U or A = L*L**T of the band
+     *          matrix A, in the same storage format as A.
+     *
+     *  LDAB    (input) INTEGER
+     *          The leading dimension of the array AB.  LDAB >= KD+1.
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i is not
+     *                positive definite, and the factorization could not be
+     *                completed.
+     *
+     *  Further Details
+     *  ===============
+     *
+     *  The band storage scheme is illustrated by the following example, when
+     *  N = 6, KD = 2, and UPLO = 'U':
+     *
+     *  On entry:                       On exit:
+     *
+     *      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+     *      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+     *     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+     *
+     *  Similarly, if UPLO = 'L' the format of A is as follows:
+     *
+     *  On entry:                       On exit:
+     *
+     *     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+     *     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+     *     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+     *
+     *  Array elements marked * are not used by the routine.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param diagCount
+     * @param ab
+     */
+    public static void dpbtrf(Lapack la, TUpLo uplo, int n, int diagCount, double[] ab) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        int ldab = Math.max(1, diagCount + 1);
+        la.dpbtrf(uplo.val(), n, diagCount, ab, ldab, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("The leading minor of order " + info.val
+                        + " is not positive-definite. The factorization could not be completed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPBTRS solves a system of linear equations A*X = B with a symmetric
+     *  positive definite band matrix A using the Cholesky factorization
+     *  A = U**T*U or A = L*L**T computed by DPBTRF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangular factor stored in AB;
+     *          = 'L':  Lower triangular factor stored in AB.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  KD      (input) INTEGER
+     *          The number of superdiagonals of the matrix A if UPLO = 'U',
+     *          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+     *          The triangular factor U or L from the Cholesky factorization
+     *          A = U**T*U or A = L*L**T of the band matrix A, stored in the
+     *          first KD+1 rows of the array.  The j-th column of U or L is
+     *          stored in the j-th column of the array AB as follows:
+     *          if UPLO ='U', AB(kd+1+i-j,j) = U(i,j) for max(1,j-kd)<=i<=j;
+     *          if UPLO ='L', AB(1+i-j,j)    = L(i,j) for j<=i<=min(n,j+kd).
+     *
+     *  LDAB    (input) INTEGER
+     *          The leading dimension of the array AB.  LDAB >= KD+1.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param diagCount
+     * @param rhsCount
+     * @param ab
+     * @param b
+     * @param ldb
+     */
+    public static void dpbtrs(Lapack la, TUpLo uplo, int n, int diagCount, int rhsCount, double[] ab, double[] b,
+            int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        int ldab = Math.max(1, diagCount + 1);
+        la.dpbtrs(uplo.val(), n, diagCount, rhsCount, ab, ldab, b, ldb, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPOCON estimates the reciprocal of the condition number (in the
+     *  1-norm) of a real symmetric positive definite matrix using the
+     *  Cholesky factorization A = U**T*U or A = L*L**T computed by DPOTRF.
+     *
+     *  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+     *  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  A       (input) DOUBLE PRECISION array, dimension (LDA,N)
+     *          The triangular factor U or L from the Cholesky factorization
+     *          A = U**T*U or A = L*L**T, as computed by DPOTRF.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  ANORM   (input) DOUBLE PRECISION
+     *          The 1-norm (or infinity-norm) of the symmetric matrix A.
+     *
+     *  RCOND   (output) DOUBLE PRECISION
+     *          The reciprocal of the condition number of the matrix A,
+     *          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+     *          estimate of the 1-norm of inv(A) computed in this routine.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param a
+     * @param lda
+     * @param normA
+     */
+    public static double dpocon(Lapack la, TUpLo uplo, int n, double[] a, int lda, double normA) {
+        intW info = new intW(0);
+        doubleW rcond = new doubleW(0.0);
+        // TODO: remaining params sanity check
+        double[] work = new double[3 * n];
+        int[] iwork = new int[n];
+        la.dpocon(uplo.val(), n, a, lda, normA, rcond, work, iwork, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        return rcond.val;
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPOSV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N symmetric positive definite matrix and X and B
+     *  are N-by-NRHS matrices.
+     *
+     *  The Cholesky decomposition is used to factor A as
+     *     A = U**T* U,  if UPLO = 'U', or
+     *     A = L * L**T,  if UPLO = 'L',
+     *  where U is an upper triangular matrix and L is a lower triangular
+     *  matrix.  The factored form of A is then used to solve the system of
+     *  equations A * X = B.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+     *          N-by-N upper triangular part of A contains the upper
+     *          triangular part of the matrix A, and the strictly lower
+     *          triangular part of A is not referenced.  If UPLO = 'L', the
+     *          leading N-by-N lower triangular part of A contains the lower
+     *          triangular part of the matrix A, and the strictly upper
+     *          triangular part of A is not referenced.
+     *
+     *          On exit, if INFO = 0, the factor U or L from the Cholesky
+     *          factorization A = U**T*U or A = L*L**T.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i of A is not
+     *                positive definite, so the factorization could not be
+     *                completed, and the solution has not been computed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param b
+     * @param ldb
+     */
+    public static void dposv(Lapack la, TUpLo uplo, int n, int rhsCount, double[] a, int lda, double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dposv(uplo.val(), n, rhsCount, a, lda, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("The leading minor of order " + info.val
+                        + " of A is not positive-definite. The factorization could not be completed "
+                        + " and the solution has not been computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPOTRF computes the Cholesky factorization of a real symmetric
+     *  positive definite matrix A.
+     *
+     *  The factorization has the form
+     *     A = U**T * U,  if UPLO = 'U', or
+     *     A = L  * L**T,  if UPLO = 'L',
+     *  where U is an upper triangular matrix and L is lower triangular.
+     *
+     *  This is the block version of the algorithm, calling Level 3 BLAS.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+     *          N-by-N upper triangular part of A contains the upper
+     *          triangular part of the matrix A, and the strictly lower
+     *          triangular part of A is not referenced.  If UPLO = 'L', the
+     *          leading N-by-N lower triangular part of A contains the lower
+     *          triangular part of the matrix A, and the strictly upper
+     *          triangular part of A is not referenced.
+     *
+     *          On exit, if INFO = 0, the factor U or L from the Cholesky
+     *          factorization A = U**T*U or A = L*L**T.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i is not
+     *                positive definite, and the factorization could not be
+     *                completed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param a
+     * @param lda
+     */
+    public static void dpotrf(Lapack la, TUpLo uplo, int n, double[] a, int lda) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dpotrf(uplo.val(), n, a, lda, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("The leading minor of order " + info.val
+                        + " is not positive-definite. The factorization could not be completed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPOTRS solves a system of linear equations A*X = B with a symmetric
+     *  positive definite matrix A using the Cholesky factorization
+     *  A = U**T*U or A = L*L**T computed by DPOTRF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  A       (input) DOUBLE PRECISION array, dimension (LDA,N)
+     *          The triangular factor U or L from the Cholesky factorization
+     *          A = U**T*U or A = L*L**T, as computed by DPOTRF.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param b
+     * @param ldb
+     */
+    public static void dpotrs(Lapack la, TUpLo uplo, int n, int rhsCount, double[] a, int lda, double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dpotrs(uplo.val(), n, rhsCount, a, lda, b, ldb, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPPCON estimates the reciprocal of the condition number (in the
+     *  1-norm) of a real symmetric positive definite packed matrix using
+     *  the Cholesky factorization A = U**T*U or A = L*L**T computed by
+     *  DPPTRF.
+     *
+     *  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+     *  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          The triangular factor U or L from the Cholesky factorization
+     *          A = U**T*U or A = L*L**T, packed columnwise in a linear
+     *          array.  The j-th column of U or L is stored in the array AP
+     *          as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = U(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = L(i,j) for j<=i<=n.
+     *
+     *  ANORM   (input) DOUBLE PRECISION
+     *          The 1-norm (or infinity-norm) of the symmetric matrix A.
+     *
+     *  RCOND   (output) DOUBLE PRECISION
+     *          The reciprocal of the condition number of the matrix A,
+     *          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+     *          estimate of the 1-norm of inv(A) computed in this routine.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param ap
+     * @param normA
+     */
+    public static double dppcon(Lapack la, TUpLo uplo, int n, double[] ap, double normA) {
+        intW info = new intW(0);
+        doubleW rcond = new doubleW(0.0);
+        // TODO: remaining params sanity check
+        double[] work = new double[3 * n];
+        int[] iwork = new int[n];
+        la.dppcon(uplo.val(), n, ap, normA, rcond, work, iwork, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        return rcond.val;
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPPSV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N symmetric positive definite matrix stored in
+     *  packed format and X and B are N-by-NRHS matrices.
+     *
+     *  The Cholesky decomposition is used to factor A as
+     *     A = U**T* U,  if UPLO = 'U', or
+     *     A = L * L**T,  if UPLO = 'L',
+     *  where U is an upper triangular matrix and L is a lower triangular
+     *  matrix.  The factored form of A is then used to solve the system of
+     *  equations A * X = B.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          On entry, the upper or lower triangle of the symmetric matrix
+     *          A, packed columnwise in a linear array.  The j-th column of A
+     *          is stored in the array AP as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+     *          See below for further details.
+     *
+     *          On exit, if INFO = 0, the factor U or L from the Cholesky
+     *          factorization A = U**T*U or A = L*L**T, in the same storage
+     *          format as A.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i of A is not
+     *                positive definite, so the factorization could not be
+     *                completed, and the solution has not been computed.
+     *
+     *  Further Details
+     *  ===============
+     *
+     *  The packed storage scheme is illustrated by the following example
+     *  when N = 4, UPLO = 'U':
+     *
+     *  Two-dimensional storage of the symmetric matrix A:
+     *
+     *     a11 a12 a13 a14
+     *         a22 a23 a24
+     *             a33 a34     (aij = conjg(aji))
+     *                 a44
+     *
+     *  Packed storage of the upper triangle of A:
+     *
+     *  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param rhsCount
+     * @param ap
+     * @param b
+     * @param ldb
+     */
+    public static void dppsv(Lapack la, TUpLo uplo, int n, int rhsCount, double[] ap, double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dppsv(uplo.val(), n, rhsCount, ap, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("The leading minor of order " + info.val
+                        + " of A is not positive-definite. The factorization could not be completed "
+                        + " and the solution has not been computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPPTRF computes the Cholesky factorization of a real symmetric
+     *  positive definite matrix A stored in packed format.
+     *
+     *  The factorization has the form
+     *     A = U**T * U,  if UPLO = 'U', or
+     *     A = L  * L**T,  if UPLO = 'L',
+     *  where U is an upper triangular matrix and L is lower triangular.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          On entry, the upper or lower triangle of the symmetric matrix
+     *          A, packed columnwise in a linear array.  The j-th column of A
+     *          is stored in the array AP as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+     *          See below for further details.
+     *
+     *          On exit, if INFO = 0, the triangular factor U or L from the
+     *          Cholesky factorization A = U**T*U or A = L*L**T, in the same
+     *          storage format as A.
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i is not
+     *                positive definite, and the factorization could not be
+     *                completed.
+     *
+     *  Further Details
+     *  ======= =======
+     *
+     *  The packed storage scheme is illustrated by the following example
+     *  when N = 4, UPLO = 'U':
+     *
+     *  Two-dimensional storage of the symmetric matrix A:
+     *
+     *     a11 a12 a13 a14
+     *         a22 a23 a24
+     *             a33 a34     (aij = aji)
+     *                 a44
+     *
+     *  Packed storage of the upper triangle of A:
+     *
+     *  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param ap
+     */
+    public static void dpptrf(Lapack la, TUpLo uplo, int n, double[] ap) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dpptrf(uplo.val(), n, ap, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("The leading minor of order " + info.val
+                        + " is not positive-definite. The factorization could not be completed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPPTRS solves a system of linear equations A*X = B with a symmetric
+     *  positive definite matrix A in packed storage using the Cholesky
+     *  factorization A = U**T*U or A = L*L**T computed by DPPTRF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          The triangular factor U or L from the Cholesky factorization
+     *          A = U**T*U or A = L*L**T, packed columnwise in a linear
+     *          array.  The j-th column of U or L is stored in the array AP
+     *          as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = U(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = L(i,j) for j<=i<=n.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param rhsCount
+     * @param ap
+     * @param b
+     * @param ldb
+     */
+    public static void dpptrs(Lapack la, TUpLo uplo, int n, int rhsCount, double[] ap, double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dpptrs(uplo.val(), n, rhsCount, ap, b, ldb, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DPTSV computes the solution to a real system of linear equations
+     *  A*X = B, where A is an N-by-N symmetric positive definite tridiagonal
+     *  matrix, and X and B are N-by-NRHS matrices.
+     *
+     *  A is factored as A = L*D*L**T, and the factored form of A is then
+     *  used to solve the system of equations.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  D       (input/output) DOUBLE PRECISION array, dimension (N)
+     *          On entry, the n diagonal elements of the tridiagonal matrix
+     *          A.  On exit, the n diagonal elements of the diagonal matrix
+     *          D from the factorization A = L*D*L**T.
+     *
+     *  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+     *          On entry, the (n-1) subdiagonal elements of the tridiagonal
+     *          matrix A.  On exit, the (n-1) subdiagonal elements of the
+     *          unit bidiagonal factor L from the L*D*L**T factorization of
+     *          A.  (E can also be regarded as the superdiagonal of the unit
+     *          bidiagonal factor U from the U**T*D*U factorization of A.)
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the leading minor of order i is not
+     *                positive definite, and the solution has not been
+     *                computed.  The factorization has not been completed
+     *                unless i = N.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param n
+     * @param rhsCount
+     * @param d
+     * @param e
+     * @param b
+     * @param ldb
+     */
+    public static void dptsv(Lapack la, int n, int rhsCount, double[] d, double[] e, double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dptsv(n, rhsCount, d, e, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("The leading minor of order " + info.val
+                        + " is not positive-definite. Solution could not be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSBEVD computes all the eigenvalues and, optionally, eigenvectors of
+     *  a real symmetric band matrix A. If eigenvectors are desired, it uses
+     *  a divide and conquer algorithm.
+     *
+     *  The divide and conquer algorithm makes very mild assumptions about
+     *  floating point arithmetic. It will work on machines with a guard
+     *  digit in add/subtract, or on those binary machines without guard
+     *  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+     *  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+     *  without guard digits, but we know of none.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  JOBZ    (input) CHARACTER*1
+     *          = 'N':  Compute eigenvalues only;
+     *          = 'V':  Compute eigenvalues and eigenvectors.
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  KD      (input) INTEGER
+     *          The number of superdiagonals of the matrix A if UPLO = 'U',
+     *          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+     *
+     *  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+     *          On entry, the upper or lower triangle of the symmetric band
+     *          matrix A, stored in the first KD+1 rows of the array.  The
+     *          j-th column of A is stored in the j-th column of the array AB
+     *          as follows:
+     *          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+     *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+     *
+     *          On exit, AB is overwritten by values generated during the
+     *          reduction to tridiagonal form.  If UPLO = 'U', the first
+     *          superdiagonal and the diagonal of the tridiagonal matrix T
+     *          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+     *          the diagonal and first subdiagonal of T are returned in the
+     *          first two rows of AB.
+     *
+     *  LDAB    (input) INTEGER
+     *          The leading dimension of the array AB.  LDAB >= KD + 1.
+     *
+     *  W       (output) DOUBLE PRECISION array, dimension (N)
+     *          If INFO = 0, the eigenvalues in ascending order.
+     *
+     *  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+     *          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+     *          eigenvectors of the matrix A, with the i-th column of Z
+     *          holding the eigenvector associated with W(i).
+     *          If JOBZ = 'N', then Z is not referenced.
+     *
+     *  LDZ     (input) INTEGER
+     *          The leading dimension of the array Z.  LDZ >= 1, and if
+     *          JOBZ = 'V', LDZ >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the algorithm failed to converge; i
+     *                off-diagonal elements of an intermediate tridiagonal
+     *                form did not converge to zero.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param jobz
+     * @param uplo
+     * @param n
+     * @param diagCount
+     * @param ab
+     * @param w
+     * @param z
+     * @param ldz
+     */
+    public static void dsbevd(Lapack la, TEigJob jobz, TUpLo uplo, int n, int diagCount, double[] ab, double[] w,
+            double[] z, int ldz) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        int[] iwork = new int[1];
+        int ldab = Math.max(1, diagCount + 1);
+        la.dsbevd(jobz.val(), uplo.val(), n, diagCount, new double[0], ldab, new double[0], new double[0], ldz, work,
+                -1, iwork, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        iwork = new int[iwork[0]];
+        la.dsbevd(jobz.val(), uplo.val(), n, diagCount, ab, ldab, w, z, ldz, work, work.length, iwork, iwork.length,
+                info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new NotConvergedException("Failed to converge");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSPEVD computes all the eigenvalues and, optionally, eigenvectors
+     *  of a real symmetric matrix A in packed storage. If eigenvectors are
+     *  desired, it uses a divide and conquer algorithm.
+     *
+     *  The divide and conquer algorithm makes very mild assumptions about
+     *  floating point arithmetic. It will work on machines with a guard
+     *  digit in add/subtract, or on those binary machines without guard
+     *  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+     *  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+     *  without guard digits, but we know of none.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  JOBZ    (input) CHARACTER*1
+     *          = 'N':  Compute eigenvalues only;
+     *          = 'V':  Compute eigenvalues and eigenvectors.
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          On entry, the upper or lower triangle of the symmetric matrix
+     *          A, packed columnwise in a linear array.  The j-th column of A
+     *          is stored in the array AP as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+     *
+     *          On exit, AP is overwritten by values generated during the
+     *          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+     *          and first superdiagonal of the tridiagonal matrix T overwrite
+     *          the corresponding elements of A, and if UPLO = 'L', the
+     *          diagonal and first subdiagonal of T overwrite the
+     *          corresponding elements of A.
+     *
+     *  W       (output) DOUBLE PRECISION array, dimension (N)
+     *          If INFO = 0, the eigenvalues in ascending order.
+     *
+     *  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+     *          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+     *          eigenvectors of the matrix A, with the i-th column of Z
+     *          holding the eigenvector associated with W(i).
+     *          If JOBZ = 'N', then Z is not referenced.
+     *
+     *  LDZ     (input) INTEGER
+     *          The leading dimension of the array Z.  LDZ >= 1, and if
+     *          JOBZ = 'V', LDZ >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value.
+     *          > 0:  if INFO = i, the algorithm failed to converge; i
+     *                off-diagonal elements of an intermediate tridiagonal
+     *                form did not converge to zero.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param jobz
+     * @param uplo
+     * @param n
+     * @param ap
+     * @param w
+     * @param z
+     * @param ldz
+     */
+    public static void dspevd(Lapack la, TEigJob jobz, TUpLo uplo, int n, double[] ap, double[] w, double[] z,
+            int ldz) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        int[] iwork = new int[1];
+        la.dspevd(jobz.val(), uplo.val(), n, new double[0], new double[0], new double[0], ldz, work, -1, iwork, -1,
+                info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        iwork = new int[iwork[0]];
+        la.dspevd(jobz.val(), uplo.val(), n, ap, w, z, ldz, work, work.length, iwork, iwork.length, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new NotConvergedException("Failed to converge");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSPSV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N symmetric matrix stored in packed format and X
+     *  and B are N-by-NRHS matrices.
+     *
+     *  The diagonal pivoting method is used to factor A as
+     *     A = U * D * U**T,  if UPLO = 'U', or
+     *     A = L * D * L**T,  if UPLO = 'L',
+     *  where U (or L) is a product of permutation and unit upper (lower)
+     *  triangular matrices, D is symmetric and block diagonal with 1-by-1
+     *  and 2-by-2 diagonal blocks.  The factored form of A is then used to
+     *  solve the system of equations A * X = B.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          On entry, the upper or lower triangle of the symmetric matrix
+     *          A, packed columnwise in a linear array.  The j-th column of A
+     *          is stored in the array AP as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+     *          See below for further details.
+     *
+     *          On exit, the block diagonal matrix D and the multipliers used
+     *          to obtain the factor U or L from the factorization
+     *          A = U*D*U**T or A = L*D*L**T as computed by DSPTRF, stored as
+     *          a packed triangular matrix in the same storage format as A.
+     *
+     *  IPIV    (output) INTEGER array, dimension (N)
+     *          Details of the interchanges and the block structure of D, as
+     *          determined by DSPTRF.  If IPIV(k) > 0, then rows and columns
+     *          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+     *          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+     *          then rows and columns k-1 and -IPIV(k) were interchanged and
+     *          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+     *          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+     *          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+     *          diagonal block.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, D(i,i) is exactly zero.  The factorization
+     *                has been completed, but the block diagonal matrix D is
+     *                exactly singular, so the solution could not be
+     *                computed.
+     *
+     *  Further Details
+     *  ===============
+     *
+     *  The packed storage scheme is illustrated by the following example
+     *  when N = 4, UPLO = 'U':
+     *
+     *  Two-dimensional storage of the symmetric matrix A:
+     *
+     *     a11 a12 a13 a14
+     *         a22 a23 a24
+     *             a33 a34     (aij = aji)
+     *                 a44
+     *
+     *  Packed storage of the upper triangle of A:
+     *
+     *  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param rhsCount
+     * @param ap
+     * @param indices
+     * @param b
+     * @param ldb
+     */
+    public static void dspsv(Lapack la, TUpLo uplo, int n, int rhsCount, double[] ap, int[] indices, double[] b,
+            int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dspsv(uplo.val(), n, rhsCount, ap, indices, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "The block diagonal matrix D is exactly singular. Solution could not be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSTEVR computes selected eigenvalues and, optionally, eigenvectors
+     *  of a real symmetric tridiagonal matrix T.  Eigenvalues and
+     *  eigenvectors can be selected by specifying either a range of values
+     *  or a range of indices for the desired eigenvalues.
+     *
+     *  Whenever possible, DSTEVR calls DSTEMR to compute the
+     *  eigenspectrum using Relatively Robust Representations.  DSTEMR
+     *  computes eigenvalues by the dqds algorithm, while orthogonal
+     *  eigenvectors are computed from various "good" L D L^T representations
+     *  (also known as Relatively Robust Representations). Gram-Schmidt
+     *  orthogonalization is avoided as far as possible. More specifically,
+     *  the various steps of the algorithm are as follows. For the i-th
+     *  unreduced block of T,
+     *     (a) Compute T - sigma_i = L_i D_i L_i^T, such that L_i D_i L_i^T
+     *          is a relatively robust representation,
+     *     (b) Compute the eigenvalues, lambda_j, of L_i D_i L_i^T to high
+     *         relative accuracy by the dqds algorithm,
+     *     (c) If there is a cluster of close eigenvalues, "choose" sigma_i
+     *         close to the cluster, and go to step (a),
+     *     (d) Given the approximate eigenvalue lambda_j of L_i D_i L_i^T,
+     *         compute the corresponding eigenvector by forming a
+     *         rank-revealing twisted factorization.
+     *  The desired accuracy of the output can be specified by the input
+     *  parameter ABSTOL.
+     *
+     *  For more details, see "A new O(n^2) algorithm for the symmetric
+     *  tridiagonal eigenvalue/eigenvector problem", by Inderjit Dhillon,
+     *  Computer Science Division Technical Report No. UCB//CSD-97-971,
+     *  UC Berkeley, May 1997.
+     *
+     *
+     *  Note 1 : DSTEVR calls DSTEMR when the full spectrum is requested
+     *  on machines which conform to the ieee-754 floating point standard.
+     *  DSTEVR calls DSTEBZ and DSTEIN on non-ieee machines and
+     *  when partial spectrum requests are made.
+     *
+     *  Normal execution of DSTEMR may create NaNs and infinities and
+     *  hence may abort due to a floating point exception in environments
+     *  which do not handle NaNs and infinities in the ieee standard default
+     *  manner.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  JOBZ    (input) CHARACTER*1
+     *          = 'N':  Compute eigenvalues only;
+     *          = 'V':  Compute eigenvalues and eigenvectors.
+     *
+     *  RANGE   (input) CHARACTER*1
+     *          = 'A': all eigenvalues will be found.
+     *          = 'V': all eigenvalues in the half-open interval (VL,VU]
+     *                 will be found.
+     *          = 'I': the IL-th through IU-th eigenvalues will be found.
+     ********** For RANGE = 'V' or 'I' and IU - IL < N - 1, DSTEBZ and
+     ********** DSTEIN are called
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix.  N >= 0.
+     *
+     *  D       (input/output) DOUBLE PRECISION array, dimension (N)
+     *          On entry, the n diagonal elements of the tridiagonal matrix
+     *          A.
+     *          On exit, D may be multiplied by a constant factor chosen
+     *          to avoid over/underflow in computing the eigenvalues.
+     *
+     *  E       (input/output) DOUBLE PRECISION array, dimension (max(1,N-1))
+     *          On entry, the (n-1) subdiagonal elements of the tridiagonal
+     *          matrix A in elements 1 to N-1 of E.
+     *          On exit, E may be multiplied by a constant factor chosen
+     *          to avoid over/underflow in computing the eigenvalues.
+     *
+     *  VL      (input) DOUBLE PRECISION
+     *  VU      (input) DOUBLE PRECISION
+     *          If RANGE='V', the lower and upper bounds of the interval to
+     *          be searched for eigenvalues. VL < VU.
+     *          Not referenced if RANGE = 'A' or 'I'.
+     *
+     *  IL      (input) INTEGER
+     *  IU      (input) INTEGER
+     *          If RANGE='I', the indices (in ascending order) of the
+     *          smallest and largest eigenvalues to be returned.
+     *          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+     *          Not referenced if RANGE = 'A' or 'V'.
+     *
+     *  ABSTOL  (input) DOUBLE PRECISION
+     *          The absolute error tolerance for the eigenvalues.
+     *          An approximate eigenvalue is accepted as converged
+     *          when it is determined to lie in an interval [a,b]
+     *          of width less than or equal to
+     *
+     *                  ABSTOL + EPS *   max( |a|,|b| ) ,
+     *
+     *          where EPS is the machine precision.  If ABSTOL is less than
+     *          or equal to zero, then  EPS*|T|  will be used in its place,
+     *          where |T| is the 1-norm of the tridiagonal matrix obtained
+     *          by reducing A to tridiagonal form.
+     *
+     *          See "Computing Small Singular Values of Bidiagonal Matrices
+     *          with Guaranteed High Relative Accuracy," by Demmel and
+     *          Kahan, LAPACK Working Note #3.
+     *
+     *          If high relative accuracy is important, set ABSTOL to
+     *          DLAMCH( 'Safe minimum' ).  Doing so will guarantee that
+     *          eigenvalues are computed to high relative accuracy when
+     *          possible in future releases.  The current code does not
+     *          make any guarantees about high relative accuracy, but
+     *          future releases will. See J. Barlow and J. Demmel,
+     *          "Computing Accurate Eigensystems of Scaled Diagonally
+     *          Dominant Matrices", LAPACK Working Note #7, for a discussion
+     *          of which matrices define their eigenvalues to high relative
+     *          accuracy.
+     *
+     *  M       (output) INTEGER
+     *          The total number of eigenvalues found.  0 <= M <= N.
+     *          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+     *
+     *  W       (output) DOUBLE PRECISION array, dimension (N)
+     *          The first M elements contain the selected eigenvalues in
+     *          ascending order.
+     *
+     *  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M) )
+     *          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+     *          contain the orthonormal eigenvectors of the matrix A
+     *          corresponding to the selected eigenvalues, with the i-th
+     *          column of Z holding the eigenvector associated with W(i).
+     *          Note: the user must ensure that at least max(1,M) columns are
+     *          supplied in the array Z; if RANGE = 'V', the exact value of M
+     *          is not known in advance and an upper bound must be used.
+     *
+     *  LDZ     (input) INTEGER
+     *          The leading dimension of the array Z.  LDZ >= 1, and if
+     *          JOBZ = 'V', LDZ >= max(1,N).
+     *
+     *  ISUPPZ  (output) INTEGER array, dimension ( 2*max(1,M) )
+     *          The support of the eigenvectors in Z, i.e., the indices
+     *          indicating the nonzero elements in Z. The i-th eigenvector
+     *          is nonzero only in elements ISUPPZ( 2*i-1 ) through
+     *          ISUPPZ( 2*i ).
+     ********** Implemented only for RANGE = 'A' or 'I' and IU - IL = N - 1
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  Internal error
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param jobz
+     * @param range
+     * @param n
+     * @param d
+     * @param e
+     * @param vLower
+     * @param vUpper
+     * @param iLower
+     * @param iUpper
+     * @param abstol
+     * @param w
+     * @param z
+     * @param ldz
+     * @param supportZ
+     */
+    public static int dstevr(Lapack la, TEigJob jobz, TRange range, int n, double[] d, double[] e, double vLower,
+            double vUpper, int iLower, int iUpper, double abstol, double[] w, double[] z, int ldz, int[] supportZ) {
+        intW info = new intW(0);
+        intW m = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        int[] iwork = new int[1];
+        la.dstevr(jobz.val(), range.val(), n, new double[0], new double[0], vLower, vUpper, iLower, iUpper, abstol, m,
+                new double[0], new double[0], ldz, new int[0], work, -1, iwork, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        iwork = new int[iwork[0]];
+        la.dstevr(jobz.val(), range.val(), n, d, e, vLower, vUpper, iLower, iUpper, abstol, m, w, z, ldz, supportZ,
+                work, work.length, iwork, iwork.length, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new IllegalStateException("Internal error");
+            }
+        }
+        return m.val;
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSYEVR computes selected eigenvalues and, optionally, eigenvectors
+     *  of a real symmetric matrix A.  Eigenvalues and eigenvectors can be
+     *  selected by specifying either a range of values or a range of
+     *  indices for the desired eigenvalues.
+     *
+     *  DSYEVR first reduces the matrix A to tridiagonal form T with a call
+     *  to DSYTRD.  Then, whenever possible, DSYEVR calls DSTEMR to compute
+     *  the eigenspectrum using Relatively Robust Representations.  DSTEMR
+     *  computes eigenvalues by the dqds algorithm, while orthogonal
+     *  eigenvectors are computed from various "good" L D L^T representations
+     *  (also known as Relatively Robust Representations). Gram-Schmidt
+     *  orthogonalization is avoided as far as possible. More specifically,
+     *  the various steps of the algorithm are as follows.
+     *
+     *  For each unreduced block (submatrix) of T,
+     *     (a) Compute T - sigma I  = L D L^T, so that L and D
+     *         define all the wanted eigenvalues to high relative accuracy.
+     *         This means that small relative changes in the entries of D and
+     *         cause only small relative changes in the eigenvalues and
+     *         eigenvectors. The standard (unfactored) representation of the
+     *         tridiagonal matrix T does not have this property in general.
+     *     (b) Compute the eigenvalues to suitable accuracy.
+     *         If the eigenvectors are desired, the algorithm attains full
+     *         accuracy of the computed eigenvalues only right before
+     *         the corresponding vectors have to be computed, see steps c) an
+     *     (c) For each cluster of close eigenvalues, select a new
+     *         shift close to the cluster, find a new factorization, and refi
+     *         the shifted eigenvalues to suitable accuracy.
+     *     (d) For each eigenvalue with a large enough relative separation co
+     *         the corresponding eigenvector by forming a rank revealing twis
+     *         factorization. Go back to (c) for any clusters that remain.
+     *
+     *  The desired accuracy of the output can be specified by the input
+     *  parameter ABSTOL.
+     *
+     *  Note 1 : DSYEVR calls DSTEMR when the full spectrum is requested
+     *  on machines which conform to the ieee-754 floating point standard.
+     *  DSYEVR calls DSTEBZ and SSTEIN on non-ieee machines and
+     *  when partial spectrum requests are made.
+     *
+     *  Normal execution of DSTEMR may create NaNs and infinities and
+     *  hence may abort due to a floating point exception in environments
+     *  which do not handle NaNs and infinities in the ieee standard default
+     *  manner.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  JOBZ    (input) CHARACTER*1
+     *          = 'N':  Compute eigenvalues only;
+     *          = 'V':  Compute eigenvalues and eigenvectors.
+     *
+     *  RANGE   (input) CHARACTER*1
+     *          = 'A': all eigenvalues will be found.
+     *          = 'V': all eigenvalues in the half-open interval (VL,VU]
+     *                 will be found.
+     *          = 'I': the IL-th through IU-th eigenvalues will be found.
+     ********** For RANGE = 'V' or 'I' and IU - IL < N - 1, DSTEBZ and
+     ********** DSTEIN are called
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA, N)
+     *          On entry, the symmetric matrix A.  If UPLO = 'U', the
+     *          leading N-by-N upper triangular part of A contains the
+     *          upper triangular part of the matrix A.  If UPLO = 'L',
+     *          the leading N-by-N lower triangular part of A contains
+     *          the lower triangular part of the matrix A.
+     *          On exit, the lower triangle (if UPLO='L') or the upper
+     *          triangle (if UPLO='U') of A, including the diagonal, is
+     *          destroyed.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  VL      (input) DOUBLE PRECISION
+     *  VU      (input) DOUBLE PRECISION
+     *          If RANGE='V', the lower and upper bounds of the interval to
+     *          be searched for eigenvalues. VL < VU.
+     *          Not referenced if RANGE = 'A' or 'I'.
+     *
+     *  IL      (input) INTEGER
+     *  IU      (input) INTEGER
+     *          If RANGE='I', the indices (in ascending order) of the
+     *          smallest and largest eigenvalues to be returned.
+     *          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+     *          Not referenced if RANGE = 'A' or 'V'.
+     *
+     *  ABSTOL  (input) DOUBLE PRECISION
+     *          The absolute error tolerance for the eigenvalues.
+     *          An approximate eigenvalue is accepted as converged
+     *          when it is determined to lie in an interval [a,b]
+     *          of width less than or equal to
+     *
+     *                  ABSTOL + EPS *   max( |a|,|b| ) ,
+     *
+     *          where EPS is the machine precision.  If ABSTOL is less than
+     *          or equal to zero, then  EPS*|T|  will be used in its place,
+     *          where |T| is the 1-norm of the tridiagonal matrix obtained
+     *          by reducing A to tridiagonal form.
+     *
+     *          See "Computing Small Singular Values of Bidiagonal Matrices
+     *          with Guaranteed High Relative Accuracy," by Demmel and
+     *          Kahan, LAPACK Working Note #3.
+     *
+     *          If high relative accuracy is important, set ABSTOL to
+     *          DLAMCH( 'Safe minimum' ).  Doing so will guarantee that
+     *          eigenvalues are computed to high relative accuracy when
+     *          possible in future releases.  The current code does not
+     *          make any guarantees about high relative accuracy, but
+     *          future releases will. See J. Barlow and J. Demmel,
+     *          "Computing Accurate Eigensystems of Scaled Diagonally
+     *          Dominant Matrices", LAPACK Working Note #7, for a discussion
+     *          of which matrices define their eigenvalues to high relative
+     *          accuracy.
+     *
+     *  M       (output) INTEGER
+     *          The total number of eigenvalues found.  0 <= M <= N.
+     *          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+     *
+     *  W       (output) DOUBLE PRECISION array, dimension (N)
+     *          The first M elements contain the selected eigenvalues in
+     *          ascending order.
+     *
+     *  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M))
+     *          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+     *          contain the orthonormal eigenvectors of the matrix A
+     *          corresponding to the selected eigenvalues, with the i-th
+     *          column of Z holding the eigenvector associated with W(i).
+     *          If JOBZ = 'N', then Z is not referenced.
+     *          Note: the user must ensure that at least max(1,M) columns are
+     *          supplied in the array Z; if RANGE = 'V', the exact value of M
+     *          is not known in advance and an upper bound must be used.
+     *          Supplying N columns is always safe.
+     *
+     *  LDZ     (input) INTEGER
+     *          The leading dimension of the array Z.  LDZ >= 1, and if
+     *          JOBZ = 'V', LDZ >= max(1,N).
+     *
+     *  ISUPPZ  (output) INTEGER array, dimension ( 2*max(1,M) )
+     *          The support of the eigenvectors in Z, i.e., the indices
+     *          indicating the nonzero elements in Z. The i-th eigenvector
+     *          is nonzero only in elements ISUPPZ( 2*i-1 ) through
+     *          ISUPPZ( 2*i ).
+     ********** Implemented only for RANGE = 'A' or 'I' and IU - IL = N - 1
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  Internal error
+     *
+     * =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param jobz
+     * @param range
+     * @param uplo
+     * @param n
+     * @param a
+     * @param lda
+     * @param vLower
+     * @param vUpper
+     * @param iLower
+     * @param iUpper
+     * @param abstol
+     * @param w
+     * @param z
+     * @param ldz
+     * @param supportZ
+     */
+    public static int dsyevr(Lapack la, TEigJob jobz, TRange range, TUpLo uplo, int n, double[] a, int lda,
+            double vLower, double vUpper, int iLower, int iUpper, double abstol, double[] w, double[] z, int ldz,
+            int[] supportZ) {
+        intW info = new intW(0);
+        intW m = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        int[] iwork = new int[1];
+        la.dsyevr(jobz.val(), range.val(), uplo.val(), n, new double[0], lda, vLower, vUpper, iLower, iUpper, abstol, m,
+                new double[0], new double[0], ldz, new int[0], work, -1, iwork, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        iwork = new int[iwork[0]];
+        la.dsyevr(jobz.val(), range.val(), uplo.val(), n, a, lda, vLower, vUpper, iLower, iUpper, abstol, m, w, z, ldz,
+                supportZ, work, work.length, iwork, iwork.length, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new IllegalStateException("Internal error");
+            }
+        }
+        return m.val;
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSYGVD computes all the eigenvalues, and optionally, the eigenvectors
+     *  of a real generalized symmetric-definite eigenproblem, of the form
+     *  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
+     *  B are assumed to be symmetric and B is also positive definite.
+     *  If eigenvectors are desired, it uses a divide and conquer algorithm.
+     *
+     *  The divide and conquer algorithm makes very mild assumptions about
+     *  floating point arithmetic. It will work on machines with a guard
+     *  digit in add/subtract, or on those binary machines without guard
+     *  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+     *  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+     *  without guard digits, but we know of none.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  ITYPE   (input) INTEGER
+     *          Specifies the problem type to be solved:
+     *          = 1:  A*x = (lambda)*B*x
+     *          = 2:  A*B*x = (lambda)*x
+     *          = 3:  B*A*x = (lambda)*x
+     *
+     *  JOBZ    (input) CHARACTER*1
+     *          = 'N':  Compute eigenvalues only;
+     *          = 'V':  Compute eigenvalues and eigenvectors.
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangles of A and B are stored;
+     *          = 'L':  Lower triangles of A and B are stored.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrices A and B.  N >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA, N)
+     *          On entry, the symmetric matrix A.  If UPLO = 'U', the
+     *          leading N-by-N upper triangular part of A contains the
+     *          upper triangular part of the matrix A.  If UPLO = 'L',
+     *          the leading N-by-N lower triangular part of A contains
+     *          the lower triangular part of the matrix A.
+     *
+     *          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+     *          matrix Z of eigenvectors.  The eigenvectors are normalized
+     *          as follows:
+     *          if ITYPE = 1 or 2, Z**T*B*Z = I;
+     *          if ITYPE = 3, Z**T*inv(B)*Z = I.
+     *          If JOBZ = 'N', then on exit the upper triangle (if UPLO='U')
+     *          or the lower triangle (if UPLO='L') of A, including the
+     *          diagonal, is destroyed.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB, N)
+     *          On entry, the symmetric matrix B.  If UPLO = 'U', the
+     *          leading N-by-N upper triangular part of B contains the
+     *          upper triangular part of the matrix B.  If UPLO = 'L',
+     *          the leading N-by-N lower triangular part of B contains
+     *          the lower triangular part of the matrix B.
+     *
+     *          On exit, if INFO <= N, the part of B containing the matrix is
+     *          overwritten by the triangular factor U or L from the Cholesky
+     *          factorization B = U**T*U or B = L*L**T.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  W       (output) DOUBLE PRECISION array, dimension (N)
+     *          If INFO = 0, the eigenvalues in ascending order.
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  DPOTRF or DSYEVD returned an error code:
+     *             <= N:  if INFO = i and JOBZ = 'N', then the algorithm
+     *                    failed to converge; i off-diagonal elements of an
+     *                    intermediate tridiagonal form did not converge to
+     *                    zero;
+     *                    if INFO = i and JOBZ = 'V', then the algorithm
+     *                    failed to compute an eigenvalue while working on
+     *                    the submatrix lying in rows and columns INFO/(N+1)
+     *                    through mod(INFO,N+1);
+     *             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+     *                    minor of order i of B is not positive definite.
+     *                    The factorization of B could not be completed and
+     *                    no eigenvalues or eigenvectors were computed.
+     *
+     * </code>
+     * </pre>
+     *
+     * @param type
+     * @param jobz
+     * @param uplo
+     * @param n
+     * @param a
+     * @param lda
+     * @param b
+     * @param ldb
+     * @param w
+     */
+    public static void dsygvd(Lapack la, int type, TEigJob jobz, TUpLo uplo, int n, double[] a, int lda, double[] b,
+            int ldb, double[] w) {
+        if (type < 1 || type > 3) {
+            throw new IllegalArgumentException("type : " + type + " must be from closed interval [1..3]");
+        }
+        // TODO: remaining params sanity check
+        intW info = new intW(0);
+        double[] work = new double[1];
+        int[] iwork = new int[1];
+        la.dsygvd(type, jobz.val(), uplo.val(), n, new double[0], lda, new double[0], ldb, new double[0], work, -1,
+                iwork, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        iwork = new int[iwork[0]];
+        la.dsygvd(type, jobz.val(), uplo.val(), n, a, lda, b, ldb, w, work, work.length, iwork, iwork.length, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                if (info.val > n) {
+                    throw new ComputationTruncatedException("The leading minor of order " + info.val
+                            + " of B is not positive-semidifinte. Factorization could not be completed.");
+                } else {
+                    throw new NotConvergedException("Failed to converge");
+                }
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DSYSV computes the solution to a real system of linear equations
+     *     A * X = B,
+     *  where A is an N-by-N symmetric matrix and X and B are N-by-NRHS
+     *  matrices.
+     *
+     *  The diagonal pivoting method is used to factor A as
+     *     A = U * D * U**T,  if UPLO = 'U', or
+     *     A = L * D * L**T,  if UPLO = 'L',
+     *  where U (or L) is a product of permutation and unit upper (lower)
+     *  triangular matrices, and D is symmetric and block diagonal with
+     *  1-by-1 and 2-by-2 diagonal blocks.  The factored form of A is then
+     *  used to solve the system of equations A * X = B.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  Upper triangle of A is stored;
+     *          = 'L':  Lower triangle of A is stored.
+     *
+     *  N       (input) INTEGER
+     *          The number of linear equations, i.e., the order of the
+     *          matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+     *          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+     *          N-by-N upper triangular part of A contains the upper
+     *          triangular part of the matrix A, and the strictly lower
+     *          triangular part of A is not referenced.  If UPLO = 'L', the
+     *          leading N-by-N lower triangular part of A contains the lower
+     *          triangular part of the matrix A, and the strictly upper
+     *          triangular part of A is not referenced.
+     *
+     *          On exit, if INFO = 0, the block diagonal matrix D and the
+     *          multipliers used to obtain the factor U or L from the
+     *          factorization A = U*D*U**T or A = L*D*L**T as computed by
+     *          DSYTRF.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  IPIV    (output) INTEGER array, dimension (N)
+     *          Details of the interchanges and the block structure of D, as
+     *          determined by DSYTRF.  If IPIV(k) > 0, then rows and columns
+     *          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+     *          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+     *          then rows and columns k-1 and -IPIV(k) were interchanged and
+     *          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+     *          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+     *          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+     *          diagonal block.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the N-by-NRHS right hand side matrix B.
+     *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0: successful exit
+     *          < 0: if INFO = -i, the i-th argument had an illegal value
+     *          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
+     *               has been completed, but the block diagonal matrix D is
+     *               exactly singular, so the solution could not be computed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param indices
+     * @param b
+     * @param ldb
+     */
+    public static void dsysv(Lapack la, TUpLo uplo, int n, int rhsCount, double[] a, int lda, int[] indices, double[] b,
+            int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        double[] work = new double[1];
+        la.dsysv(uplo.val(), n, rhsCount, new double[0], lda, new int[0], new double[0], ldb, work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new double[(int) work[0]];
+        la.dsysv(uplo.val(), n, rhsCount, a, lda, indices, b, ldb, work, work.length, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "The block-diagonal matrix D is exactly singular. The solution couldn't be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DTBTRS solves a triangular system of the form
+     *
+     *     A * X = B  or  A**T * X = B,
+     *
+     *  where A is a triangular band matrix of order N, and B is an
+     *  N-by NRHS matrix.  A check is made to verify that A is nonsingular.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  A is upper triangular;
+     *          = 'L':  A is lower triangular.
+     *
+     *  TRANS   (input) CHARACTER*1
+     *          Specifies the form the system of equations:
+     *          = 'N':  A * X = B  (No transpose)
+     *          = 'T':  A**T * X = B  (Transpose)
+     *          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+     *
+     *  DIAG    (input) CHARACTER*1
+     *          = 'N':  A is non-unit triangular;
+     *          = 'U':  A is unit triangular.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  KD      (input) INTEGER
+     *          The number of superdiagonals or subdiagonals of the
+     *          triangular band matrix A.  KD >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+     *          The upper or lower triangular band matrix A, stored in the
+     *          first kd+1 rows of AB.  The j-th column of A is stored
+     *          in the j-th column of the array AB as follows:
+     *          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+     *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+     *          If DIAG = 'U', the diagonal elements of A are not referenced
+     *          and are assumed to be 1.
+     *
+     *  LDAB    (input) INTEGER
+     *          The leading dimension of the array AB.  LDAB >= KD+1.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, if INFO = 0, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the i-th diagonal element of A is zero,
+     *                indicating that the matrix is singular and the
+     *                solutions X have not been computed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param trans
+     * @param diag
+     * @param n
+     * @param diagCount
+     * @param rhsCount
+     * @param ab
+     * @param b
+     * @param ldb
+     */
+    public static void dtbtrs(Lapack la, TUpLo uplo, TTrans trans, TDiag diag, int n, int diagCount, int rhsCount,
+            double[] ab, double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        int ldab = Math.max(1, diagCount + 1);
+        la.dtbtrs(uplo.val(), trans.val(), diag.val(), n, diagCount, rhsCount, ab, ldab, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Matrix A is singular. The solution couldn't be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DTPTRS solves a triangular system of the form
+     *
+     *     A * X = B  or  A**T * X = B,
+     *
+     *  where A is a triangular matrix of order N stored in packed format,
+     *  and B is an N-by-NRHS matrix.  A check is made to verify that A is
+     *  nonsingular.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  A is upper triangular;
+     *          = 'L':  A is lower triangular.
+     *
+     *  TRANS   (input) CHARACTER*1
+     *          Specifies the form of the system of equations:
+     *          = 'N':  A * X = B  (No transpose)
+     *          = 'T':  A**T * X = B  (Transpose)
+     *          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+     *
+     *  DIAG    (input) CHARACTER*1
+     *          = 'N':  A is non-unit triangular;
+     *          = 'U':  A is unit triangular.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+     *          The upper or lower triangular matrix A, packed columnwise in
+     *          a linear array.  The j-th column of A is stored in the array
+     *          AP as follows:
+     *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+     *          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, if INFO = 0, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0:  if INFO = -i, the i-th argument had an illegal value
+     *          > 0:  if INFO = i, the i-th diagonal element of A is zero,
+     *                indicating that the matrix is singular and the
+     *                solutions X have not been computed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param trans
+     * @param diag
+     * @param n
+     * @param rhsCount
+     * @param ap
+     * @param b
+     * @param ldb
+     */
+    public static void dtptrs(Lapack la, TUpLo uplo, TTrans trans, TDiag diag, int n, int rhsCount, double[] ap,
+            double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dtptrs(uplo.val(), trans.val(), diag.val(), n, rhsCount, ap, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Matrix A is singular. The solution couldn't be computed.");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  DTRTRS solves a triangular system of the form
+     *
+     *     A * X = B  or  A**T * X = B,
+     *
+     *  where A is a triangular matrix of order N, and B is an N-by-NRHS
+     *  matrix.  A check is made to verify that A is nonsingular.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  UPLO    (input) CHARACTER*1
+     *          = 'U':  A is upper triangular;
+     *          = 'L':  A is lower triangular.
+     *
+     *  TRANS   (input) CHARACTER*1
+     *          Specifies the form of the system of equations:
+     *          = 'N':  A * X = B  (No transpose)
+     *          = 'T':  A**T * X = B  (Transpose)
+     *          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+     *
+     *  DIAG    (input) CHARACTER*1
+     *          = 'N':  A is non-unit triangular;
+     *          = 'U':  A is unit triangular.
+     *
+     *  N       (input) INTEGER
+     *          The order of the matrix A.  N >= 0.
+     *
+     *  NRHS    (input) INTEGER
+     *          The number of right hand sides, i.e., the number of columns
+     *          of the matrix B.  NRHS >= 0.
+     *
+     *  A       (input) DOUBLE PRECISION array, dimension (LDA,N)
+     *          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
+     *          upper triangular part of the array A contains the upper
+     *          triangular matrix, and the strictly lower triangular part of
+     *          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
+     *          triangular part of the array A contains the lower triangular
+     *          matrix, and the strictly upper triangular part of A is not
+     *          referenced.  If DIAG = 'U', the diagonal elements of A are
+     *          also not referenced and are assumed to be 1.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,N).
+     *
+     *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+     *          On entry, the right hand side matrix B.
+     *          On exit, if INFO = 0, the solution matrix X.
+     *
+     *  LDB     (input) INTEGER
+     *          The leading dimension of the array B.  LDB >= max(1,N).
+     *
+     *  INFO    (output) INTEGER
+     *          = 0:  successful exit
+     *          < 0: if INFO = -i, the i-th argument had an illegal value
+     *          > 0: if INFO = i, the i-th diagonal element of A is zero,
+     *               indicating that the matrix is singular and the solutions
+     *               X have not been computed.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param uplo
+     * @param trans
+     * @param diag
+     * @param n
+     * @param rhsCount
+     * @param a
+     * @param lda
+     * @param b
+     * @param ldb
+     */
+    public static void dtrtrs(Lapack la, TUpLo uplo, TTrans trans, TDiag diag, int n, int rhsCount, double[] a, int lda,
+            double[] b, int ldb) {
+        intW info = new intW(0);
+        // TODO: remaining params sanity check
+        la.dtrtrs(uplo.val(), trans.val(), diag.val(), n, rhsCount, a, lda, b, ldb, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Matrix A is singular. The solution couldn't be computed.");
+            }
+        }
+    }
+
+    // helper methods for argument checks
 
     private static void checkNonNegative(int value, String name) {
         if (value < 0) {
