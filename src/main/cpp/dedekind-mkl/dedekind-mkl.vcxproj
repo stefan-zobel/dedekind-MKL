@@ -183,6 +183,7 @@
     <ClCompile Include="JException.cpp" />
     <ClCompile Include="JExceptionUtils.cpp" />
     <ClCompile Include="JvmProvider.cpp" />
+    <ClCompile Include="net_dedekind_blas_BlasExt.cpp" />
     <ClCompile Include="net_dedekind_blas_BlasN.cpp" />
     <ClCompile Include="net_dedekind_lapack_LapackN.cpp" />
     <ClCompile Include="Portability.cpp" />

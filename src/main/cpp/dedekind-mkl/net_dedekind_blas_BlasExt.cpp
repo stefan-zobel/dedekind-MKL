@@ -182,8 +182,9 @@ Java_net_dedekind_blas_BlasExt_simatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        FloatArray ABa = FloatArray(env, AB, 0, useCrit);
 
-
+        mkl_simatcopy(ordering, trans, rows, cols, alpha, ABa.ptr(), lda, ldb);
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "simatcopy_n", ex.what());
     } catch (...) {
@@ -208,8 +209,9 @@ Java_net_dedekind_blas_BlasExt_dimatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        DoubleArray ABa = DoubleArray(env, AB, 0, useCrit);
 
-
+        mkl_dimatcopy(ordering, trans, rows, cols, alpha, ABa.ptr(), lda, ldb);
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "dimatcopy_n", ex.what());
     } catch (...) {
@@ -235,8 +237,16 @@ Java_net_dedekind_blas_BlasExt_cimatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        FloatArray ABa = FloatArray(env, AB, 0, useCrit);
+        ComplexFloatArray ABac = ComplexFloatArray(ABa);
 
+        MKL_Complex8 alpha = { alphar, alphai };
+        mkl_cimatcopy(ordering, trans, rows, cols, alpha, ABac.ptr(), lda, ldb);
 
+        long len = ABac.complexLength();
+        if (len > 0 && ABac.hasCopy()) {
+            floatCopy(len, ABa.ptr(), ABac.ptr());
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cimatcopy_n", ex.what());
     } catch (...) {
@@ -262,8 +272,16 @@ Java_net_dedekind_blas_BlasExt_zimatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        DoubleArray ABa = DoubleArray(env, AB, 0, useCrit);
+        ComplexDoubleArray ABac = ComplexDoubleArray(ABa);
 
+        MKL_Complex16 alpha = { alphar, alphai };
+        mkl_zimatcopy(ordering, trans, rows, cols, alpha, ABac.ptr(), lda, ldb);
 
+        long len = ABac.complexLength();
+        if (len > 0 && ABac.hasCopy()) {
+            doubleCopy(len, ABa.ptr(), ABac.ptr());
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zimatcopy_n", ex.what());
     } catch (...) {
@@ -289,8 +307,10 @@ Java_net_dedekind_blas_BlasExt_somatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        FloatArray Aa = FloatArray(env, A, 0, useCrit);
+        FloatArray Ba = FloatArray(env, B, 0, useCrit);
 
-
+        mkl_somatcopy(ordering, trans, rows, cols, alpha, Aa.ptr(), lda, Ba.ptr(), ldb);
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "somatcopy_n", ex.what());
     } catch (...) {
@@ -316,8 +336,10 @@ Java_net_dedekind_blas_BlasExt_domatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        DoubleArray Aa = DoubleArray(env, A, 0, useCrit);
+        DoubleArray Ba = DoubleArray(env, B, 0, useCrit);
 
-
+        mkl_domatcopy(ordering, trans, rows, cols, alpha, Aa.ptr(), lda, Ba.ptr(), ldb);
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "domatcopy_n", ex.what());
     } catch (...) {
@@ -344,8 +366,21 @@ Java_net_dedekind_blas_BlasExt_comatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        FloatArray Aa = FloatArray(env, A, 0, useCrit);
+        FloatArray Ba = FloatArray(env, B, 0, useCrit);
 
+        ComplexFloatArray Aac = ComplexFloatArray(Aa);
+        ComplexFloatArray Bac = ComplexFloatArray(Ba);
 
+        MKL_Complex8 alpha = { alphar, alphai };
+
+        mkl_comatcopy(ordering, trans, rows, cols, alpha, Aac.ptr(), lda, Bac.ptr(), ldb);
+
+        // we only need B
+        long len = Bac.complexLength();
+        if (len > 0 && Bac.hasCopy()) {
+            floatCopy(len, Ba.ptr(), Bac.ptr());
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "comatcopy_n", ex.what());
     } catch (...) {
@@ -372,8 +407,21 @@ Java_net_dedekind_blas_BlasExt_zomatcopy_1n(JNIEnv* env, jclass,
   jint ldb,
   jboolean useCrit) {
     try {
+        DoubleArray Aa = DoubleArray(env, A, 0, useCrit);
+        DoubleArray Ba = DoubleArray(env, B, 0, useCrit);
 
+        ComplexDoubleArray Aac = ComplexDoubleArray(Aa);
+        ComplexDoubleArray Bac = ComplexDoubleArray(Ba);
 
+        MKL_Complex16 alpha = { alphar, alphai };
+
+        mkl_zomatcopy(ordering, trans, rows, cols, alpha, Aac.ptr(), lda, Bac.ptr(), ldb);
+
+        // we only need B
+        long len = Bac.complexLength();
+        if (len > 0 && Bac.hasCopy()) {
+            doubleCopy(len, Ba.ptr(), Bac.ptr());
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zomatcopy_n", ex.what());
     } catch (...) {
@@ -403,7 +451,12 @@ Java_net_dedekind_blas_BlasExt_somatadd_1n(JNIEnv* env, jclass,
   jint ldc,
   jboolean useCrit) {
     try {
+        FloatArray Aa = FloatArray(env, A, 0, useCrit);
+        FloatArray Ba = FloatArray(env, B, 0, useCrit);
+        FloatArray Ca = FloatArray(env, C, 0, useCrit);
 
+        mkl_somatadd(ordering, transa, transb, m, n, alpha, Aa.ptr(), lda, beta,
+            Ba.ptr(), ldb, Ca.ptr(), ldc);
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "somatadd_n", ex.what());
@@ -434,7 +487,12 @@ Java_net_dedekind_blas_BlasExt_domatadd_1n(JNIEnv* env, jclass,
   jint ldc,
   jboolean useCrit) {
     try {
+        DoubleArray Aa = DoubleArray(env, A, 0, useCrit);
+        DoubleArray Ba = DoubleArray(env, B, 0, useCrit);
+        DoubleArray Ca = DoubleArray(env, C, 0, useCrit);
 
+        mkl_domatadd(ordering, transa, transb, m, n, alpha, Aa.ptr(), lda, beta,
+            Ba.ptr(), ldb, Ca.ptr(), ldc);
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "domatadd_n", ex.what());
@@ -467,7 +525,25 @@ Java_net_dedekind_blas_BlasExt_comatadd_1n(JNIEnv* env, jclass,
   jint ldc,
   jboolean useCrit) {
     try {
+        FloatArray Aa = FloatArray(env, A, 0, useCrit);
+        FloatArray Ba = FloatArray(env, B, 0, useCrit);
+        FloatArray Ca = FloatArray(env, C, 0, useCrit);
 
+        ComplexFloatArray Aac = ComplexFloatArray(Aa);
+        ComplexFloatArray Bac = ComplexFloatArray(Ba);
+        ComplexFloatArray Cac = ComplexFloatArray(Ca);
+
+        MKL_Complex8 alpha = { alphar, alphai };
+        MKL_Complex8 beta = { betar, betai };
+
+        mkl_comatadd(ordering, transa, transb, m, n, alpha, Aac.ptr(), lda, beta,
+            Bac.ptr(), ldb, Cac.ptr(), ldc);
+
+        // we only need C
+        long len = Cac.complexLength();
+        if (len > 0 && Cac.hasCopy()) {
+            floatCopy(len, Ca.ptr(), Cac.ptr());
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "comatadd_n", ex.what());
@@ -500,7 +576,25 @@ Java_net_dedekind_blas_BlasExt_zomatadd_1n(JNIEnv* env, jclass,
   jint ldc,
   jboolean useCrit) {
     try {
+        DoubleArray Aa = DoubleArray(env, A, 0, useCrit);
+        DoubleArray Ba = DoubleArray(env, B, 0, useCrit);
+        DoubleArray Ca = DoubleArray(env, C, 0, useCrit);
 
+        ComplexDoubleArray Aac = ComplexDoubleArray(Aa);
+        ComplexDoubleArray Bac = ComplexDoubleArray(Ba);
+        ComplexDoubleArray Cac = ComplexDoubleArray(Ca);
+
+        MKL_Complex16 alpha = { alphar, alphai };
+        MKL_Complex16 beta = { betar, betai };
+
+        mkl_zomatadd(ordering, transa, transb, m, n, alpha, Aac.ptr(), lda, beta,
+            Bac.ptr(), ldb, Cac.ptr(), ldc);
+
+        // we only need C
+        long len = Cac.complexLength();
+        if (len > 0 && Cac.hasCopy()) {
+            doubleCopy(len, Ca.ptr(), Cac.ptr());
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zomatadd_n", ex.what());

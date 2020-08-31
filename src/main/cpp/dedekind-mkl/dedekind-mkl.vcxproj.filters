@@ -113,5 +113,8 @@
     <ClCompile Include="ComplexDoubleArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="net_dedekind_blas_BlasExt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
