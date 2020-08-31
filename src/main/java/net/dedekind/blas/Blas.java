@@ -17,9 +17,9 @@ package net.dedekind.blas;
 
 /**
  * Matrix storage layout must be column-major as in Fortran. The number of
- * matrix rows and columns must always be strictly positive. All operations
- * throw a {@code NullPointerException} if any of the reference method arguments
- * is {@code null}.
+ * matrix rows and columns, if required, must be strictly positive. All
+ * operations throw a {@code NullPointerException} if any of the reference
+ * method arguments is {@code null}.
  */
 public abstract class Blas {
 
