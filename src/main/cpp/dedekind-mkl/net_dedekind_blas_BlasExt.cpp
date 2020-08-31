@@ -61,22 +61,45 @@ Java_net_dedekind_blas_BlasExt_cgemm3m_1n(JNIEnv* env, jclass,
   jint order,
   jint transa,
   jint transb,
-  jint,
-  jint,
-  jint,
-  jfloat,
-  jfloat,
-  jfloatArray,
-  jint,
-  jfloatArray,
-  jint,
-  jfloat,
-  jfloat,
-  jfloatArray,
-  jint,
+  jint m,
+  jint n,
+  jint k,
+  jfloat alphar,
+  jfloat alphai,
+  jfloatArray a,
+  jint lda,
+  jfloatArray b,
+  jint ldb,
+  jfloat betar,
+  jfloat betai,
+  jfloatArray c,
+  jint ldc,
   jboolean useCrit) {
     try {
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray ba = FloatArray(env, b, 0, useCrit);
+        FloatArray ca = FloatArray(env, c, 0, useCrit);
 
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray bac = ComplexFloatArray(ba);
+        ComplexFloatArray cac = ComplexFloatArray(ca);
+
+        MKL_Complex8* pa = aac.ptr();
+        MKL_Complex8* pb = bac.ptr();
+        MKL_Complex8* pc = cac.ptr();
+
+        if (pa && pb && pc) {
+            MKL_Complex8 alpha = { alphar, alphai };
+            MKL_Complex8 beta = { betar, betai };
+
+            cblas_cgemm3m(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+                static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, &alpha, pa, lda, pb, ldb, &beta, pc, ldc);
+
+            long len = cac.complexLength();
+            if (len > 0 && cac.hasCopy()) {
+                floatCopy(len, ca.ptr(), pc);
+            }
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgemm3m_n", ex.what());
@@ -95,22 +118,45 @@ Java_net_dedekind_blas_BlasExt_zgemm3m_1n(JNIEnv* env, jclass,
   jint order,
   jint transa,
   jint transb,
-  jint,
-  jint,
-  jint,
-  jdouble,
-  jdouble,
-  jdoubleArray,
-  jint,
-  jdoubleArray,
-  jint,
-  jdouble,
-  jdouble,
-  jdoubleArray,
-  jint,
+  jint m,
+  jint n,
+  jint k,
+  jdouble alphar,
+  jdouble alphai,
+  jdoubleArray a,
+  jint lda,
+  jdoubleArray b,
+  jint ldb,
+  jdouble betar,
+  jdouble betai,
+  jdoubleArray c,
+  jint ldc,
   jboolean useCrit) {
     try {
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray ba = DoubleArray(env, b, 0, useCrit);
+        DoubleArray ca = DoubleArray(env, c, 0, useCrit);
 
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray bac = ComplexDoubleArray(ba);
+        ComplexDoubleArray cac = ComplexDoubleArray(ca);
+
+        MKL_Complex16* pa = aac.ptr();
+        MKL_Complex16* pb = bac.ptr();
+        MKL_Complex16* pc = cac.ptr();
+
+        if (pa && pb && pc) {
+            MKL_Complex16 alpha = { alphar, alphai };
+            MKL_Complex16 beta = { betar, betai };
+
+            cblas_zgemm3m(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+                static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, &alpha, pa, lda, pb, ldb, &beta, pc, ldc);
+
+            long len = cac.complexLength();
+            if (len > 0 && cac.hasCopy()) {
+                doubleCopy(len, ca.ptr(), pc);
+            }
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgemm3m_n", ex.what());
