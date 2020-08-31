@@ -396,6 +396,55 @@ public class BlasExt {
         zomatcopy_n(ORDERING, trans(trans), rows, cols, alphar, alphai, A, lda, B, ldb, USE_CRITICAL);
     }
 
+    /**
+     * Scales and adds two float matrices, as well as performing out-of-place
+     * transposition operations {@code C := alpha *op(A) + beta *op(B)} where
+     * the {@code op()} operations are transpose, conjugate-transpose, conjugate
+     * (no transpose), or no transpose, depending on the values of
+     * {@code transa} and {@code transb}. If no transposition of the source
+     * matrices is required, {@code m} is the number of rows and {@code n} is
+     * the number of columns in the source matrices {@code A} and {@code B}. In
+     * this case, the output matrix {@code C} is {@code m x n}.
+     * 
+     * @param transa
+     *            specifies the operation type for matrix {@code A}
+     * @param transb
+     *            specifies the operation type for matrix {@code B}
+     * @param m
+     *            the number of matrix rows in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param n
+     *            the number of matrix columns in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param alpha
+     *            this parameter scales the input matrix {@code A} by
+     *            {@code alpha}
+     * @param A
+     *            the input matrix {@code A}, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code A}; measured in the number of elements.
+     *            If {@code transa} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param beta
+     *            this parameter scales the input matrix {@code B} by
+     *            {@code beta}
+     * @param B
+     *            the input matrix {@code B}, unmodified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code B}; measured in the number of elements.
+     *            If {@code transb} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param C
+     *            the output matrix, modified
+     * @param ldc
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix {@code C}; measured in the number of
+     *            elements (it must be at least {@code max(1, m)})
+     */
     public final void somatadd(TTrans transa, TTrans transb, int m, int n, float alpha, float[] A, int lda, float beta,
             float[] B, int ldb, float[] C, int ldc) {
         Objects.requireNonNull(transa, "transa");
@@ -408,6 +457,55 @@ public class BlasExt {
         somatadd_n(ORDERING, trans(transa), trans(transb), m, n, alpha, A, lda, beta, B, ldb, C, ldc, USE_CRITICAL);
     }
 
+    /**
+     * Scales and adds two doubles matrices, as well as performing out-of-place
+     * transposition operations {@code C := alpha *op(A) + beta *op(B)} where
+     * the {@code op()} operations are transpose, conjugate-transpose, conjugate
+     * (no transpose), or no transpose, depending on the values of
+     * {@code transa} and {@code transb}. If no transposition of the source
+     * matrices is required, {@code m} is the number of rows and {@code n} is
+     * the number of columns in the source matrices {@code A} and {@code B}. In
+     * this case, the output matrix {@code C} is {@code m x n}.
+     * 
+     * @param transa
+     *            specifies the operation type for matrix {@code A}
+     * @param transb
+     *            specifies the operation type for matrix {@code B}
+     * @param m
+     *            the number of matrix rows in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param n
+     *            the number of matrix columns in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param alpha
+     *            this parameter scales the input matrix {@code A} by
+     *            {@code alpha}
+     * @param A
+     *            the input matrix {@code A}, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code A}; measured in the number of elements.
+     *            If {@code transa} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param beta
+     *            this parameter scales the input matrix {@code B} by
+     *            {@code beta}
+     * @param B
+     *            the input matrix {@code B}, unmodified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code B}; measured in the number of elements.
+     *            If {@code transb} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param C
+     *            the output matrix, modified
+     * @param ldc
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix {@code C}; measured in the number of
+     *            elements (it must be at least {@code max(1, m)})
+     */
     public final void domatadd(TTrans transa, TTrans transb, int m, int n, double alpha, double[] A, int lda,
             double beta, double[] B, int ldb, double[] C, int ldc) {
         Objects.requireNonNull(transa, "transa");
@@ -420,6 +518,62 @@ public class BlasExt {
         domatadd_n(ORDERING, trans(transa), trans(transb), m, n, alpha, A, lda, beta, B, ldb, C, ldc, USE_CRITICAL);
     }
 
+    /**
+     * Scales and adds two single precision complex matrices, as well as
+     * performing out-of-place transposition operations
+     * {@code C := alpha *op(A) + beta *op(B)} where the {@code op()} operations
+     * are transpose, conjugate-transpose, conjugate (no transpose), or no
+     * transpose, depending on the values of {@code transa} and {@code transb}.
+     * If no transposition of the source matrices is required, {@code m} is the
+     * number of rows and {@code n} is the number of columns in the source
+     * matrices {@code A} and {@code B}. In this case, the output matrix
+     * {@code C} is {@code m x n}.
+     * 
+     * @param transa
+     *            specifies the operation type for matrix {@code A}
+     * @param transb
+     *            specifies the operation type for matrix {@code B}
+     * @param m
+     *            the number of matrix rows in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param n
+     *            the number of matrix columns in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param alphar
+     *            the real part of the scale factor for the input matrix
+     *            {@code A}
+     * @param alphai
+     *            the imaginary part of the scale factor for the input matrix
+     *            {@code A}
+     * @param A
+     *            the input matrix {@code A}, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code A}; measured in the number of elements.
+     *            If {@code transa} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param betar
+     *            the real part of the scale factor for the input matrix
+     *            {@code B}
+     * @param betai
+     *            the imaginary part of the scale factor for the input matrix
+     *            {@code B}
+     * @param B
+     *            the input matrix {@code B}, unmodified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code B}; measured in the number of elements.
+     *            If {@code transb} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param C
+     *            the output matrix, modified
+     * @param ldc
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix {@code C}; measured in the number of
+     *            elements (it must be at least {@code max(1, m)})
+     */
     public final void comatadd(TTrans transa, TTrans transb, int m, int n, float alphar, float alphai, float[] A,
             int lda, float betar, float betai, float[] B, int ldb, float[] C, int ldc) {
         Objects.requireNonNull(transa, "transa");
@@ -433,6 +587,62 @@ public class BlasExt {
                 USE_CRITICAL);
     }
 
+    /**
+     * Scales and adds two double precision complex matrices, as well as
+     * performing out-of-place transposition operations
+     * {@code C := alpha *op(A) + beta *op(B)} where the {@code op()} operations
+     * are transpose, conjugate-transpose, conjugate (no transpose), or no
+     * transpose, depending on the values of {@code transa} and {@code transb}.
+     * If no transposition of the source matrices is required, {@code m} is the
+     * number of rows and {@code n} is the number of columns in the source
+     * matrices {@code A} and {@code B}. In this case, the output matrix
+     * {@code C} is {@code m x n}.
+     * 
+     * @param transa
+     *            specifies the operation type for matrix {@code A}
+     * @param transb
+     *            specifies the operation type for matrix {@code B}
+     * @param m
+     *            the number of matrix rows in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param n
+     *            the number of matrix columns in {@code op(A), op(B)}, and
+     *            {@code C}
+     * @param alphar
+     *            the real part of the scale factor for the input matrix
+     *            {@code A}
+     * @param alphai
+     *            the imaginary part of the scale factor for the input matrix
+     *            {@code A}
+     * @param A
+     *            the input matrix {@code A}, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code A}; measured in the number of elements.
+     *            If {@code transa} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param betar
+     *            the real part of the scale factor for the input matrix
+     *            {@code B}
+     * @param betai
+     *            the imaginary part of the scale factor for the input matrix
+     *            {@code B}
+     * @param B
+     *            the input matrix {@code B}, unmodified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix {@code B}; measured in the number of elements.
+     *            If {@code transb} is {@link TTrans#NO_TRANS} or
+     *            {@link TTrans#CONJ}, this parameter must be at least
+     *            {@code max(1, m)}; otherwise it must be {@code max(1, n)}
+     * @param C
+     *            the output matrix, modified
+     * @param ldc
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix {@code C}; measured in the number of
+     *            elements (it must be at least {@code max(1, m)})
+     */
     public final void zomatadd(TTrans transa, TTrans transb, int m, int n, double alphar, double alphai, double[] A,
             int lda, double betar, double betai, double[] B, int ldb, double[] C, int ldc) {
         Objects.requireNonNull(transa, "transa");
