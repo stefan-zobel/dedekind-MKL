@@ -233,6 +233,36 @@ public class BlasExt {
         zimatcopy_n(ORDERING, trans(trans), rows, cols, alphar, alphai, AB, lda, ldb, USE_CRITICAL);
     }
 
+    /**
+     * Scaling and out-of-place transposition / copying of a float matrix
+     * {@code B := alpha *op( A )} where the transposition operation
+     * {@code op()} can be a normal matrix copy, a transposition, a conjugate
+     * transposition, or just a conjugation.
+     * 
+     * @param trans
+     *            specifies the operation type
+     * @param rows
+     *            the number of rows in matrix {@code A} (the source matrix)
+     * @param cols
+     *            the number of columns in matrix {@code A} (the source matrix)
+     * @param alpha
+     *            this parameter scales the input matrix by {@code alpha}
+     * @param A
+     *            the input matrix, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix ({@code A}); measured in the number of elements
+     *            (this parameter must be at least {@code rows})
+     * @param B
+     *            the output matrix, modified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix ({@code B}); measured in the number of
+     *            elements. If {@code trans} is {@link TTrans#TRANS} or
+     *            {@link TTrans#CONJ_TRANS}, this parameter must be at least
+     *            {@code max(1, cols)}; otherwise it must be at least
+     *            {@code max(1, rows)}
+     */
     public final void somatcopy(TTrans trans, int rows, int cols, float alpha, float[] A, int lda, float[] B, int ldb) {
         Objects.requireNonNull(trans, "trans");
         Objects.requireNonNull(A, "A");
@@ -242,6 +272,36 @@ public class BlasExt {
         somatcopy_n(ORDERING, trans(trans), rows, cols, alpha, A, lda, B, ldb, USE_CRITICAL);
     }
 
+    /**
+     * Scaling and out-of-place transposition / copying of a double matrix
+     * {@code B := alpha *op( A )} where the transposition operation
+     * {@code op()} can be a normal matrix copy, a transposition, a conjugate
+     * transposition, or just a conjugation.
+     * 
+     * @param trans
+     *            specifies the operation type
+     * @param rows
+     *            the number of rows in matrix {@code A} (the source matrix)
+     * @param cols
+     *            the number of columns in matrix {@code A} (the source matrix)
+     * @param alpha
+     *            this parameter scales the input matrix by {@code alpha}
+     * @param A
+     *            the input matrix, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix ({@code A}); measured in the number of elements
+     *            (this parameter must be at least {@code rows})
+     * @param B
+     *            the output matrix, modified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix ({@code B}); measured in the number of
+     *            elements. If {@code trans} is {@link TTrans#TRANS} or
+     *            {@link TTrans#CONJ_TRANS}, this parameter must be at least
+     *            {@code max(1, cols)}; otherwise it must be at least
+     *            {@code max(1, rows)}
+     */
     public final void domatcopy(TTrans trans, int rows, int cols, double alpha, double[] A, int lda, double[] B,
             int ldb) {
         Objects.requireNonNull(trans, "trans");
@@ -252,6 +312,38 @@ public class BlasExt {
         domatcopy_n(ORDERING, trans(trans), rows, cols, alpha, A, lda, B, ldb, USE_CRITICAL);
     }
 
+    /**
+     * Scaling and out-of-place transposition / copying of a single precision
+     * complex matrix {@code B := alpha *op( A )} where the transposition
+     * operation {@code op()} can be a normal matrix copy, a transposition, a
+     * conjugate transposition, or just a conjugation.
+     * 
+     * @param trans
+     *            specifies the operation type
+     * @param rows
+     *            the number of rows in matrix {@code A} (the source matrix)
+     * @param cols
+     *            the number of columns in matrix {@code A} (the source matrix)
+     * @param alphar
+     *            the real part of the scale factor for the input matrix
+     * @param alphai
+     *            the imaginary part of the scale factor for the input matrix
+     * @param A
+     *            the input matrix, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix ({@code A}); measured in the number of elements
+     *            (this parameter must be at least {@code rows})
+     * @param B
+     *            the output matrix, modified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix ({@code B}); measured in the number of
+     *            elements. If {@code trans} is {@link TTrans#TRANS} or
+     *            {@link TTrans#CONJ_TRANS}, this parameter must be at least
+     *            {@code max(1, cols)}; otherwise it must be at least
+     *            {@code max(1, rows)}
+     */
     public final void comatcopy(TTrans trans, int rows, int cols, float alphar, float alphai, float[] A, int lda,
             float[] B, int ldb) {
         Objects.requireNonNull(trans, "trans");
@@ -262,6 +354,38 @@ public class BlasExt {
         comatcopy_n(ORDERING, trans(trans), rows, cols, alphar, alphai, A, lda, B, ldb, USE_CRITICAL);
     }
 
+    /**
+     * Scaling and out-of-place transposition / copying of a double precision
+     * complex matrix {@code B := alpha *op( A )} where the transposition
+     * operation {@code op()} can be a normal matrix copy, a transposition, a
+     * conjugate transposition, or just a conjugation.
+     * 
+     * @param trans
+     *            specifies the operation type
+     * @param rows
+     *            the number of rows in matrix {@code A} (the source matrix)
+     * @param cols
+     *            the number of columns in matrix {@code A} (the source matrix)
+     * @param alphar
+     *            the real part of the scale factor for the input matrix
+     * @param alphai
+     *            the imaginary part of the scale factor for the input matrix
+     * @param A
+     *            the input matrix, unmodified
+     * @param lda
+     *            distance between the first elements in adjacent columns in the
+     *            source matrix ({@code A}); measured in the number of elements
+     *            (this parameter must be at least {@code rows})
+     * @param B
+     *            the output matrix, modified
+     * @param ldb
+     *            distance between the first elements in adjacent columns in the
+     *            destination matrix ({@code B}); measured in the number of
+     *            elements. If {@code trans} is {@link TTrans#TRANS} or
+     *            {@link TTrans#CONJ_TRANS}, this parameter must be at least
+     *            {@code max(1, cols)}; otherwise it must be at least
+     *            {@code max(1, rows)}
+     */
     public final void zomatcopy(TTrans trans, int rows, int cols, double alphar, double alphai, double[] A, int lda,
             double[] B, int ldb) {
         Objects.requireNonNull(trans, "trans");
