@@ -1988,6 +1988,46 @@ public final class PlainLapack {
         }
     }
 
+    public static void cgesv(Lapack la, int n, int rhsCount, float[] a, int lda, int[] indices, float[] b, int ldb) {
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, n, "lda");
+        checkValueAtLeast(ldb, n, "ldb");
+        checkMinLen(indices, n, "indices");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(b, 2 * ldb * rhsCount, "b");
+
+        int info = la.cgesv(n, rhsCount, a, lda, indices, b, ldb);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "Factor U in the LU decomposition is exactly singular. Solution could not be computed.");
+            }
+        }
+    }
+
+    public static void zgesv(Lapack la, int n, int rhsCount, double[] a, int lda, int[] indices, double[] b, int ldb) {
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, n, "lda");
+        checkValueAtLeast(ldb, n, "ldb");
+        checkMinLen(indices, n, "indices");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(b, 2 * ldb * rhsCount, "b");
+
+        int info = la.zgesv(n, rhsCount, a, lda, indices, b, ldb);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "Factor U in the LU decomposition is exactly singular. Solution could not be computed.");
+            }
+        }
+    }
+
     /**
      * <pre>
      * <code>
