@@ -1886,6 +1886,80 @@ public final class PlainLapack {
         }
     }
 
+    // note: 's' (the singular values) are real (a float[]) wheras 'a[]', 'u[]'
+    // and 'vt[]' are arrays of complex numbers; the only case where 'a' must
+    // be copied before calling cgesdd is when jobz == 'O'
+    public static void cgesdd(Lapack la, TSvdJob jobz, int m, int n, float[] a, int lda, float[] s, float[] u, int ldu,
+            float[] vt, int ldvt) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(s, Math.min(m, n), "s");
+        checkStrictlyPositive(ldu, "ldu");
+        checkStrictlyPositive(ldvt, "ldvt");
+        // ldu + u
+        if (jobz == TSvdJob.ALL || jobz == TSvdJob.PART || (m < n && jobz == TSvdJob.OVERWRITE)) {
+            checkValueAtLeast(ldu, m, "ldu");
+            int ucol = (jobz == TSvdJob.PART) ? Math.min(m, n) : m;
+            checkMinLen(u, 2 * ldu * ucol, "u");
+        }
+        // ldvt + vt
+        if (jobz == TSvdJob.ALL || (m >= n && jobz == TSvdJob.OVERWRITE)) {
+            checkValueAtLeast(ldvt, n, "ldvt");
+            checkMinLen(vt, 2 * ldvt * n, "vt");
+        } else if (jobz == TSvdJob.PART) {
+            checkValueAtLeast(ldvt, Math.min(m, n), "ldvt");
+            checkMinLen(vt, 2 * ldvt * n, "vt");
+        }
+
+        int info = la.cgesdd(jobz.val(), m, n, a, lda, s, u, ldu, vt, ldvt);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new NotConvergedException("Did not converge. Update failed.");
+            }
+        }
+    }
+
+    // note: 's' (the singular values) are real (a double[]) wheras 'a[]', 'u[]'
+    // and 'vt[]' are arrays of complex numbers; the only case where 'a' must
+    // be copied before calling zgesdd is when jobz == 'O'
+    public static void zgesdd(Lapack la, TSvdJob jobz, int m, int n, double[] a, int lda, double[] s, double[] u,
+            int ldu, double[] vt, int ldvt) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(s, Math.min(m, n), "s");
+        checkStrictlyPositive(ldu, "ldu");
+        checkStrictlyPositive(ldvt, "ldvt");
+        // ldu + u
+        if (jobz == TSvdJob.ALL || jobz == TSvdJob.PART || (m < n && jobz == TSvdJob.OVERWRITE)) {
+            checkValueAtLeast(ldu, m, "ldu");
+            int ucol = (jobz == TSvdJob.PART) ? Math.min(m, n) : m;
+            checkMinLen(u, 2 * ldu * ucol, "u");
+        }
+        // ldvt + vt
+        if (jobz == TSvdJob.ALL || (m >= n && jobz == TSvdJob.OVERWRITE)) {
+            checkValueAtLeast(ldvt, n, "ldvt");
+            checkMinLen(vt, 2 * ldvt * n, "vt");
+        } else if (jobz == TSvdJob.PART) {
+            checkValueAtLeast(ldvt, Math.min(m, n), "ldvt");
+            checkMinLen(vt, 2 * ldvt * n, "vt");
+        }
+
+        int info = la.zgesdd(jobz.val(), m, n, a, lda, s, u, ldu, vt, ldvt);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new NotConvergedException("Did not converge. Update failed.");
+            }
+        }
+    }
+
     /**
      * <pre>
      * <code>
