@@ -1126,6 +1126,48 @@ public final class PlainLapack {
         }
     }
 
+    public static void cgels(Lapack la, TTrans trans, int m, int n, int rhsCount, float[] a, int lda, float[] b,
+            int ldb) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, m, "lda");
+        checkValueAtLeast(ldb, Math.max(n, m), "ldb");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(b, 2 * ldb * rhsCount, "b");
+
+        int info = la.cgels(trans.val(), m, n, rhsCount, a, lda, b, ldb);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "A does not have full rank. Least squares solution could not be computed.");
+            }
+        }
+    }
+
+    public static void zgels(Lapack la, TTrans trans, int m, int n, int rhsCount, double[] a, int lda, double[] b,
+            int ldb) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkStrictlyPositive(rhsCount, "rhsCount");
+        checkValueAtLeast(lda, m, "lda");
+        checkValueAtLeast(ldb, Math.max(n, m), "ldb");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(b, 2 * ldb * rhsCount, "b");
+
+        int info = la.zgels(trans.val(), m, n, rhsCount, a, lda, b, ldb);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "A does not have full rank. Least squares solution could not be computed.");
+            }
+        }
+    }
+
     /**
      * <pre>
      * <code>
@@ -4915,6 +4957,10 @@ public final class PlainLapack {
 
     private static void throwIAEPosition(intW info) {
         throw new IllegalArgumentException("Illegal argument at position " + -info.val);
+    }
+
+    private static void throwIAEPosition(int info) {
+        throw new IllegalArgumentException("Illegal argument at position " + -info);
     }
 
     protected PlainLapack() {
