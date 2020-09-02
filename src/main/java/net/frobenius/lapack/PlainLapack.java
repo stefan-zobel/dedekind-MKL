@@ -791,6 +791,68 @@ public final class PlainLapack {
         }
     }
 
+    // note: there is no need to make a copy of 'a' before calling cgeev!
+    public static void cgeev(Lapack la, TEigJob jobvl, TEigJob jobvr, int n, float[] a, int lda, float[] w, float[] vl,
+            int ldvl, float[] vr, int ldvr) {
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, n, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(w, 2 * n, "w");
+        if (jobvl == TEigJob.ALL) {
+            checkValueAtLeast(ldvl, n, "ldvl");
+            checkMinLen(vl, 2 * ldvl * n, "vl");
+        } else {
+            checkValueAtLeast(ldvl, 1, "ldvl");
+        }
+        if (jobvr == TEigJob.ALL) {
+            checkValueAtLeast(ldvr, n, "ldvr");
+            checkMinLen(vr, 2 * ldvr * n, "vr");
+        } else {
+            checkValueAtLeast(ldvr, 1, "ldvr");
+        }
+
+        int info = la.cgeev(jobvl.val(), jobvr.val(), n, a, lda, w, vl, ldvl, vr, ldvr);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "QR failed to compute all eigenvalues, eigenvectors haven't been computed.");
+            }
+        }
+    }
+
+    // note: there is no need to make a copy of 'a' before calling zgeev!
+    public static void zgeev(Lapack la, TEigJob jobvl, TEigJob jobvr, int n, double[] a, int lda, double[] w,
+            double[] vl, int ldvl, double[] vr, int ldvr) {
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, n, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(w, 2 * n, "w");
+        if (jobvl == TEigJob.ALL) {
+            checkValueAtLeast(ldvl, n, "ldvl");
+            checkMinLen(vl, 2 * ldvl * n, "vl");
+        } else {
+            checkValueAtLeast(ldvl, 1, "ldvl");
+        }
+        if (jobvr == TEigJob.ALL) {
+            checkValueAtLeast(ldvr, n, "ldvr");
+            checkMinLen(vr, 2 * ldvr * n, "vr");
+        } else {
+            checkValueAtLeast(ldvr, 1, "ldvr");
+        }
+
+        int info = la.zgeev(jobvl.val(), jobvr.val(), n, a, lda, w, vl, ldvl, vr, ldvr);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException(
+                        "QR failed to compute all eigenvalues, eigenvectors haven't been computed.");
+            }
+        }
+    }
+
     /**
      * <pre>
      * <code>
