@@ -17,7 +17,8 @@ public class ComplexGemmTest {
     public static void main(String[] args) {
         // zgemm
         // 2 x 3 matrix C
-        double[] c = new double[12];
+        double[] c1 = new double[12];
+        double[] c3 = new double[12];
 
         // 2 x 2 matrix A
         // 0.0 + 0.0i, 1.0 + 0.25i
@@ -57,13 +58,19 @@ public class ComplexGemmTest {
         double betar = 1.0;
         double betai = 0.0;
 
-        System.out.println("A: " + Arrays.toString(a));
+        System.out.println("A : " + Arrays.toString(a));
         Blas blas = Blas.getInstance();
+        // zgemm
         blas.zgemm(Trans.N, Trans.N, numRowsC, numColsC, numColsA, alphar, alphai, a, Math.max(1, numRowsA), b,
-                Math.max(1, numRowsB), betar, betai, c, Math.max(1, numRowsC));
+                Math.max(1, numRowsB), betar, betai, c1, Math.max(1, numRowsC));
+        BlasExt blasExt = BlasExt.getInstance();
+        // zgemm3m
+        blasExt.zgemm3m(Trans.N, Trans.N, numRowsC, numColsC, numColsA, alphar, alphai, a, Math.max(1, numRowsA), b,
+                Math.max(1, numRowsB), betar, betai, c3, Math.max(1, numRowsC));
 
-        System.out.println("C: " + Arrays.toString(c));
-        System.out.println("A: " + Arrays.toString(a));
+        System.out.println("C1: " + Arrays.toString(c1));
+        System.out.println("C3: " + Arrays.toString(c3));
+        System.out.println("A : " + Arrays.toString(a));
 
         // cgemm
         float alpharf = (float) alphar;
@@ -71,6 +78,7 @@ public class ComplexGemmTest {
         float betarf = (float) betar;
         float betaif = (float) betai;
         float[] c2 = new float[12];
+        float[] c4 = new float[12];
         float[] a2 = new float[8];
         float[] b2 = new float[12];
         for (int i = 0; i < a2.length; ++i) {
@@ -81,11 +89,16 @@ public class ComplexGemmTest {
         }
 
         System.out.println(" --- ");
-        System.out.println("A: " + Arrays.toString(a2));
+        System.out.println("A : " + Arrays.toString(a2));
+        // cgemm
         blas.cgemm(Trans.N, Trans.N, numRowsC, numColsC, numColsA, alpharf, alphaif, a2, Math.max(1, numRowsA), b2,
                 Math.max(1, numRowsB), betarf, betaif, c2, Math.max(1, numRowsC));
+        // cgemm3m
+        blasExt.cgemm3m(Trans.N, Trans.N, numRowsC, numColsC, numColsA, alpharf, alphaif, a2, Math.max(1, numRowsA), b2,
+                Math.max(1, numRowsB), betarf, betaif, c4, Math.max(1, numRowsC));
 
-        System.out.println("C: " + Arrays.toString(c2));
-        System.out.println("A: " + Arrays.toString(a2));
+        System.out.println("C2: " + Arrays.toString(c2));
+        System.out.println("C4: " + Arrays.toString(c4));
+        System.out.println("A : " + Arrays.toString(a2));
     }
 }
