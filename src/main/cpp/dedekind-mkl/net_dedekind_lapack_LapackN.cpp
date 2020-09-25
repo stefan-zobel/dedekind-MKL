@@ -1894,6 +1894,75 @@ Java_net_dedekind_lapack_LapackN_sgesv_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    sgeqrf_n
+ * Signature: (III[FII[FI[FIIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_sgeqrf_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray tau,
+  jint tauOffset,
+  jfloatArray work,
+  jint workOffset,
+  jint lwork,
+  jboolean) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray taua = FloatArray(env, tau, tauOffset, useCrit);
+        FloatArray worka = FloatArray(env, work, workOffset, useCrit);
+
+        return LAPACKE_sgeqrf_work(order, m, n, aa.ptr(), lda, taua.ptr(),
+            worka.ptr(), lwork);
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgeqrf_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgeqrf_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    sorgqr_n
+ * Signature: (IIII[FII[FI[FIIZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_sorgqr_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jint k,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray tau,
+  jint tauOffset,
+  jfloatArray work,
+  jint workOffset,
+  jint lwork,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray taua = FloatArray(env, tau, tauOffset, useCrit);
+        FloatArray worka = FloatArray(env, work, workOffset, useCrit);
+
+        return LAPACKE_sorgqr_work(order, m, n, k, aa.ptr(), lda, taua.ptr(),
+            worka.ptr(), lwork);
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sorgqr_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sorgqr_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
     // miscellaneous complex routines
 
 /*
