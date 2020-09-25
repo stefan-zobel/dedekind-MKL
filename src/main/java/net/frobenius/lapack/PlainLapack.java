@@ -2464,8 +2464,6 @@ public final class PlainLapack {
         la.dlaswp(n, a, lda, pivFirstIdx, pivLastIdx, indices, increment);
     }
 
-    // TODO: finish sanity checks for the remaining arguments
-
     /**
      * <pre>
      * <code>
@@ -2520,8 +2518,15 @@ public final class PlainLapack {
      * @param tau
      */
     public static void dorglq(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+        checkStrictlyPositive(m, "m");
+        checkValueAtLeast(m, k, "m");
+        checkValueAtLeast(n, m, "n");
+        checkStrictlyPositive(k, "k");
+        checkValueAtLeast(lda, Math.max(1, m), "lda");
+        checkMinLen(a, m * n, "a");
+        checkMinLen(tau, k, "tau");
+
         intW info = new intW(0);
-        // TODO: remaining params sanity check
         double[] work = new double[1];
         la.dorglq(m, n, k, new double[0], lda, new double[0], work, -1, info);
         if (info.val != 0) {
@@ -2589,8 +2594,14 @@ public final class PlainLapack {
      * @param tau
      */
     public static void dorgqr(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+        checkStrictlyPositive(k, "k");
+        checkValueAtLeast(n, k, "n");
+        checkValueAtLeast(m, n, "m");
+        checkValueAtLeast(lda, Math.max(1, m), "lda");
+        checkMinLen(a, m * n, "a");
+        checkMinLen(tau, k, "tau");
+
         intW info = new intW(0);
-        // TODO: remaining params sanity check
         double[] work = new double[1];
         la.dorgqr(m, n, k, new double[0], lda, new double[0], work, -1, info);
         if (info.val != 0) {
@@ -2602,6 +2613,8 @@ public final class PlainLapack {
             throwIAEPosition(info);
         }
     }
+
+    // TODO: finish sanity checks for the remaining arguments
 
     /**
      * <pre>
