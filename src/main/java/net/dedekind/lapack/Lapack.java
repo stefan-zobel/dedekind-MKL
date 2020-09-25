@@ -5155,7 +5155,7 @@ public abstract class Lapack {
      *
      *        Q  =  H(1) H(2) . . . H(k)
      *
-     *  as returned by DGEQRF.
+     *  as returned by SGEQRF.
      *
      *  Arguments
      *  =========
@@ -5173,7 +5173,7 @@ public abstract class Lapack {
      *  A       (input/output) REAL array, dimension (LDA,N)
      *          On entry, the i-th column must contain the vector which
      *          defines the elementary reflector H(i), for i = 1,2,...,k, as
-     *          returned by DGEQRF in the first k columns of its array
+     *          returned by SGEQRF in the first k columns of its array
      *          argument A.
      *          On exit, the M-by-N matrix Q.
      *
@@ -5182,7 +5182,7 @@ public abstract class Lapack {
      *
      *  TAU     (input) REAL array, dimension (K)
      *          TAU(i) must contain the scalar factor of the elementary
-     *          reflector H(i), as returned by DGEQRF.
+     *          reflector H(i), as returned by SGEQRF.
      *
      *  WORK    (workspace/output) REAL array, dimension (MAX(1,L
      *          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
