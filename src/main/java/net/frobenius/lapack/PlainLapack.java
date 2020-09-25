@@ -2614,6 +2614,81 @@ public final class PlainLapack {
         }
     }
 
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
+     *  SORGQR generates an M-by-N real matrix Q with orthonormal columns,
+     *  which is defined as the first N columns of a product of K elementary
+     *  reflectors of order M
+     *
+     *        Q  =  H(1) H(2) . . . H(k)
+     *
+     *  as returned by SGEQRF.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix Q. M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix Q. M >= N >= 0.
+     *
+     *  K       (input) INTEGER
+     *          The number of elementary reflectors whose product defines the
+     *          matrix Q. N >= K >= 0.
+     *
+     *  A       (input/output) REAL array, dimension (LDA,N)
+     *          On entry, the i-th column must contain the vector which
+     *          defines the elementary reflector H(i), for i = 1,2,...,k, as
+     *          returned by SGEQRF in the first k columns of its array
+     *          argument A.
+     *          On exit, the M-by-N matrix Q.
+     *
+     *  LDA     (input) INTEGER
+     *          The first dimension of the array A. LDA >= max(1,M).
+     *
+     *  TAU     (input) REAL array, dimension (K)
+     *          TAU(i) must contain the scalar factor of the elementary
+     *          reflector H(i), as returned by SGEQRF.
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param k
+     * @param a
+     * @param lda
+     * @param tau
+     */
+    public static void sorgqr(Lapack la, int m, int n, int k, float[] a, int lda, float[] tau) {
+        checkStrictlyPositive(k, "k");
+        checkValueAtLeast(n, k, "n");
+        checkValueAtLeast(m, n, "m");
+        checkValueAtLeast(lda, Math.max(1, m), "lda");
+        checkMinLen(a, m * n, "a");
+        checkMinLen(tau, k, "tau");
+
+        intW info = new intW(0);
+        float[] work = new float[1];
+        la.sorgqr(m, n, k, new float[0], lda, new float[0], work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new float[(int) work[0]];
+        la.sorgqr(m, n, k, a, lda, tau, work, work.length, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
     // TODO: finish sanity checks for the remaining arguments
 
     /**

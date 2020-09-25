@@ -598,6 +598,17 @@ public class LapackN extends Lapack {
         info.val = sgesv_n(Order.COL.code(), n, nrhs, a, aOffset, lda, ipiv, ipivOffset, b, bOffset, ldb, USE_CRITICAL);
     }
 
+    @Override
+    public final void sorgqr(int m, int n, int k, float[] a, int aOffset, int lda, float[] tau, int tauOffset,
+            float[] work, int workOffset, int lwork, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(tau, "tau");
+        Objects.requireNonNull(work, "work");
+        Objects.requireNonNull(info, "info");
+        info.val = sorgqr_n(Order.COL.code(), m, n, k, a, aOffset, lda, tau, tauOffset, work, workOffset, lwork,
+                USE_CRITICAL);
+    }
+
     // miscellaneous complex routines
 
     @Override
@@ -848,6 +859,9 @@ public class LapackN extends Lapack {
 
     private static native int sgesv_n(int order, int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv,
             int ipivOffset, float[] b, int bOffset, int ldb, boolean useCriticalRegion);
+
+    private static native int sorgqr_n(int order, int m, int n, int k, float[] a, int aOffset, int lda, float[] tau,
+            int tauOffset, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
 
     // miscellaneous complex routines
 
