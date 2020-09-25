@@ -599,6 +599,17 @@ public class LapackN extends Lapack {
     }
 
     @Override
+    public final void sgeqrf(int m, int n, float[] a, int aOffset, int lda, float[] tau, int tauOffset, float[] work,
+            int workOffset, int lwork, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(tau, "tau");
+        Objects.requireNonNull(work, "work");
+        Objects.requireNonNull(info, "info");
+        info.val = sgeqrf_n(Order.COL.code(), m, n, a, aOffset, lda, tau, tauOffset, work, workOffset, lwork,
+                USE_CRITICAL);
+    }
+
+    @Override
     public final void sorgqr(int m, int n, int k, float[] a, int aOffset, int lda, float[] tau, int tauOffset,
             float[] work, int workOffset, int lwork, intW info) {
         Objects.requireNonNull(a, "a");
@@ -859,6 +870,9 @@ public class LapackN extends Lapack {
 
     private static native int sgesv_n(int order, int n, int nrhs, float[] a, int aOffset, int lda, int[] ipiv,
             int ipivOffset, float[] b, int bOffset, int ldb, boolean useCriticalRegion);
+
+    private static native int sgeqrf_n(int order, int m, int n, float[] a, int aOffset, int lda, float[] tau,
+            int tauOffset, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
 
     private static native int sorgqr_n(int order, int m, int n, int k, float[] a, int aOffset, int lda, float[] tau,
             int tauOffset, float[] work, int workOffset, int lwork, boolean useCriticalRegion);

@@ -1489,6 +1489,87 @@ public final class PlainLapack {
      *  Purpose
      *  =======
      *
+     *  SGEQRF computes a QR factorization of a real M-by-N matrix A:
+     *  A = Q * R.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix A.  M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix A.  N >= 0.
+     *
+     *  A       (input/output) REAL array, dimension (LDA,N)
+     *          On entry, the M-by-N matrix A.
+     *          On exit, the elements on and above the diagonal of the array
+     *          contain the min(M,N)-by-N upper trapezoidal matrix R (R is
+     *          upper triangular if m >= n); the elements below the diagonal,
+     *          with the array TAU, represent the orthogonal matrix Q as a
+     *          product of min(m,n) elementary reflectors (see Further
+     *          Details).
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,M).
+     *
+     *  TAU     (output) REAL array, dimension (min(M,N))
+     *          The scalar factors of the elementary reflectors (see Further
+     *          Details).
+     *
+     *  Further Details
+     *  ===============
+     *
+     *  The matrix Q is represented as a product of elementary reflectors
+     *
+     *     Q = H(1) H(2) . . . H(k), where k = min(m,n).
+     *
+     *  Each H(i) has the form
+     *
+     *     H(i) = I - tau * v * v'
+     *
+     *  where tau is a real scalar, and v is a real vector with
+     *  v(1:i-1) = 0 and v(i) = 1; v(i+1:m) is stored on exit in A(i+1:m,i),
+     *  and tau in TAU(i).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param a
+     * @param lda
+     * @param tau
+     */
+    public static void sgeqrf(Lapack la, int m, int n, float[] a, int lda, float[] tau) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(tau, Math.min(m, n), "tau");
+
+        intW info = new intW(0);
+        float[] work = new float[1];
+        la.sgeqrf(m, n, new float[0], lda, new float[0], work, -1, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+        work = new float[(int) work[0]];
+        la.sgeqrf(m, n, a, lda, tau, work, work.length, info);
+        if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
      *  DGERQF computes an RQ factorization of a real M-by-N matrix A:
      *  A = R * Q.
      *

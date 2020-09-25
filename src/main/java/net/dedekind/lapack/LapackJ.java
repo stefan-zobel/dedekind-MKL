@@ -347,6 +347,12 @@ public class LapackJ extends Lapack {
     }
 
     @Override
+    public final void sgeqrf(int m, int n, float[] a, int aOffset, int lda, float[] tau, int tauOffset, float[] work,
+            int workOffset, int lwork, intW info) {
+        Sgeqrf.sgeqrf(m, n, a, aOffset, lda, tau, tauOffset, work, workOffset, lwork, info);
+    }
+
+    @Override
     public final void sorgqr(int m, int n, int k, float[] a, int aOffset, int lda, float[] tau, int tauOffset,
             float[] work, int workOffset, int lwork, intW info) {
         Sorgqr.sorgqr(m, n, k, a, aOffset, lda, tau, tauOffset, work, workOffset, lwork, info);
