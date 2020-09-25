@@ -360,48 +360,128 @@ public class LapackJ extends Lapack {
 
     // miscellaneous complex routines
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int cgeev(String jobvl, String jobvr, int n, float[] a, int lda, float[] w, float[] vl, int ldvl,
             float[] vr, int ldvr) {
         throw new UnsupportedOperationException("cgeev only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int zgeev(String jobvl, String jobvr, int n, double[] a, int lda, double[] w, double[] vl, int ldvl,
             double[] vr, int ldvr) {
         throw new UnsupportedOperationException("zgeev only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int cgesdd(String jobz, int m, int n, float[] a, int lda, float[] s, float[] u, int ldu, float[] vt,
             int ldvt) {
         throw new UnsupportedOperationException("cgesdd only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int zgesdd(String jobz, int m, int n, double[] a, int lda, double[] s, double[] u, int ldu,
             double[] vt, int ldvt) {
         throw new UnsupportedOperationException("zgesdd only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int cgels(String trans, int m, int n, int nrhs, float[] a, int lda, float[] b, int ldb) {
         throw new UnsupportedOperationException("cgels only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int zgels(String trans, int m, int n, int nrhs, double[] a, int lda, double[] b, int ldb) {
         throw new UnsupportedOperationException("zgels only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int cgesv(int n, int nrhs, float[] a, int lda, int[] ipiv, float[] b, int ldb) {
         throw new UnsupportedOperationException("cgesv only supported for LapackN");
     }
 
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
     @Override
     public final int zgesv(int n, int nrhs, double[] a, int lda, int[] ipiv, double[] b, int ldb) {
         throw new UnsupportedOperationException("zgesv only supported for LapackN");
+    }
+
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
+    @Override
+    public final int cgeqrf(int m, int n, float[] a, int lda, float[] tau) {
+        throw new UnsupportedOperationException("cgeqrf only supported for LapackN");
+    }
+
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
+    @Override
+    public final int zgeqrf(int m, int n, double[] a, int lda, double[] tau) {
+        throw new UnsupportedOperationException("zgeqrf only supported for LapackN");
     }
 
     protected LapackJ() {

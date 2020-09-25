@@ -1563,6 +1563,32 @@ public final class PlainLapack {
         }
     }
 
+    public static void cgeqrf(Lapack la, int m, int n, float[] a, int lda, float[] tau) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(tau, 2 * Math.min(m, n), "tau");
+
+        int info = la.cgeqrf(m, n, a, lda, tau);
+        if (info != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    public static void zgeqrf(Lapack la, int m, int n, double[] a, int lda, double[] tau) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(tau, 2 * Math.min(m, n), "tau");
+
+        int info = la.zgeqrf(m, n, a, lda, tau);
+        if (info != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
     /**
      * <pre>
      * <code>

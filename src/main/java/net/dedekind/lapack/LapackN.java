@@ -700,6 +700,20 @@ public class LapackN extends Lapack {
         return zgesv_n(Order.COL.code(), n, nrhs, a, lda, ipiv, b, ldb, USE_CRITICAL);
     }
 
+    @Override
+    public final int cgeqrf(int m, int n, float[] a, int lda, float[] tau) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(tau, "tau");
+        return cgeqrf_n(Order.COL.code(), m, n, a, lda, tau, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zgeqrf(int m, int n, double[] a, int lda, double[] tau) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(tau, "tau");
+        return zgeqrf_n(Order.COL.code(), m, n, a, lda, tau, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
@@ -901,6 +915,12 @@ public class LapackN extends Lapack {
             boolean useCriticalRegion);
 
     private static native int zgesv_n(int order, int n, int nrhs, double[] a, int lda, int[] ipiv, double[] b, int ldb,
+            boolean useCriticalRegion);
+
+    private static native int cgeqrf_n(int order, int m, int n, float[] a, int lda, float[] tau,
+            boolean useCriticalRegion);
+
+    private static native int zgeqrf_n(int order, int m, int n, double[] a, int lda, double[] tau,
             boolean useCriticalRegion);
 
     static native void initialize_n();

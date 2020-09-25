@@ -5346,6 +5346,10 @@ public abstract class Lapack {
 
     public abstract int zgesv(int n, int nrhs, double[] a, int lda, int[] ipiv, double[] b, int ldb);
 
+    public abstract int cgeqrf(int m, int n, float[] a, int lda, float[] tau);
+
+    public abstract int zgeqrf(int m, int n, double[] a, int lda, double[] tau);
+
     protected Lapack() {
     }
 }
