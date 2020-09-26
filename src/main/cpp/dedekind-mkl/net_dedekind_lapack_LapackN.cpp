@@ -2433,6 +2433,7 @@ Java_net_dedekind_lapack_LapackN_cgeqrf_1n(JNIEnv* env, jclass,
                 floatCopy(len, taua.ptr(), tauac.ptr());
             }
         }
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgeqrf_n", ex.what());
     } catch (...) {
@@ -2473,6 +2474,7 @@ Java_net_dedekind_lapack_LapackN_zgeqrf_1n(JNIEnv* env, jclass,
                 doubleCopy(len, taua.ptr(), tauac.ptr());
             }
         }
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgeqrf_n", ex.what());
     } catch (...) {
@@ -2510,6 +2512,7 @@ Java_net_dedekind_lapack_LapackN_cungqr_1n(JNIEnv* env, jclass,
                 floatCopy(len, aa.ptr(), aac.ptr());
             }
         }
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cungqr_n", ex.what());
     } catch (...) {
@@ -2547,6 +2550,7 @@ Java_net_dedekind_lapack_LapackN_zungqr_1n(JNIEnv* env, jclass,
                 doubleCopy(len, aa.ptr(), aac.ptr());
             }
         }
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zungqr_n", ex.what());
     } catch (...) {
