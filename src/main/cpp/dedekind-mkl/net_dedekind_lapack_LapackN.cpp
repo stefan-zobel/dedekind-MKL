@@ -2451,6 +2451,58 @@ Java_net_dedekind_lapack_LapackN_zgeqrf_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    cungqr_n
+ * Signature: (IIII[FI[FZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_cungqr_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jint k,
+  jfloatArray a,
+  jint lda,
+  jfloatArray tau,
+  jboolean useCrit) {
+    try {
+        // TODO
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cungqr_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "cungqr_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    zungqr_n
+ * Signature: (IIII[DI[DZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_zungqr_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jint k,
+  jdoubleArray a,
+  jint lda,
+  jdoubleArray tau,
+  jboolean useCrit) {
+    try {
+        // TODO
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zungqr_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "zungqr_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
     // initialize
 
 /*
