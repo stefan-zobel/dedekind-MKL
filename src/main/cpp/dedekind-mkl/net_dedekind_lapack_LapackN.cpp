@@ -1912,7 +1912,7 @@ Java_net_dedekind_lapack_LapackN_sgeqrf_1n(JNIEnv* env, jclass,
   jfloatArray work,
   jint workOffset,
   jint lwork,
-  jboolean) {
+  jboolean useCrit) {
     try {
         FloatArray aa = FloatArray(env, a, aOffset, useCrit);
         FloatArray taua = FloatArray(env, tau, tauOffset, useCrit);
@@ -2416,8 +2416,23 @@ Java_net_dedekind_lapack_LapackN_cgeqrf_1n(JNIEnv* env, jclass,
   jfloatArray tau,
   jboolean useCrit) {
     try {
-        // TODO
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray taua = FloatArray(env, tau, 0, useCrit);
 
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray tauac = ComplexFloatArray(taua);
+
+        int r = LAPACKE_cgeqrf(order, m, n, aac.ptr(), lda, tauac.ptr());
+        if (r == 0) {
+            long len = aac.complexLength();
+            if (len > 0 && aac.hasCopy()) {
+                floatCopy(len, aa.ptr(), aac.ptr());
+            }
+            len = tauac.complexLength();
+            if (len > 0 && tauac.hasCopy()) {
+                floatCopy(len, taua.ptr(), tauac.ptr());
+            }
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgeqrf_n", ex.what());
     } catch (...) {
@@ -2441,8 +2456,23 @@ Java_net_dedekind_lapack_LapackN_zgeqrf_1n(JNIEnv* env, jclass,
   jdoubleArray tau,
   jboolean useCrit) {
     try {
-        // TODO
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray taua = DoubleArray(env, tau, 0, useCrit);
 
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray tauac = ComplexDoubleArray(taua);
+
+        int r = LAPACKE_zgeqrf(order, m, n, aac.ptr(), lda, tauac.ptr());
+        if (r == 0) {
+            long len = aac.complexLength();
+            if (len > 0 && aac.hasCopy()) {
+                doubleCopy(len, aa.ptr(), aac.ptr());
+            }
+            len = tauac.complexLength();
+            if (len > 0 && tauac.hasCopy()) {
+                doubleCopy(len, taua.ptr(), tauac.ptr());
+            }
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgeqrf_n", ex.what());
     } catch (...) {
@@ -2467,8 +2497,19 @@ Java_net_dedekind_lapack_LapackN_cungqr_1n(JNIEnv* env, jclass,
   jfloatArray tau,
   jboolean useCrit) {
     try {
-        // TODO
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        FloatArray taua = FloatArray(env, tau, 0, useCrit);
 
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+        ComplexFloatArray tauac = ComplexFloatArray(taua);
+
+        int r = LAPACKE_cungqr(order, m, n, k, aac.ptr(), lda, tauac.ptr());
+        if (r == 0) {
+            long len = aac.complexLength();
+            if (len > 0 && aac.hasCopy()) {
+                floatCopy(len, aa.ptr(), aac.ptr());
+            }
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cungqr_n", ex.what());
     } catch (...) {
@@ -2493,8 +2534,19 @@ Java_net_dedekind_lapack_LapackN_zungqr_1n(JNIEnv* env, jclass,
   jdoubleArray tau,
   jboolean useCrit) {
     try {
-        // TODO
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        DoubleArray taua = DoubleArray(env, tau, 0, useCrit);
 
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+        ComplexDoubleArray tauac = ComplexDoubleArray(taua);
+
+        int r = LAPACKE_zungqr(order, m, n, k, aac.ptr(), lda, tauac.ptr());
+        if (r == 0) {
+            long len = aac.complexLength();
+            if (len > 0 && aac.hasCopy()) {
+                doubleCopy(len, aa.ptr(), aac.ptr());
+            }
+        }
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zungqr_n", ex.what());
     } catch (...) {
