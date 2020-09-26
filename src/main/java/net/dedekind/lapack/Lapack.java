@@ -5350,6 +5350,16 @@ public abstract class Lapack {
 
     public abstract int zgeqrf(int m, int n, double[] a, int lda, double[] tau);
 
+    /**
+     * Complex counterpart of {@link #sorgqr}.
+     */
+    public abstract int cungqr(int m, int n, int k, float[] a, int lda, float[] tau);
+
+    /**
+     * Complex counterpart of {@link #dorgqr}.
+     */
+    public abstract int zungqr(int m, int n, int k, double[] a, int lda, double[] tau);
+
     protected Lapack() {
     }
 }

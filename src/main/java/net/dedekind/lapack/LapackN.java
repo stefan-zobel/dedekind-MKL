@@ -714,6 +714,20 @@ public class LapackN extends Lapack {
         return zgeqrf_n(Order.COL.code(), m, n, a, lda, tau, USE_CRITICAL);
     }
 
+    @Override
+    public final int cungqr(int m, int n, int k, float[] a, int lda, float[] tau) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(tau, "tau");
+        return cungqr_n(Order.COL.code(), m, n, k, a, lda, tau, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zungqr(int m, int n, int k, double[] a, int lda, double[] tau) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(tau, "tau");
+        return zungqr_n(Order.COL.code(), m, n, k, a, lda, tau, USE_CRITICAL);
+    }
+
     // native methods
 
     private static native int dgbcon_n(int order, byte norm, int n, int kl, int ku, double[] ab, int abOffset, int ldab,
@@ -923,7 +937,17 @@ public class LapackN extends Lapack {
     private static native int zgeqrf_n(int order, int m, int n, double[] a, int lda, double[] tau,
             boolean useCriticalRegion);
 
+    private static native int cungqr_n(int order, int m, int n, int k, float[] a, int lda, float[] tau,
+            boolean useCriticalRegion);
+
+    private static native int zungqr_n(int order, int m, int n, int k, double[] a, int lda, double[] tau,
+            boolean useCriticalRegion);
+
+    // initialization
+
     static native void initialize_n();
+
+    // helpers
 
     private static byte norm(String norm) {
         char c = Character.toUpperCase(norm.charAt(0));

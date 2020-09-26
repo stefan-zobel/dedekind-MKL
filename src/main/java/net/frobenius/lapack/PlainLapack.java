@@ -2722,6 +2722,23 @@ public final class PlainLapack {
     }
 
     /**
+     * Complex counterpart of {@link #dorgqr}.
+     */
+    public static void zungqr(Lapack la, int m, int n, int k, double[] a, int lda, double[] tau) {
+        checkStrictlyPositive(k, "k");
+        checkValueAtLeast(n, k, "n");
+        checkValueAtLeast(m, n, "m");
+        checkValueAtLeast(lda, Math.max(1, m), "lda");
+        checkMinLen(a, 2 * m * n, "a");
+        checkMinLen(tau, 2 * k, "tau");
+
+        int info = la.zungqr(m, n, k, a, lda, tau);
+        if (info != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
      * <pre>
      * <code>
      *
@@ -2792,6 +2809,23 @@ public final class PlainLapack {
         work = new float[(int) work[0]];
         la.sorgqr(m, n, k, a, lda, tau, work, work.length, info);
         if (info.val != 0) {
+            throwIAEPosition(info);
+        }
+    }
+
+    /**
+     * Complex counterpart of {@link #sorgqr}.
+     */
+    public static void cungqr(Lapack la, int m, int n, int k, float[] a, int lda, float[] tau) {
+        checkStrictlyPositive(k, "k");
+        checkValueAtLeast(n, k, "n");
+        checkValueAtLeast(m, n, "m");
+        checkValueAtLeast(lda, Math.max(1, m), "lda");
+        checkMinLen(a, 2 * m * n, "a");
+        checkMinLen(tau, 2 * k, "tau");
+
+        int info = la.cungqr(m, n, k, a, lda, tau);
+        if (info != 0) {
             throwIAEPosition(info);
         }
     }
