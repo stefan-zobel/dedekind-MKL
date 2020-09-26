@@ -361,7 +361,7 @@ public class LapackJ extends Lapack {
     // miscellaneous complex routines
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -374,7 +374,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -387,7 +387,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -400,7 +400,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -413,7 +413,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -425,7 +425,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -437,7 +437,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -449,7 +449,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -461,7 +461,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -473,7 +473,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -485,7 +485,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
@@ -497,7 +497,7 @@ public class LapackJ extends Lapack {
     }
 
     /**
-     * Not supported in the {@code Netlib} implementation. Use {@link #LapackN}
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
      * instead.
      * 
      * @throws UnsupportedOperationException
