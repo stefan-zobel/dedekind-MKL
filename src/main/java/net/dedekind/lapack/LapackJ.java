@@ -497,6 +497,30 @@ public class LapackJ extends Lapack {
      *             always
      */
     @Override
+    public final int cgetrf(int m, int n, float[] a, int lda, int[] ipiv) {
+        throw new UnsupportedOperationException("cgetrf only supported for LapackN");
+    }
+
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
+    @Override
+    public final int zgetrf(int m, int n, double[] a, int lda, int[] ipiv) {
+        throw new UnsupportedOperationException("zgetrf only supported for LapackN");
+    }
+
+    /**
+     * Not supported in the {@code Netlib} implementation. Use {@link LapackN}
+     * instead.
+     * 
+     * @throws UnsupportedOperationException
+     *             always
+     */
+    @Override
     public final int cungqr(int m, int n, int k, float[] a, int lda, float[] tau) {
         throw new UnsupportedOperationException("cungqr only supported for LapackN");
     }

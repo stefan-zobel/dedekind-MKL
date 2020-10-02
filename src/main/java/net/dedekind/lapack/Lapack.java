@@ -5414,6 +5414,10 @@ public abstract class Lapack {
 
     public abstract int zgeqrf(int m, int n, double[] a, int lda, double[] tau);
 
+    public abstract int cgetrf (int m, int n, float[] a, int lda, int[] ipiv);
+
+    public abstract int zgetrf (int m, int n, double[] a, int lda, int[] ipiv);
+
     /**
      * Complex counterpart of {@link #sorgqr}.
      */

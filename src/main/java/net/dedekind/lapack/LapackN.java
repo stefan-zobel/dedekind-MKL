@@ -723,6 +723,20 @@ public class LapackN extends Lapack {
     }
 
     @Override
+    public final int cgetrf(int m, int n, float[] a, int lda, int[] ipiv) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(ipiv, "ipiv");
+        return cgetrf_n(Order.COL.code(), m, n, a, lda, ipiv, USE_CRITICAL);
+    }
+
+    @Override
+    public final int zgetrf(int m, int n, double[] a, int lda, int[] ipiv) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(ipiv, "ipiv");
+        return zgetrf_n(Order.COL.code(), m, n, a, lda, ipiv, USE_CRITICAL);
+    }
+
+    @Override
     public final int cungqr(int m, int n, int k, float[] a, int lda, float[] tau) {
         Objects.requireNonNull(a, "a");
         Objects.requireNonNull(tau, "tau");
@@ -946,6 +960,12 @@ public class LapackN extends Lapack {
             boolean useCriticalRegion);
 
     private static native int zgeqrf_n(int order, int m, int n, double[] a, int lda, double[] tau,
+            boolean useCriticalRegion);
+
+    private static native int cgetrf_n(int order, int m, int n, float[] a, int lda, int[] ipiv,
+            boolean useCriticalRegion);
+
+    private static native int zgetrf_n(int order, int m, int n, double[] a, int lda, int[] ipiv,
             boolean useCriticalRegion);
 
     private static native int cungqr_n(int order, int m, int n, int k, float[] a, int lda, float[] tau,
