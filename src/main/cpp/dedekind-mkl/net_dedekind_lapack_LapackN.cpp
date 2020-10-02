@@ -2526,9 +2526,19 @@ Java_net_dedekind_lapack_LapackN_cgetrf_1n(JNIEnv* env, jclass,
   jintArray ipiv,
   jboolean useCrit) {
     try {
-        // TODO
+        FloatArray aa = FloatArray(env, a, 0, useCrit);
+        IntArray ipiva = IntArray(env, ipiv, 0, useCrit);
 
-        return NOT_REACHED;
+        ComplexFloatArray aac = ComplexFloatArray(aa);
+
+        int r = LAPACKE_cgetrf(order, m, n, aac.ptr(), lda, ipiva.ptr());
+        if (r >= 0) {
+            long len = aac.complexLength();
+            if (len > 0 && aac.hasCopy()) {
+                floatCopy(len, aa.ptr(), aac.ptr());
+            }
+        }
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "cgetrf_n", ex.what());
     } catch (...) {
@@ -2552,9 +2562,19 @@ Java_net_dedekind_lapack_LapackN_zgetrf_1n(JNIEnv* env, jclass,
   jintArray ipiv,
   jboolean useCrit) {
     try {
-        // TODO
+        DoubleArray aa = DoubleArray(env, a, 0, useCrit);
+        IntArray ipiva = IntArray(env, ipiv, 0, useCrit);
 
-        return NOT_REACHED;
+        ComplexDoubleArray aac = ComplexDoubleArray(aa);
+
+        int r = LAPACKE_zgetrf(order, m, n, aac.ptr(), lda, ipiva.ptr());
+        if (r >= 0) {
+            long len = aac.complexLength();
+            if (len > 0 && aac.hasCopy()) {
+                doubleCopy(len, aa.ptr(), aac.ptr());
+            }
+        }
+        return r;
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "zgetrf_n", ex.what());
     } catch (...) {
