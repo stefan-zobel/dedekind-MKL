@@ -1963,6 +1963,34 @@ Java_net_dedekind_lapack_LapackN_sorgqr_1n(JNIEnv* env, jclass,
     return NOT_REACHED;
 }
 
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    sgetrf_n
+ * Signature: (III[FII[IIZ)I
+ */
+JNIEXPORT jint JNICALL Java_net_dedekind_lapack_LapackN_sgetrf_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jintArray ipiv,
+  jint ipivOffset,
+  jboolean useCrit) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        IntArray ipiva = IntArray(env, ipiv, ipivOffset, useCrit);
+
+        return LAPACKE_sgetrf(order, m, n, aa.ptr(), lda, ipiva.ptr());
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgetrf_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgetrf_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
     // miscellaneous complex routines
 
 /*
