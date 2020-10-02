@@ -2513,6 +2513,58 @@ Java_net_dedekind_lapack_LapackN_zgeqrf_1n(JNIEnv* env, jclass,
 
 /*
  * Class:     net_dedekind_lapack_LapackN
+ * Method:    cgetrf_n
+ * Signature: (III[FI[IZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_cgetrf_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jfloatArray a,
+  jint lda,
+  jintArray ipiv,
+  jboolean useCrit) {
+    try {
+        // TODO
+
+        return NOT_REACHED;
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "cgetrf_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "cgetrf_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
+ * Method:    zgetrf_n
+ * Signature: (III[DI[IZ)I
+ */
+JNIEXPORT jint JNICALL
+Java_net_dedekind_lapack_LapackN_zgetrf_1n(JNIEnv* env, jclass,
+  jint order,
+  jint m,
+  jint n,
+  jdoubleArray a,
+  jint lda,
+  jintArray ipiv,
+  jboolean useCrit) {
+    try {
+        // TODO
+
+        return NOT_REACHED;
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "zgetrf_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "zgetrf_n: caught unknown exception");
+    }
+    return NOT_REACHED;
+}
+
+/*
+ * Class:     net_dedekind_lapack_LapackN
  * Method:    cungqr_n
  * Signature: (IIII[FI[FZ)I
  */
