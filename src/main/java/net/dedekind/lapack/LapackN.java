@@ -203,6 +203,14 @@ public class LapackN extends Lapack {
     }
 
     @Override
+    public final void sgetrf(int m, int n, float[] a, int aOffset, int lda, int[] ipiv, int ipivOffset, intW info) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(ipiv, "ipiv");
+        Objects.requireNonNull(info, "info");
+        info.val = sgetrf_n(Order.COL.code(), m, n, a, aOffset, lda, ipiv, ipivOffset, USE_CRITICAL);
+    }
+
+    @Override
     public final void dgetrs(String trans, int n, int nrhs, double[] a, int aOffset, int lda, int[] ipiv,
             int ipivOffset, double[] b, int bOffset, int ldb, intW info) {
         Objects.requireNonNull(a, "a");
@@ -904,6 +912,9 @@ public class LapackN extends Lapack {
 
     private static native int sorgqr_n(int order, int m, int n, int k, float[] a, int aOffset, int lda, float[] tau,
             int tauOffset, float[] work, int workOffset, int lwork, boolean useCriticalRegion);
+
+    private static native int sgetrf_n(int order, int m, int n, float[] a, int aOffset, int lda, int[] ipiv,
+            int ipivOffset, boolean useCriticalRegion);
 
     // miscellaneous complex routines
 
