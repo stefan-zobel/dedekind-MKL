@@ -2346,6 +2346,108 @@ public final class PlainLapack {
      *  Purpose
      *  =======
      *
+     *  SGETRF computes an LU factorization of a general M-by-N matrix A
+     *  using partial pivoting with row interchanges.
+     *
+     *  The factorization has the form
+     *     A = P * L * U
+     *  where P is a permutation matrix, L is lower triangular with unit
+     *  diagonal elements (lower trapezoidal if m > n), and U is upper
+     *  triangular (upper trapezoidal if m < n).
+     *
+     *  This is the right-looking Level 3 BLAS version of the algorithm.
+     *
+     *  Arguments
+     *  =========
+     *
+     *  M       (input) INTEGER
+     *          The number of rows of the matrix A.  M >= 0.
+     *
+     *  N       (input) INTEGER
+     *          The number of columns of the matrix A.  N >= 0.
+     *
+     *  A       (input/output) REAL array, dimension (LDA,N)
+     *          On entry, the M-by-N matrix to be factored.
+     *          On exit, the factors L and U from the factorization
+     *          A = P*L*U; the unit diagonal elements of L are not stored.
+     *
+     *  LDA     (input) INTEGER
+     *          The leading dimension of the array A.  LDA >= max(1,M).
+     *
+     *  IPIV    (output) INTEGER array, dimension (min(M,N))
+     *          The pivot indices; for 1 <= i <= min(M,N), row i of the
+     *          matrix was interchanged with row IPIV(i).
+     *
+     *  =====================================================================
+     *
+     * </code>
+     * </pre>
+     *
+     * @param m
+     * @param n
+     * @param a
+     * @param lda
+     * @param indices
+     */
+    public static void sgetrf(Lapack la, int m, int n, float[] a, int lda, int[] indices) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, lda * n, "a");
+        checkMinLen(indices, Math.min(m, n), "indices");
+
+        intW info = new intW(0);
+        la.sgetrf(m, n, a, lda, indices, info);
+        if (info.val != 0) {
+            if (info.val < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Factor U in the LU decomposition is exactly singular");
+            }
+        }
+    }
+
+    public static void cgetrf(Lapack la, int m, int n, float[] a, int lda, int[] indices) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(indices, Math.min(m, n), "indices");
+
+        int info = la.cgetrf(m, n, a, lda, indices);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Factor U in the LU decomposition is exactly singular");
+            }
+        }
+    }
+
+    public static void zgetrf(Lapack la, int m, int n, double[] a, int lda, int[] indices) {
+        checkStrictlyPositive(m, "m");
+        checkStrictlyPositive(n, "n");
+        checkValueAtLeast(lda, m, "lda");
+        checkMinLen(a, 2 * lda * n, "a");
+        checkMinLen(indices, Math.min(m, n), "indices");
+
+        int info = la.zgetrf(m, n, a, lda, indices);
+        if (info != 0) {
+            if (info < 0) {
+                throwIAEPosition(info);
+            } else {
+                throw new ComputationTruncatedException("Factor U in the LU decomposition is exactly singular");
+            }
+        }
+    }
+
+    /**
+     * <pre>
+     * <code>
+     *
+     *  Purpose
+     *  =======
+     *
      *  DGETRS solves a system of linear equations
      *     A * X = B  or  A' * X = B
      *  with a general N-by-N matrix A using the LU factorization computed
