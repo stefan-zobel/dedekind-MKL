@@ -32,7 +32,7 @@ are also provided. Hence, the basic operations for general dense matrices, as we
 
 The intended purpose of the library is to be a Java JNI wrapper of Intel's native *Math Kernel Library* (`MKL`). However, the float and double functions can also be used without an MKL installation as the pure Java *org.netlib* implementation of those functions is included as a dependency.
 
-Given that the original Fortran API is very low-level, there is [PlainLapack](https://github.com/stefan-zobel/dedekind-MKL/blob/master/src/main/java/net/frobenius/lapack/PlainLapack.java) which is a very thin wrapper that provides automatic work array allocation and extensive parameter checking (only partially implemented by now).
+Given that the original Fortran API is very low-level, there is [PlainLapack](https://github.com/stefan-zobel/dedekind-MKL/blob/master/src/main/java/net/frobenius/lapack/PlainLapack.java) which is a very thin wrapper that provides automatic work array allocation and extensive parameter checking (the latter being only partially implemented by now).
 Since parameter checking is crucial for the JNI implementation, the safest approach is to go through the `PlainLapack` API.
 
 Beyond that, no attempt has been made to hide or simplify the difficulties of the original BLAS / LAPACK API.
