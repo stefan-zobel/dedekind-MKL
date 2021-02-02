@@ -1,5 +1,7 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/stefan-zobel/dedekind-MKL.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/stefan-zobel/dedekind-MKL/alerts/)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/stefan-zobel/dedekind-MKL.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/stefan-zobel/dedekind-MKL/context:java)
+[![Maven Central](https://img.shields.io/maven-central/v/net.sourceforge.streamsupport/dedekind-mkl.svg)](http://mvnrepository.com/artifact/net.sourceforge.streamsupport/dedekind-mkl)
+[![javadoc.io](https://javadoc.io/badge2/net.sourceforge.streamsupport/dedekind-mkl/javadoc.svg)](https://javadoc.io/doc/net.sourceforge.streamsupport/dedekind-mkl)
 
 # dedekind-MKL
 
@@ -36,3 +38,14 @@ Given that the original Fortran API is very low-level, there is [PlainLapack](ht
 Since parameter checking is crucial for the JNI implementation, the safest approach is to go through the `PlainLapack` API.
 
 Beyond that, no attempt has been made to hide or simplify the difficulties of the original BLAS / LAPACK API.
+
+
+### Maven:
+
+```xml
+<dependency>
+    <groupId>net.sourceforge.streamsupport</groupId>
+    <artifactId>dedekind-mkl</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
