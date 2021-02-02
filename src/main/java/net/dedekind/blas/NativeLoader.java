@@ -140,9 +140,11 @@ final class NativeLoader {
         File file = createFile(fileName);
         InputStream in = null;
         FileChannel dest = null;
+        FileOutputStream fos = null;
         try {
             in = NativeLoader.class.getResourceAsStream(filePath);
-            dest = new FileOutputStream(file).getChannel();
+            fos = new FileOutputStream(file);
+            dest = fos.getChannel();
             ReadableByteChannel src = Channels.newChannel(in);
             dest.transferFrom(src, 0L, 0x7fffffffffffffffL);
             return file;
@@ -152,6 +154,9 @@ final class NativeLoader {
             try {
                 if (dest != null) {
                     dest.close();
+                }
+                if (fos != null) {
+                    fos.close();
                 }
                 if (in != null) {
                     in.close();
