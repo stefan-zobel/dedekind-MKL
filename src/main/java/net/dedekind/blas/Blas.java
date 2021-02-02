@@ -33,7 +33,7 @@ public abstract class Blas {
 
     private static Blas loadNative() {
         try {
-            System.loadLibrary("dedekind-mkl");
+            NativeLoader.load();
             BlasN.redirect_xerbla_n();
             return new BlasN();
         } catch (Throwable t) {
