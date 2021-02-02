@@ -24,8 +24,7 @@ import net.dedekind.Order;
  */
 public class BlasN extends Blas {
 
-    // TODO
-    private static final boolean USE_CRITICAL = true; // XXX
+    private static final boolean USE_CRITICAL = true;
 
     @Override
     public final void dgbmv(String trans, int m, int n, int kl, int ku, double alpha, double[] a, int aOffset, int lda,

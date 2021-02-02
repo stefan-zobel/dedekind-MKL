@@ -27,7 +27,6 @@ import net.dedekind.Order;
  */
 public class LapackN extends Lapack {
 
-    // TODO
     private static final boolean USE_CRITICAL = true;
 
     @Override
