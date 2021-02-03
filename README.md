@@ -1,6 +1,6 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/stefan-zobel/dedekind-MKL.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/stefan-zobel/dedekind-MKL/alerts/)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/stefan-zobel/dedekind-MKL.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/stefan-zobel/dedekind-MKL/context:java)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.sourceforge.streamsupport/dedekind-mkl.svg)](https://maven-badges.herokuapp.com/maven-central/net.sourceforge.streamsupport/dedekind-mkl)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.sourceforge.streamsupport/dedekind-mkl/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.sourceforge.streamsupport/dedekind-mkl)
 [![javadoc.io](https://javadoc.io/badge2/net.sourceforge.streamsupport/dedekind-mkl/javadoc.svg)](https://javadoc.io/doc/net.sourceforge.streamsupport/dedekind-mkl)
 
 # dedekind-MKL
