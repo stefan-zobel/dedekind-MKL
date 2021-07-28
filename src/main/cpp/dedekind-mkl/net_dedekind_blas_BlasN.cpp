@@ -1174,10 +1174,8 @@ void xerbla(const char* name, const int* num, const int /*len*/) {
                     "detected in function", name);
             } else {
                 int position = code - 1;
-                char buffer[16] = {};
-                sprintf(buffer, "%d", position);
-                throwJavaRuntimeException(env, "%s %s %s %s %s", "Intel MKL ERROR:",
-                    "Parameter", buffer, "was incorrect on entry to", name);
+                throwJavaRuntimeException(env, "%s %s %d %s %s", "Intel MKL ERROR:",
+                    "Parameter", position, "was incorrect on entry to", name);
             }
         } catch (const JException& ex) {
             throwJavaRuntimeException(env, "%s %s", "xerbla", ex.what());
