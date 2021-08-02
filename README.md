@@ -5,7 +5,7 @@
 
 # dedekind-MKL
 
-Selected BLAS and LAPACK Java bindings for Intel's MKL (Math Kernel Library)
+Selected BLAS and LAPACK Java bindings for Intel's MKL (Math Kernel Library) on Windows and Linux
 
 
 ### What is included?
@@ -49,3 +49,13 @@ Beyond that, no attempt has been made to hide or simplify the difficulties of th
     <version>1.0.1</version>
 </dependency>
 ```
+
+### Enabling the Intel MKL library
+
+*dedekind-MKL* doesn't ship with the Intel `MKL` library (now called [oneMKL](https://software.intel.com/content/www/us/en/develop/tools/oneapi/base-toolkit/download.html)). If MKL isn't already installed on your system an easy path is to download one of the redistributables [here](https://repo1.maven.org/maven2/org/bytedeco/mkl/) or [here](https://github.com/Anlon-Burke/intel-mkl-x64-redist/releases), extract the archive to a directory and add that to your `PATH` variable and you should be ready to go. There is also a [nuget](https://www.nuget.org/packages/intelmkl.redist.win-x64/) redistributable for Windows and a lot of Linux distros ship MKL in their repositories, for example, on *Arch Linux*, it's simply `pacman -S intel-mkl` and you're done. Of course, you can also download the [official](https://software.intel.com/content/www/us/en/develop/tools/oneapi/base-toolkit/download.html) installer from Intel for a full installation which has a **huge** on-disk footprint. Finally, the MKL binaries included in Python distributions like [Anaconda](https://www.anaconda.com/products/individual) or [WinPython](https://winpython.github.io/) should also be usable.
+
+By default, dedekind-MKL searches for its own *dedekind-mkl.so/.dll* native library on the *java.library.path* or in a directory that can be specified either through the environment variable `DEDEKIND_SHAREDLIB_DIR` or via the Java system property `dedekind.sharedlib.dir`. If that doesn't succeed, the shared library gets automatically unpacked from the jar file into *java.io.tmpdir* and loaded from there. The *dedekind-mkl.so/.dll* can <ins>only</ins> be loaded if the OS can find the dependent `MKL` libraries somewhere on the `PATH`.
+
+You'll see an exception stack trace in the console if that doesn't work but *dedekind-MKL* will still be (partially) usable as it will fallback to the [F2J](https://repo1.maven.org/maven2/net/sourceforge/f2j/arpack_combined_all/0.1/) pure Java implementation. However, none of the BLAS / LAPACK routines for complex datatypes nor the BLAS extensions will be usable in that case and you'll surrender major performance improvements especially for larger matrices.
+
+ 
