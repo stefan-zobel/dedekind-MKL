@@ -187,9 +187,9 @@ JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_dgemm_1multi_1n(JNIEnv*, jcl
         }
 
     } catch (const JException& ex) {
-        throwJavaRuntimeException(env, "%s %s", "dgemm_n", ex.what());
+        throwJavaRuntimeException(env, "%s %s", "dgemm_multi_n", ex.what());
     } catch (...) {
-        throwJavaRuntimeException(env, "%s", "dgemm_n: caught unknown exception");
+        throwJavaRuntimeException(env, "%s", "dgemm_multi_n: caught unknown exception");
     }
 }
 
@@ -1069,6 +1069,60 @@ Java_net_dedekind_blas_BlasN_sgemm_1n(JNIEnv* env, jclass,
         throwJavaRuntimeException(env, "%s %s", "sgemm_n", ex.what());
     } catch (...) {
         throwJavaRuntimeException(env, "%s", "sgemm_n: caught unknown exception");
+    }
+}
+
+/*
+ * Class:     net_dedekind_blas_BlasN
+ * Method:    sgemm_multi_n
+ * Signature: (IIIIIIF[FII[FIIF[FIIZIIII)V
+ */
+JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_sgemm_1multi_1n(JNIEnv*, jclass,
+  jint order,
+  jint transa,
+  jint transb,
+  jint m,
+  jint n,
+  jint k,
+  jfloat alpha,
+  jfloatArray a,
+  jint aOffset,
+  jint lda,
+  jfloatArray b,
+  jint bOffset,
+  jint ldb,
+  jfloat beta,
+  jfloatArray c,
+  jint cOffset,
+  jint ldc,
+  jboolean useCrit,
+  jint howMany,
+  jint incAOff,
+  jint incBOff,
+  jint incCOff) {
+    try {
+        FloatArray aa = FloatArray(env, a, aOffset, useCrit);
+        FloatArray ba = FloatArray(env, b, bOffset, useCrit);
+        FloatArray ca = FloatArray(env, c, cOffset, useCrit);
+
+        float* pa = aa.ptr();
+        float* pb = ba.ptr();
+        float* pc = ca.ptr();
+
+        for (int = 0; i < howMany; ++i) {
+            cblas_sgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+                static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, alpha, pa, lda, pb, ldb, beta,
+                pc, ldc);
+
+            pa += incAOff;
+            pb += incBOff;
+            pc += incCOff;
+        }
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "sgemm_multi_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "sgemm_multi_n: caught unknown exception");
     }
 }
 
