@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2020 Stefan Zobel
+ * Copyright 2019, 2023 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,6 +132,59 @@ Java_net_dedekind_blas_BlasN_dgemm_1n(JNIEnv* env, jclass,
         cblas_dgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
             static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, alpha, aa.ptr(), lda, ba.ptr(),
             ldb, beta, ca.ptr(), ldc);
+
+    } catch (const JException& ex) {
+        throwJavaRuntimeException(env, "%s %s", "dgemm_n", ex.what());
+    } catch (...) {
+        throwJavaRuntimeException(env, "%s", "dgemm_n: caught unknown exception");
+    }
+}
+/*
+ * Class:     net_dedekind_blas_BlasN
+ * Method:    dgemm_multi_n
+ * Signature: (IIIIIID[DII[DIID[DIIZIIII)V
+ */
+JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_dgemm_1multi_1n(JNIEnv*, jclass,
+  jint order,
+  jint transa,
+  jint transb,
+  jint m,
+  jint n,
+  jint k,
+  jdouble alpha,
+  jdoubleArray a,
+  jint aOffset,
+  jint lda,
+  jdoubleArray b,
+  jint bOffset,
+  jint ldb,
+  jdouble beta,
+  jdoubleArray c,
+  jint cOffset,
+  jint ldc,
+  jboolean useCrit,
+  jint howMany,
+  jint incAOff,
+  jint incBOff,
+  jint incCOff) {
+    try {
+        DoubleArray aa = DoubleArray(env, a, aOffset, useCrit);
+        DoubleArray ba = DoubleArray(env, b, bOffset, useCrit);
+        DoubleArray ca = DoubleArray(env, c, cOffset, useCrit);
+
+        double* pa = aa.ptr();
+        double* pb = ba.ptr();
+        double* pc = ca.ptr();
+
+        for (int = 0; i < howMany; ++i) {
+            cblas_dgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
+                static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, alpha, pa, lda, pb, ldb, beta,
+                pc, ldc);
+
+            pa += incAOff;
+            pb += incBOff;
+            pc += incCOff;
+        }
 
     } catch (const JException& ex) {
         throwJavaRuntimeException(env, "%s %s", "dgemm_n", ex.what());
