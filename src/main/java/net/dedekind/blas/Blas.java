@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2020 Stefan Zobel
+ * Copyright 2019, 2023 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -376,6 +376,13 @@ public abstract class Blas {
 
     public abstract void dgemm(String transa, String transb, int m, int n, int k, double alpha, double[] a, int aOffset,
             int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc);
+
+    /**
+     * @since 1.0.2
+     */
+    public abstract void dgemm_multi(String transa, String transb, int m, int n, int k, double alpha, double[] a,
+            int aOffset, int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc,
+            int howMany, int incAOff, int incBOff, int incCOff);
 
     /**
      * <pre>
@@ -2929,6 +2936,13 @@ public abstract class Blas {
 
     public abstract void sgemm(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
             int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc);
+
+    /**
+     * @since 1.0.2
+     */
+    public abstract void sgemm_multi(String transa, String transb, int m, int n, int k, float alpha, float[] a,
+            int aOffset, int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc,
+            int howMany, int incAOff, int incBOff, int incCOff);
 
     // miscellaneous complex routines
 

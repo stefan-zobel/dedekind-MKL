@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2020 Stefan Zobel
+ * Copyright 2019, 2023 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,19 @@ public class BlasJ extends Blas {
     public final void dgemm(String transa, String transb, int m, int n, int k, double alpha, double[] a, int aOffset,
             int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc) {
         Dgemm.dgemm(transa, transb, m, n, k, alpha, a, aOffset, lda, b, bOffset, ldb, beta, c, cOffset, ldc);
+    }
+
+    @Override
+    public void dgemm_multi(String transa, String transb, int m, int n, int k, double alpha, double[] a, int aOffset,
+            int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc, int howMany,
+            int incAOff, int incBOff, int incCOff) {
+
+        for (int i = 0; i < howMany; ++i) {
+            Dgemm.dgemm(transa, transb, m, n, k, alpha, a, aOffset, lda, b, bOffset, ldb, beta, c, cOffset, ldc);
+            aOffset += incAOff;
+            bOffset += incBOff;
+            cOffset += incCOff;
+        }
     }
 
     @Override
@@ -185,6 +198,19 @@ public class BlasJ extends Blas {
     public final void sgemm(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
             int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc) {
         Sgemm.sgemm(transa, transb, m, n, k, alpha, a, aOffset, lda, b, bOffset, ldb, beta, c, cOffset, ldc);
+    }
+
+    @Override
+    public void sgemm_multi(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
+            int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc, int howMany,
+            int incAOff, int incBOff, int incCOff) {
+
+        for (int i = 0; i < howMany; ++i) {
+            Sgemm.sgemm(transa, transb, m, n, k, alpha, a, aOffset, lda, b, bOffset, ldb, beta, c, cOffset, ldc);
+            aOffset += incAOff;
+            bOffset += incBOff;
+            cOffset += incCOff;
+        }
     }
 
     // miscellaneous complex routines

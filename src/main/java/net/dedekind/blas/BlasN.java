@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2020 Stefan Zobel
+ * Copyright 2019, 2023 Stefan Zobel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,16 @@ public class BlasN extends Blas {
         Objects.requireNonNull(c, "c");
         dgemm_n(Order.COL.code(), Trans.of(transa).code(), Trans.of(transb).code(), m, n, k, alpha, a, aOffset, lda, b,
                 bOffset, ldb, beta, c, cOffset, ldc, USE_CRITICAL);
+    }
+
+    @Override
+    public void dgemm_multi(String transa, String transb, int m, int n, int k, double alpha, double[] a, int aOffset,
+            int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc, int howMany,
+            int incAOff, int incBOff, int incCOff) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(c, "c");
+        throw new UnsupportedOperationException("NOT YET IMPLEMENTED");
     }
 
     @Override
@@ -276,6 +286,16 @@ public class BlasN extends Blas {
                 bOffset, ldb, beta, c, cOffset, ldc, USE_CRITICAL);
     }
 
+    @Override
+    public void sgemm_multi(String transa, String transb, int m, int n, int k, float alpha, float[] a, int aOffset,
+            int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc, int howMany,
+            int incAOff, int incBOff, int incCOff) {
+        Objects.requireNonNull(a, "a");
+        Objects.requireNonNull(b, "b");
+        Objects.requireNonNull(c, "c");
+        throw new UnsupportedOperationException("NOT YET IMPLEMENTED");
+    }
+
     // miscellaneous complex routines
 
     @Override
@@ -311,6 +331,10 @@ public class BlasN extends Blas {
     private static native void dgemm_n(int order, int transa, int transb, int m, int n, int k, double alpha, double[] a,
             int aOffset, int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset, int ldc,
             boolean useCriticalRegion);
+
+    private static native void dgemm_multi_n(int order, int transa, int transb, int m, int n, int k, double alpha,
+            double[] a, int aOffset, int lda, double[] b, int bOffset, int ldb, double beta, double[] c, int cOffset,
+            int ldc, boolean useCriticalRegion, int howMany, int incAOff, int incBOff, int incCOff);
 
     private static native void dgemv_n(int order, int trans, int m, int n, double alpha, double[] a, int aOffset,
             int lda, double[] x, int xOffset, int incx, double beta, double[] y, int yOffset, int incy,
@@ -398,6 +422,10 @@ public class BlasN extends Blas {
     private static native void sgemm_n(int order, int transa, int transb, int m, int n, int k, float alpha, float[] a,
             int aOffset, int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset, int ldc,
             boolean useCriticalRegion);
+
+    private static native void sgemm_multi_n(int order, int transa, int transb, int m, int n, int k, float alpha,
+            float[] a, int aOffset, int lda, float[] b, int bOffset, int ldb, float beta, float[] c, int cOffset,
+            int ldc, boolean useCriticalRegion, int howMany, int incAOff, int incBOff, int incCOff);
 
     // miscellaneous complex routines
 
