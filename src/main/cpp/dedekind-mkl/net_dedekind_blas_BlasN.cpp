@@ -144,7 +144,7 @@ Java_net_dedekind_blas_BlasN_dgemm_1n(JNIEnv* env, jclass,
  * Method:    dgemm_multi_n
  * Signature: (IIIIIID[DII[DIID[DIIZIIII)V
  */
-JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_dgemm_1multi_1n(JNIEnv*, jclass,
+JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_dgemm_1multi_1n(JNIEnv* env, jclass,
   jint order,
   jint transa,
   jint transb,
@@ -176,7 +176,7 @@ JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_dgemm_1multi_1n(JNIEnv*, jcl
         double* pb = ba.ptr();
         double* pc = ca.ptr();
 
-        for (int = 0; i < howMany; ++i) {
+        for (int i = 0; i < howMany; ++i) {
             cblas_dgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
                 static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, alpha, pa, lda, pb, ldb, beta,
                 pc, ldc);
@@ -1077,7 +1077,7 @@ Java_net_dedekind_blas_BlasN_sgemm_1n(JNIEnv* env, jclass,
  * Method:    sgemm_multi_n
  * Signature: (IIIIIIF[FII[FIIF[FIIZIIII)V
  */
-JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_sgemm_1multi_1n(JNIEnv*, jclass,
+JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_sgemm_1multi_1n(JNIEnv* env, jclass,
   jint order,
   jint transa,
   jint transb,
@@ -1109,7 +1109,7 @@ JNIEXPORT void JNICALL Java_net_dedekind_blas_BlasN_sgemm_1multi_1n(JNIEnv*, jcl
         float* pb = ba.ptr();
         float* pc = ca.ptr();
 
-        for (int = 0; i < howMany; ++i) {
+        for (int i = 0; i < howMany; ++i) {
             cblas_sgemm(static_cast<CBLAS_LAYOUT>(order), static_cast<CBLAS_TRANSPOSE>(transa),
                 static_cast<CBLAS_TRANSPOSE>(transb), m, n, k, alpha, pa, lda, pb, ldb, beta,
                 pc, ldc);
