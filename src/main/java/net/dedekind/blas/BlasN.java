@@ -53,7 +53,8 @@ public class BlasN extends Blas {
         Objects.requireNonNull(a, "a");
         Objects.requireNonNull(b, "b");
         Objects.requireNonNull(c, "c");
-        throw new UnsupportedOperationException("NOT YET IMPLEMENTED");
+        dgemm_multi_n(Order.COL.code(), Trans.of(transa).code(), Trans.of(transb).code(), m, n, k, alpha, a, aOffset,
+                lda, b, bOffset, ldb, beta, c, cOffset, ldc, USE_CRITICAL, howMany, incAOff, incBOff, incCOff);
     }
 
     @Override
@@ -293,7 +294,8 @@ public class BlasN extends Blas {
         Objects.requireNonNull(a, "a");
         Objects.requireNonNull(b, "b");
         Objects.requireNonNull(c, "c");
-        throw new UnsupportedOperationException("NOT YET IMPLEMENTED");
+        sgemm_multi_n(Order.COL.code(), Trans.of(transa).code(), Trans.of(transb).code(), m, n, k, alpha, a, aOffset,
+                lda, b, bOffset, ldb, beta, c, cOffset, ldc, USE_CRITICAL, howMany, incAOff, incBOff, incCOff);
     }
 
     // miscellaneous complex routines
