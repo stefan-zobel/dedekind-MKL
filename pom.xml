@@ -4,7 +4,7 @@
     <groupId>net.sourceforge.streamsupport</groupId>
     <artifactId>dedekind-mkl</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>dedekind-mkl</name>
     <description>Selected BLAS and LAPACK Java bindings for Intel's MKL (Math Kernel Library)</description>
     <url>https://github.com/stefan-zobel/dedekind-MKL/</url>
