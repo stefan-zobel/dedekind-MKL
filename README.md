@@ -5,7 +5,7 @@
 
 # dedekind-MKL
 
-Selected BLAS and LAPACK Java bindings for Intel's MKL (Math Kernel Library) on Windows and Linux
+Selected BLAS and LAPACK Java bindings for Intel's oneAPI Math Kernel Library on Windows and Linux
 
 
 ### What is included?
@@ -32,7 +32,7 @@ are also provided. Hence, the basic operations for general dense matrices, as we
 
 ### How to use?
 
-The intended purpose of the library is to be a Java JNI wrapper of Intel's native *Math Kernel Library* (`MKL`). However, the float and double functions can also be used without an MKL installation as the pure Java *org.netlib* implementation of those functions is included as a dependency.
+The intended purpose of the library is to be a Java JNI wrapper of Intel's native *oneAPI Math Kernel Library* (`oneMKL`). However, the float and double functions can also be used without an MKL installation as the pure Java *org.netlib* implementation of those functions is included as a dependency.
 
 Given that the original Fortran API is very low-level, there is [PlainLapack](https://github.com/stefan-zobel/dedekind-MKL/blob/master/src/main/java/net/frobenius/lapack/PlainLapack.java) which is a very thin wrapper that provides automatic work array allocation and extensive parameter checking (the latter being only partially implemented by now).
 Since parameter checking is crucial for the JNI implementation, the safest approach is to go through the `PlainLapack` API.
@@ -46,13 +46,13 @@ Beyond that, no attempt has been made to hide or simplify the difficulties of th
 <dependency>
     <groupId>net.sourceforge.streamsupport</groupId>
     <artifactId>dedekind-mkl</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
 ### Enabling the Intel MKL library
 
-*dedekind-MKL* doesn't ship with the Intel `MKL` library (now called [oneMKL](https://software.intel.com/content/www/us/en/develop/tools/oneapi/base-toolkit/download.html)). If MKL isn't already installed on your system an easy path is to download one of the redistributables [here](https://repo1.maven.org/maven2/org/bytedeco/mkl/) or [here](https://github.com/Anlon-Burke/intel-mkl-x64-redist/releases), extract the archive to a directory and add that to your `PATH` variable and you should be ready to go. There is also a [nuget](https://www.nuget.org/packages/intelmkl.redist.win-x64/) redistributable for Windows and a lot of Linux distros ship MKL in their repositories, for example, on *Arch Linux*, it's simply `pacman -S intel-mkl` and you're done. Of course, you can also download the [official](https://software.intel.com/content/www/us/en/develop/tools/oneapi/base-toolkit/download.html) installer from Intel for a full installation which has a **huge** on-disk footprint. Finally, the MKL binaries included in Python distributions like [Anaconda](https://www.anaconda.com/products/individual) or [WinPython](https://winpython.github.io/) should also be usable.
+*dedekind-MKL* doesn't ship with the Intel [oneMKL](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html) library. If MKL isn't already installed on your system an easy path is to download one of the redistributables [here](https://repo1.maven.org/maven2/org/bytedeco/mkl/) or [here](https://github.com/Anlon-Burke/intel-mkl-x64-redist/releases), extract the archive to a directory and add that to your `PATH` variable and you should be ready to go. There is also a [nuget](https://www.nuget.org/packages/intelmkl.redist.win-x64/) redistributable for Windows and a lot of Linux distros ship MKL in their repositories, for example, on *Arch Linux*, it's simply `pacman -S intel-oneapi-mkl` and you're done. Of course, you can also download the [official](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html) installer from Intel for a full installation which has a **huge** on-disk footprint (~ 8 GiB). Finally, the MKL binaries included in Python distributions like [Anaconda](https://www.anaconda.com/products/individual) or [WinPython](https://winpython.github.io/) should also be usable.
 
 By default, dedekind-MKL searches for its own *dedekind-mkl.so/.dll* native library on the *java.library.path* or in a directory that can be specified either through the environment variable `DEDEKIND_SHAREDLIB_DIR` or via the Java system property `dedekind.sharedlib.dir`. If that doesn't succeed, the shared library gets automatically unpacked from the jar file into *java.io.tmpdir* and loaded from there. The *dedekind-mkl.so/.dll* can <ins>only</ins> be loaded if the OS can find the dependent `MKL` libraries somewhere on the `PATH`.
 
