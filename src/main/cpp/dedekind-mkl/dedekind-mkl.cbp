@@ -19,7 +19,11 @@
 					<Add option="-g" />
 					<Add directory="/usr/lib/jvm/default/include" />
 					<Add directory="/usr/lib/jvm/default/include/linux" />
+					<Add directory="/opt/intel/mkl/include/" />
 				</Compiler>
+				<Linker>
+					<Add library="/opt/intel/mkl/lib/intel64/libmkl_rt.so" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option platforms="Windows;Unix;" />
@@ -34,10 +38,11 @@
 					<Add option="-fPIC" />
 					<Add directory="/usr/lib/jvm/default/include" />
 					<Add directory="/usr/lib/jvm/default/include/linux" />
+					<Add directory="/opt/intel/mkl/include/" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="/usr/lib/libmkl_rt.so" />
+					<Add library="/opt/intel/mkl/lib/intel64/libmkl_rt.so" />
 				</Linker>
 			</Target>
 		</Build>
