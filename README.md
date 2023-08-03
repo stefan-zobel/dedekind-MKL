@@ -46,7 +46,7 @@ Beyond that, no attempt has been made to hide or simplify the difficulties of th
 <dependency>
     <groupId>net.sourceforge.streamsupport</groupId>
     <artifactId>dedekind-mkl</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
